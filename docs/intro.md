@@ -2,46 +2,65 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Introduction à Algoforge
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## Présentation de l'outil
 
-## Getting Started
+Bienvenue sur **Algoforge**, un éditeur graphique interactif permettant de concevoir des algorithmes visuellement. Cet outil est conçu pour aider les étudiants, enseignants et professionnels à structurer, documenter et comprendre des algorithmes de manière intuitive.
 
-Get started by **creating a new site**.
+### Pourquoi utiliser Algoforge ?
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+-   **Visualisation claire** : Transforme les algorithmes en schémas compréhensibles.
+-   **Facilité d'utilisation** : Interface intuitive, même pour les débutants.
+-   **Support des structures algorithmiques** : Conditions, boucles, procédures, etc.
+-   **Exportation et partage** : Enregistrez vos travaux sous différents formats (`.json`, `.png`, `.pdf`).
+-   **Personnalisation** : Choisissez des thèmes pour un affichage adapté à vos préférences.
 
-### What you'll need
+Que vous soyez étudiant en informatique, enseignant ou programmeur, Algoforge vous permettra de représenter et tester vos idées de manière efficace.
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+---
 
-## Generate a new site
+## Accéder à Algoforge
 
-Generate a new Docusaurus site using the **classic template**.
+Algoforge est une application web accessible depuis un navigateur sans installation requise.
 
-The classic template will automatically be added to your project after you run the command:
+### Ouvrir Algoforge
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+3 méthodes disponibles pour accéder à Algoforge :
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+-   Accédez à [Algoforge](https://algoforge.fr) directement.
+-   Autohébérgement : Suivez les instructions sur le [dépôt GitHub](https://github.com/Bing-Chill-inc/Algoforge-main.git).
+-   Utilisation hors ligne : Téléchargez l’application depuis le [site officiel](/) et exécutez-la localement.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+### Configuration requise
 
-## Start your site
+-   **Navigateur** : Chrome, Firefox, Edge, Safari (dernières versions recommandées).
+-   **Connexion Internet** : Requise pour charger les mises à jour et la documentation.
+-   **Optionnel** : Un éditeur de code si vous souhaitez modifier ou personnaliser Algoforge.
 
-Run the development server:
+Si vous souhaitez utiliser Algoforge en mode **hors ligne**, il est possible de télécharger et exécuter l’application localement.
 
-```bash
-cd my-website
-npm run start
-```
+---
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+## Interface et Fonctionnalités Principales
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+### Présentation de l'interface
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+L'interface d'Algoforge est divisée en plusieurs sections :
+
+-   **Barre d'outils** : Contient des boutons pour créer des éléments, gérer les fichiers et modifier les options.
+-   **Espace de travail (Plan de Travail)** : Zone principale où sont placés les éléments algorithmiques.
+-   **Panneaux latéraux** : Contiennent le dictionnaire de données et la bibliothèque d'éléments.
+-   **Menus** : Options pour gérer l'import/export, les préférences et les aides.
+
+### Actions de base
+
+| Action                     | Description                                                 |
+| -------------------------- | ----------------------------------------------------------- |
+| **Créer un élément**       | Sélectionner un élément et cliquer sur l’espace de travail. |
+| **Déplacer un élément**    | Faire glisser un élément pour le repositionner.             |
+| **Connecter des éléments** | Utiliser l’outil Lien pour créer des relations.             |
+| **Modifier un élément**    | Double-cliquer pour modifier son contenu.                   |
+| **Supprimer un élément**   | Sélectionner un élément et appuyer sur `Suppr`.             |
+
+Vous êtes maintenant prêt à explorer les fonctionnalités avancées d’Algoforge et commencer à construire vos propres algorithmes ! 🚀
