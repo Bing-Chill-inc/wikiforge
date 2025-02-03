@@ -50,9 +50,10 @@ const config: Config = {
 		image: "img/AlgoForge.svg",
 		navbar: {
 			title: "Algoforge",
+			style: "dark",
 			logo: {
 				alt: "AF",
-				src: "img/AlgoForge.svg",
+				src: "img/algoforgeLogo.png",
 			},
 			items: [
 				{
