@@ -8,7 +8,7 @@
 #biblio_btn > svg#boutonBiblio {
 	width: 24px;
 	height: 24px;
-	fill: var(--ifm-color-content);
+	fill: var(--fgColor);
 	user-select: none;
 	cursor: pointer;
 }
@@ -19,14 +19,14 @@
 #boutonStructureSwitch {
 	width: 34px;
 	height: 34px;
-	fill: var(--ifm-color-content);
+	fill: var(--fgColor);
 	user-select: none;
 	cursor: pointer;
 }
 #boutonStructureIterativeBornee {
 	width: 28px;
 	height: 28px;
-	fill: var(--ifm-color-content);
+	fill: var(--fgColor);
 	user-select: none;
 	cursor: pointer;
 }
@@ -65,9 +65,9 @@
 	bottom: 100%;
 	left: 50%;
 	text-align: center;
-	background: var(--ifm-menu-color-background-active);
-	color: var(--ifm-color-content);
-	border: 1px solid var(--ifm-color-primary);
+	background: var(--bgColor);
+	color: var(--fgColor);
+	border: 1px solid var(--borderColor2);
 	border-radius: 0.6em;
 	z-index: -1;
 	translate: -50% -2.5rem;
@@ -108,10 +108,10 @@ div.barreOutilsHorizontale {
 	justify-content: center;
 	gap: 1em;
 	padding: 0 1em 0 1em;
-	background: var(--ifm-color-primary-contrast-background);
+	background: var(--bgColorTertiary);
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
-	outline: 1px solid var(--ifm-color-primary);
+	outline: 2px solid var(--borderColor2);
 }
 
 .undoRedo {
@@ -137,7 +137,7 @@ img.dragging {
 #itemsControl > div > svg.selected {
 	border-radius: 0.3vw;
 	scale: 1.2;
-	fill: var(--titleColor) !important;
+	fill: var(--ifm-menu-color-active) !important;
 }
 
 div.barreOutilsHorizontale > div.undoRedo {

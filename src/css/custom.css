@@ -6,25 +6,61 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #1c719c;
-  --ifm-color-primary-dark: #1c719c;
-  --ifm-color-primary-darker: #1c719c;
-  --ifm-color-primary-darkest: #1c719c;
-  --ifm-color-primary-light: #1c719c;
-  --ifm-color-primary-lighter: #1c719c;
-  --ifm-color-primary-lightest: #1c719c;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+	--ifm-color-primary: #1c719c;
+	--ifm-color-primary-dark: #1c719c;
+	--ifm-color-primary-darker: #1c719c;
+	--ifm-color-primary-darkest: #1c719c;
+	--ifm-color-primary-light: #1c719c;
+	--ifm-color-primary-lighter: #1c719c;
+	--ifm-color-primary-lightest: #1c719c;
+	--ifm-code-font-size: 95%;
+	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+	--bgColor: #f2f5f8;
+	--bgColorSecondary: #e5eaf0;
+	--borderColor: #becbda;
+	--fgColor: #0c3245;
+	--fgColorSemiTransparent: #becbda55;
+	--fgColorTransparent: #becbda11;
+	--fgColorForward: #33475c;
+	--goodColor: #8abe5e;
+	--goodColorTransparent: #8abe5e99;
+	--errorColor: #d85959;
+	--warningColor: #ffad5a;
+	--titleColor: #1c719c;
+	--glowColor: #00000000;
+	--baseGlowColor: 211;
+	--borderColor2: #bdc6c9;
+	--bgColorTertiary: #f2f5f870;
+	--fgColorHover: #134d67;
+	--fgColorDisabled: #7e7d73;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #34a5da;
-  --ifm-color-primary-dark: #34a5da;
-  --ifm-color-primary-darker: #34a5da;
-  --ifm-color-primary-darkest: #34a5da;
-  --ifm-color-primary-light: #34a5da;
-  --ifm-color-primary-lighter: #34a5da;
-  --ifm-color-primary-lightest: #34a5da;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+	--ifm-color-primary: #34a5da;
+	--ifm-color-primary-dark: #34a5da;
+	--ifm-color-primary-darker: #34a5da;
+	--ifm-color-primary-darkest: #34a5da;
+	--ifm-color-primary-light: #34a5da;
+	--ifm-color-primary-lighter: #34a5da;
+	--ifm-color-primary-lightest: #34a5da;
+	--docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+	--bgColor: #161e27;
+	--bgColorSecondary: #0f141a;
+	--borderColor: #838787;
+	--fgColor: #f2fbff;
+	--fgColorSemiTransparent: #83878755;
+	--fgColorTransparent: #83878711;
+	--fgColorForward: #a6aaa9;
+	--goodColor: #d4e7c5;
+	--goodColorTransparent: #d4e7c599;
+	--errorColor: #ffa8a8;
+	--warningColor: #ffd6ad;
+	--titleColor: #34a5da;
+	--glowColor: #00000000;
+	--baseGlowColor: 225;
+	--borderColor2: #1f2b38;
+	--bgColorTertiary: rgba(28, 39, 51, 0.35);
+	--fgColorHover: #bdc6c9;
+	--fgColorDisabled: rgba(166, 170, 169, 0.6);
 }

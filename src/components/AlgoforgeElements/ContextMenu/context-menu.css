@@ -1,0 +1,171 @@
+.menu-contextuel {
+	width: 180px;
+	height: fit-content;
+	min-height: 2vw;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	z-index: 2048;
+	font-size: var(--font-size1);
+	background: var(--ifm-breadcrumb-item-background-active);
+	outline: 1px solid var(--borderColor2);
+	color: var(--fgColor);
+	padding: 6px;
+	gap: 6px;
+}
+.menu-contextuel::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	z-index: -1;
+	border-radius: inherit;
+}
+
+.menu-contextuel > .element-menu-compose > span,
+.menu-deroulant > .element-menu-compose > span {
+	margin-right: 5px;
+}
+
+.menu-contextuel > .element-menu,
+.menu-contextuel > .element-menu-compose,
+.menu-contextuel > .element-menu-keyboard-tip,
+.element-menu-compose:hover > .menu-deroulant > .element-menu,
+.element-menu-compose:hover > .menu-deroulant > .element-menu-compose,
+.element-menu-compose:hover > .menu-deroulant > .element-menu-keyboard-tip {
+	text-align: left;
+	white-space: nowrap;
+	position: relative;
+	border-radius: 10px;
+	display: flex;
+	justify-content: space-between;
+	padding: 6px;
+	gap: 10px;
+}
+
+.menu-contextuel > .element-menu-keyboard-tip > p,
+.element-menu-compose:hover > .menu-deroulant > .element-menu-keyboard-tip > p {
+	padding: 0;
+	margin: 0;
+}
+
+.menu-contextuel > .element-menu:hover,
+.menu-contextuel > .element-menu-compose:hover,
+.menu-contextuel > .element-menu-keyboard-tip:hover {
+	background-color: var(--fgColorHover);
+	color: var(--bgColor);
+}
+
+.menu-contextuel > .element-menu-compose > span,
+.menu-contextuel > .element-menu-keyboard-tip > span {
+	transition: all 0.5s ease;
+}
+
+.menu-contextuel > .element-menu-compose:hover > span {
+	position: absolute;
+	right: 2%;
+	rotate: 90deg;
+}
+
+.menu-contextuel > .element-menu-compose:hover > .menu-deroulant {
+	scale: 1;
+	width: 15vw;
+	height: fit-content;
+	min-height: 2vw;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	z-index: 999999;
+	gap: 0;
+	padding: 0;
+	overflow: hidden;
+	background: var(--ifm-breadcrumb-item-background-active);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid var(--borderColor2);
+	padding: 6px;
+}
+
+.menu-contextuel > .element-menu-compose:hover > .menu-deroulant > h3 {
+	padding-left: 5%;
+	width: 95%;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.menu-deroulant > div,
+.menu-deroulant > .element-menu,
+.menu-deroulant > .element-menu-compose,
+.menu-deroulant > .element-menu-keyboard-tip {
+	padding: 4px;
+	text-align: left;
+	white-space: nowrap;
+	position: relative;
+	border-radius: 0.5em;
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.menu-deroulant > .element-menu-keyboard-tip > p {
+	padding: 0;
+	margin: 0;
+}
+
+.menu-deroulant > div:hover,
+.menu-deroulant > .element-menu:hover,
+.menu-deroulant > .element-menu-compose:hover,
+.menu-deroulant > .element-menu-keyboard-tip:hover {
+	background-color: var(--fgColorHover);
+	color: var(--bgColor);
+}
+
+.element-menu-compose > span,
+.menu-deroulant > .element-menu-keyboard-tip > span {
+	transition: all 0.5s ease;
+}
+
+.element-menu-keyboard-tip > span {
+	opacity: 60%;
+}
+
+.element-menu-compose:hover > span {
+	position: absolute;
+	right: 2%;
+	rotate: 90deg;
+}
+
+.element-menu-compose > .menu-deroulant {
+	position: absolute;
+	top: 0;
+	left: 97%;
+	min-width: fit-content;
+	background-color: var(--ifm-breadcrumb-item-background-active);
+	border: 1px solid var(--borderColor2);
+	color: var(--fgColor);
+	border-radius: 0.8em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	scale: 0;
+	gap: 6px;
+	transition: all 0.1s ease;
+	transform-origin: top left;
+	padding: 6px;
+}
+.element-menu-compose:hover > .menu-deroulant {
+	scale: 1;
+}
+
+.element-menu.disabled,
+.element-menu-compose.disabled,
+.element-menu-keyboard-tip.disabled {
+	cursor: not-allowed;
+	color: var(--fgColorDisabled);
+}

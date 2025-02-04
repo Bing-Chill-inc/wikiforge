@@ -1,5 +1,17 @@
 import "./barre-outils-display.css";
-const BarreOutils = () => {
+interface BarreOutilsProps {
+	selection?:
+		| "pointeur"
+		| "lien"
+		| "probleme"
+		| "procedure"
+		| "structureSi"
+		| "structureSwitch"
+		| "structureIterative"
+		| "structureIterativeBornee"
+		| "conditionSortie";
+}
+const BarreOutils = ({ selection }: BarreOutilsProps) => {
 	return (
 		<div className="barreOutilsHorizontale">
 			<div id="dicobiblioControl">
@@ -77,7 +89,7 @@ c0-17.6,14.4-32,32-32h285.4C379.5,401.1,379.5,430.9,381.4,448z"
 				<div className="svg-wrapper" data-title="Pointeur">
 					<svg
 						id="boutonPointeur"
-						className="dock-item"
+						className={`dock-item ${selection === "pointeur" ? "selected" : ""}`}
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
@@ -103,7 +115,7 @@ c0,0,0,0-0.1-0.1l-15.7-13.8c-0.3-0.3-0.9-0.3-1.2,0l-77.3,67.4C135.8,195.5,135.8,
 					<svg
 						version="1.1"
 						id="boutonLien"
-						className="dock-item"
+						className={`dock-item ${selection === "lien" ? "selected" : ""}`}
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
 						y="0px"
@@ -121,7 +133,7 @@ C528,24.4,528,38.5,519.4,47.1z"
 					<svg
 						version="1.1"
 						id="boutonProbleme"
-						className="dock-item"
+						className={`dock-item ${selection === "probleme" ? "selected" : ""}`}
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
 						y="0px"
@@ -139,7 +151,7 @@ C543.9,295.2,538.1,301,530.9,301z"
 				<div className="svg-wrapper" data-title="Procédure">
 					<svg
 						id="boutonProcedure"
-						className="dock-item"
+						className={`dock-item ${selection === "procedure" ? "selected" : ""}`}
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
@@ -163,7 +175,7 @@ v281.7c0,13,10.4,23.5,23.2,23.5H548c12.8,0,23.2-10.5,23.2-23.5V23.5C571.2,10.5,5
 				<div className="svg-wrapper" data-title="Structure Si">
 					<svg
 						id="boutonStructureSi"
-						className="dock-item"
+						className={`dock-item ${selection === "structureSi" ? "selected" : ""}`}
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
@@ -183,7 +195,7 @@ l-66.8,131.9v0h-163c-7.2,0-13.1-5.8-13.1-12.9V39.4c0-7.1,5.9-12.9,13.1-12.9h163v
 				<div className="svg-wrapper" data-title="Structure Switch">
 					<svg
 						id="boutonStructureSwitch"
-						className="dock-item"
+						className={`dock-item ${selection === "structureSwitch" ? "selected" : ""}`}
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
@@ -205,7 +217,7 @@ c0-3.1,2.5-5.6,5.6-5.6h223.4c4.2,0,6.9,4.4,5,8.1L474.7,301.8z"
 				<div className="svg-wrapper" data-title="Structure itérative">
 					<svg
 						id="boutonStructureIterative"
-						className="dock-item"
+						className={`dock-item ${selection === "structureIterative" ? "selected" : ""}`}
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
@@ -227,7 +239,7 @@ c4.9-5.9,12.2-9.4,20-9.4c4.8,0,9.3,1.3,13.3,3.7s7.3,5.8,9.5,10l12.1,22.6l38.7,72
 				<div className="svg-wrapper" data-title="Structure itérative bornée">
 					<svg
 						id="boutonStructureIterativeBornee"
-						className="dock-item"
+						className={`dock-item ${selection === "structureIterativeBornee" ? "selected" : ""}`}
 						version="1.1"
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
@@ -261,7 +273,7 @@ C586.7,320.9,584.5,315.9,584.5,309.9z"
 					<svg
 						version="1.1"
 						id="boutonConditionSortie"
-						className="dock-item"
+						className={`dock-item ${selection === "conditionSortie" ? "selected" : ""}`}
 						xmlns="http://www.w3.org/2000/svg"
 						x="0px"
 						y="0px"
