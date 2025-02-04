@@ -10,7 +10,7 @@ const config: Config = {
 	favicon: "img/favicon.ico",
 
 	// Set the production url of your site here
-	url: "https://wiki.algoforge.fr",
+	url: "https://algoforge.fr",
 	// Set the /<baseUrl>/ pathname under which your site is served
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
@@ -27,8 +27,8 @@ const config: Config = {
 	// useful metadata like html lang. For example, if your site is Chinese, you
 	// may want to replace "en" with "zh-Hans".
 	i18n: {
-		defaultLocale: "en",
-		locales: ["en"],
+		defaultLocale: "fr",
+		locales: ["fr"],
 	},
 
 	presets: [
@@ -81,38 +81,34 @@ const config: Config = {
 						},
 					],
 				},
-				{
-					title: "Community",
-					items: [
-						{
-							label: "Stack Overflow",
-							href: "https://stackoverflow.com/questions/tagged/docusaurus",
-						},
-						{
-							label: "Discord",
-							href: "https://discordapp.com/invite/docusaurus",
-						},
-						{
-							label: "X",
-							href: "https://x.com/docusaurus",
-						},
-					],
-				},
+				// {
+				// 	title: "Community",
+				// 	items: [
+				// 		{
+				// 			label: "Stack Overflow",
+				// 			href: "https://stackoverflow.com/questions/tagged/docusaurus",
+				// 		},
+				// 		{
+				// 			label: "Discord",
+				// 			href: "https://discordapp.com/invite/docusaurus",
+				// 		},
+				// 		{
+				// 			label: "X",
+				// 			href: "https://x.com/docusaurus",
+				// 		},
+				// 	],
+				// },
 				{
 					title: "More",
 					items: [
 						{
-							label: "Blog",
-							to: "/blog",
-						},
-						{
 							label: "GitHub",
-							href: "https://github.com/facebook/docusaurus",
+							href: "https://github.com/Bing-Chill-inc/Algoforge-main.git",
 						},
 					],
 				},
 			],
-			copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+			copyright: `Copyright © ${new Date().getFullYear()} Algoforge, Inc. Because your algorithms deserve better.`,
 		},
 		prism: {
 			theme: prismThemes.github,
