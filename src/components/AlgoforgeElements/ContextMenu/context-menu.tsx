@@ -1,32 +1,56 @@
 import "./context-menu.css";
+import ElementMenuContextuel from "./types/element-menu";
 
-const ContextMenu = () => {
-	return (
-		<div className="menu-contextuel">
-			<div className="element-menu-keyboard-tip">
-				<p>Annuler</p>
-				<span>⌘Z</span>
-			</div>
-			<div className="element-menu-keyboard-tip">
-				<p>Rétablir</p>
-				<span>⌘Y</span>
-			</div>
-			<div className="element-menu-keyboard-tip">
-				<p>Coller</p>
-				<span>⌘V</span>
-			</div>
-			<div className="element-menu-compose">
-				Ajouter un élément<span>&gt;</span>
-				<div className="menu-deroulant">
-					<div>Problème</div>
-					<div>Procédure</div>
-					<div>Structure 'SI'</div>
-					<div>Structure 'SWITCH'</div>
-					<div>Structure itérative non bornée</div>
-					<div>Structure itérative bornée</div>
-					<div>Instruction d'arrêt</div>
+interface ContextMenuProps {
+	elements?: ElementMenuContextuel[];
+	selection?: string;
+}
+
+const ContextMenu = ({ elements, selection }: ContextMenuProps) => {
+	if (!elements) {
+		return (
+			<div className="menu-contextuel">
+				<div className={`element-menu-keyboard-tip ${selection == "Annuler" ? "selected" : ""}`}>
+					<p>Annuler</p>
+					<span>⌘Z</span>
+				</div>
+				<div className={`element-menu-keyboard-tip ${selection == "Rétablir" ? "selected" : ""}`}>
+					<p>Rétablir</p>
+					<span>⌘Y</span>
+				</div>
+				<div className={`element-menu-keyboard-tip ${selection == "Coller" ? "selected" : ""}`}>
+					<p>Coller</p>
+					<span>⌘V</span>
+				</div>
+				<div className="element-menu-compose">
+					Ajouter un élément<span>&gt;</span>
+					<div className="menu-deroulant">
+						<div>Problème</div>
+						<div>Procédure</div>
+						<div>Structure 'SI'</div>
+						<div>Structure 'SWITCH'</div>
+						<div>Structure itérative non bornée</div>
+						<div>Structure itérative bornée</div>
+						<div>Instruction d'arrêt</div>
+					</div>
 				</div>
 			</div>
+		);
+	}
+
+	return (
+		<div className="menu-contextuel">
+			{elements.map((element) => (
+				<div
+					key={element.nom}
+					className={`element-menu${element.keyBoardTip ? "-keyboard-tip" : ""} ${
+						selection == element.nom ? "selected" : ""
+					}`}
+				>
+					<p>{element.nom}</p>
+					{element.keyBoardTip && <span>{element.keyBoardTip}</span>}
+				</div>
+			))}
 		</div>
 	);
 };

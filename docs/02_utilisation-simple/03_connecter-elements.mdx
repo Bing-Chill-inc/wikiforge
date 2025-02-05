@@ -1,3 +1,28 @@
+import BarreOutils from "../../src/components/AlgoforgeElements/BarreOutils/barre-outils-display";
+import ContextMenu from "../../src/components/AlgoforgeElements/ContextMenu/context-menu";
+
 # Connecter des éléments
 
-Pour connecter des éléments entre eux, vous pouvez utiliser l'outil **Lien** de la barre d'outils.
+Pour connecter des éléments entre eux, vous commencez par sélectionner l'outil **Lien** de la barre d'outils.
+
+<BarreOutils selection="lien" />
+
+Vous pouvez ensuite connecter les éléments en cliquant sur l'élément de départ, puis en cliquant sur l'élément d'arrivée. Un lien sera créé entre les deux éléments.
+
+Une fois l'élément parent sélectionné, vous pouvez aussi maintenir la touche **Shift** enfoncée pour créer des liens avec plusieurs éléments en même temps, 
+en leur cliquant dessus sans lacher la touche Shift. 
+
+Vous pouvez également utiliser le menu contextuel sur un élément (clic droit) et sélectionner "décomposer", 
+<ContextMenu elements={[
+    {nom: "Annuler", keyBoardTip: "Ctrl + Z"},
+    {nom: "Rétablir", keyBoardTip: "Ctrl + Y"},
+    {nom: "Supprimer", keyBoardTip: "Suppr"},
+    {nom: "Couper", keyBoardTip: "Ctrl + X"},
+    {nom: "Copier", keyBoardTip: "Ctrl + C"},
+    {nom: "Coller", keyBoardTip: "Ctrl + V"},
+    {nom: "Décomposer"},
+    {nom: "Aligner la sélection ici"},
+]} selection="Décomposer" />
+puis cliquer sur un autre élément pour créer un lien entre les deux.
+
+Pour supprimer un lien, vous répétez la liaison entre les deux éléments. Le lien sera supprimé.

@@ -1,0 +1,4 @@
+export default interface ElementMenuContextuel {
+	nom: string;
+	keyBoardTip?: string;
+}

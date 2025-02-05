@@ -7,7 +7,7 @@
 	flex-direction: column;
 	z-index: 2048;
 	font-size: var(--font-size1);
-	background: var(--ifm-breadcrumb-item-background-active);
+	background: var(--bgColorTertiary);
 	outline: 1px solid var(--borderColor2);
 	color: var(--fgColor);
 	padding: 6px;
@@ -47,12 +47,16 @@
 	gap: 10px;
 }
 
+.menu-contextuel > .element-menu > p,
 .menu-contextuel > .element-menu-keyboard-tip > p,
 .element-menu-compose:hover > .menu-deroulant > .element-menu-keyboard-tip > p {
 	padding: 0;
 	margin: 0;
 }
 
+.menu-contextuel > .element-menu.selected,
+.menu-contextuel > .element-menu-compose.selected,
+.menu-contextuel > .element-menu-keyboard-tip.selected,
 .menu-contextuel > .element-menu:hover,
 .menu-contextuel > .element-menu-compose:hover,
 .menu-contextuel > .element-menu-keyboard-tip:hover {
@@ -83,7 +87,7 @@
 	gap: 0;
 	padding: 0;
 	overflow: hidden;
-	background: var(--ifm-breadcrumb-item-background-active);
+	background: var(--bgColorTertiary);
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
 	border: 1px solid var(--borderColor2);
@@ -112,7 +116,7 @@
 	justify-content: space-between;
 	gap: 10px;
 }
-
+.menu-deroulant > .element-menu > p,
 .menu-deroulant > .element-menu-keyboard-tip > p {
 	padding: 0;
 	margin: 0;
@@ -146,7 +150,7 @@
 	top: 0;
 	left: 97%;
 	min-width: fit-content;
-	background-color: var(--ifm-breadcrumb-item-background-active);
+	background-color: var(--bgColorTertiary);
 	border: 1px solid var(--borderColor2);
 	color: var(--fgColor);
 	border-radius: 0.8em;
