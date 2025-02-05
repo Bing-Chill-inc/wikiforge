@@ -33,6 +33,7 @@
 	--bgColorTertiary: #f2f5f870;
 	--fgColorHover: #134d67;
 	--fgColorDisabled: #7e7d73;
+	--sizeModifier: 1;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -63,4 +64,5 @@
 	--bgColorTertiary: rgba(28, 39, 51, 0.35);
 	--fgColorHover: #bdc6c9;
 	--fgColorDisabled: rgba(166, 170, 169, 0.6);
+	--sizeModifier: 1;
 }

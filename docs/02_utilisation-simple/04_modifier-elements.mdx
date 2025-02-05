@@ -1,1 +1,34 @@
+import Probleme from '../../src/components/AlgoforgeElements/ElementsGraphiques/Probleme/probleme'
+import Procedure from '../../src/components/AlgoforgeElements/ElementsGraphiques/Procedure/procedure'
+import StructureSi from '../../src/components/AlgoforgeElements/ElementsGraphiques/StructureSi/structure-si'
+
 # Modifier des éléments
+
+## Problèmes
+
+<Probleme titre="Inverser 2 nombres" données="nbr1, nbr2" />
+
+Pour modifier le titre d'un problème, il suffit de cliquer sur le problème en question. 
+Une fois le curseur placé dans le problème, vous pouvez modifier le titre.
+
+Pour modifier ses données / résultats, cliquez sur les emplacements de données / résultats.
+S'il n'y a pas encore de données / résultats, survoler la zone de données / résultats avec la souris les fera apparaître.
+
+## Procédures
+
+<Procedure titre="Tri à bulles" données="tab" />
+
+Les procédures se modifient de la même manière que les [problèmes](#problèmes).
+
+## Structure Alternative Si
+
+<StructureSi conditions={["note < 10", "Sinon"]} max={5} />
+
+Une structure alternative est composée de plusieurs conditions. Pour modifier une condition, cliquez sur la condition en question.
+Une fois le curseur placé dans la condition, vous pouvez modifier le texte.
+
+Pour ajouter une condition, survolez le côté droit de la structure alternative. Pour y faire apparaître le bouton +. Cliquez dessus.
+Pour ajouter une condition à un emplacement différent, cliquez sur le bouton + de la condition précédente (apparait au survol).
+Pour supprimer une condition, cliquez sur le bouton - de la condition (apparait au survol).
+
+Pour échanger deux conditions, cliquez sur les boutons de déplacement en bas de la condition (apparaissent au survol).

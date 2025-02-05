@@ -1,0 +1,209 @@
+.structure-si-element {
+	display: grid;
+	grid-template-columns: 0px 1fr 0px;
+	grid-template-rows: 1fr;
+	width: fit-content;
+	height: calc(var(--sizeModifier) * 4vw);
+	place-content: center;
+	place-items: center;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	margin-bottom: 60px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.structure-si-element > div.triangle {
+	color: #0000;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	font-size: 3vw;
+	user-select: none;
+	cursor: pointer;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.structure-si-element > div.triangle:hover {
+	color: var(--fgColorForward);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.structure-si-element > div.triangleGauche {
+	width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+	height: calc(var(--sizeModifier) * 2.8284271247vw);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-left: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	rotate: -45deg;
+	grid-column: 1;
+	background-color: var(--bgColor);
+	transform: translate(-2%, 2%); /* Compenser l'imprecision du rotate */
+}
+
+.structure-si-element > div.triangleGauche > span {
+	rotate: 45deg;
+	transform: translateX(-0.7vw);
+}
+
+.structure-si-element > div.conditionContainer {
+	display: flex;
+	width: fit-content;
+	height: 100%;
+	grid-column: 2;
+	flex-direction: row;
+}
+
+.structure-si-element > div.conditionContainer > .condition-element {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bgColor);
+	border-right: calc(var(--sizeModifier) * 0.05vw) solid var(--fgColor);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-bottom: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+}
+
+.structure-si-element > div.triangleDroit {
+	width: calc(var(--sizeModifier) * 2.8284271247vw); /* 4 / sqrt(2), théorème de pythagore */
+	height: calc(var(--sizeModifier) * 2.8284271247vw);
+	border-top: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-right: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	rotate: 45deg;
+	grid-column: 3;
+	background-color: var(--bgColor);
+	transform: translate(2%, 2%); /* Compenser l'imprecision du rotate */
+}
+
+.structure-si-element > div.triangleDroit > span {
+	rotate: -45deg;
+	transform: translateX(0.7vw);
+}
+
+.condition-element {
+	position: relative;
+	transition: all 0.2s ease-in-out;
+	height: 100%;
+}
+
+.condition-element > div.libelle {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: 100%;
+	resize: none;
+	border: none;
+	background: none;
+	text-align: center;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	overflow: hidden;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	background-color: var(--bgColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.condition-element > div.libelle:focus-visible {
+	outline: none;
+}
+
+.condition-element > button.supprimer {
+	width: calc(var(--sizeModifier) * 2vw);
+	height: calc(var(--sizeModifier) * 1vw);
+	border: none;
+	border-radius: 0 0 999em 999em;
+	background-color: var(--errorColor);
+	z-index: 3;
+	transition: all var(--transitionTime) ease;
+	font-size: calc(var(--sizeModifier) * 1vw);
+	color: var(--bgColor);
+	display: none;
+	position: absolute;
+	top: 0;
+}
+
+.condition-element > button.supprimer:hover {
+	background-color: var(--fgColorHover);
+}
+
+.condition-element > div.arrowsWrapper {
+	width: calc(var(--sizeModifier) * 6vw);
+	height: calc(var(--sizeModifier) * 1vw);
+	border: none;
+	font-size: calc(var(--sizeModifier) * 1vw);
+	text-align: center;
+	position: absolute;
+	bottom: calc(var(--sizeModifier) * -1.5vw);
+	user-select: none;
+	cursor: pointer;
+	display: none;
+	padding: 0 calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw) calc(var(--sizeModifier) * 0.5vw);
+}
+
+.condition-element > div.arrowsWrapper > span {
+	padding: calc(var(--sizeModifier) * 0.5vw);
+	border-radius: 0 0 999em 999em;
+}
+
+.condition-element > div.arrowsWrapper > span:hover {
+	color: var(--bgColor);
+	font-size: calc(var(--sizeModifier) * 1.2vw);
+	transition: all 0.2s ease;
+	background-color: var(--fgColorHover);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.condition-element > div.ajouterAGauche {
+	width: calc(var(--sizeModifier) * 1.5vw);
+	height: calc(var(--sizeModifier) * 1.5vw);
+	position: absolute;
+	left: 0;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-radius: 0 999em 999em 0;
+	background-color: var(--goodColor);
+	z-index: 5;
+	color: var(--bgColor);
+	font-size: calc(var(--sizeModifier) * 1.5vw);
+	text-align: center;
+	user-select: none;
+	cursor: pointer;
+	display: none;
+}
+
+.condition-element > div.ajouterADroite {
+	width: calc(var(--sizeModifier) * 1.5vw);
+	height: calc(var(--sizeModifier) * 1.5vw);
+	position: absolute;
+	right: 0;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-radius: 999em 0 0 999em;
+	background-color: var(--goodColor);
+	z-index: 5;
+	color: var(--bgColor);
+	font-size: calc(var(--sizeModifier) * 1.5vw);
+	text-align: center;
+	user-select: none;
+	cursor: pointer;
+	display: none;
+}
+
+.condition-element > div.ajouterAGauche:hover,
+.condition-element > div.ajouterADroite:hover {
+	background-color: var(--fgColorHover);
+}
+
+.condition-element:hover > div.arrowsWrapper,
+.condition-element:hover > div.ajouterAGauche,
+.condition-element:hover > div.ajouterADroite,
+.condition-element:hover > button.supprimer {
+	opacity: 60%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

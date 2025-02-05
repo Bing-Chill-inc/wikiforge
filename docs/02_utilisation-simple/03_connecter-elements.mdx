@@ -3,6 +3,7 @@ import ContextMenu from "../../src/components/AlgoforgeElements/ContextMenu/cont
 
 # Connecter des éléments
 
+## Créer un lien
 Pour connecter des éléments entre eux, vous commencez par sélectionner l'outil **Lien** de la barre d'outils.
 
 <BarreOutils selection="lien" />
@@ -25,4 +26,32 @@ Vous pouvez également utiliser le menu contextuel sur un élément (clic droit)
 ]} selection="Décomposer" />
 puis cliquer sur un autre élément pour créer un lien entre les deux.
 
+## Supprimer un lien
+
 Pour supprimer un lien, vous répétez la liaison entre les deux éléments. Le lien sera supprimé.
+
+Vous pouvez délier un élément de tous ses enfants via le menu contextuel en cliquant sur "Délier tous les enfants".
+<ContextMenu elements={[
+    {nom: "Annuler", keyBoardTip: "Ctrl + Z"},
+    {nom: "Rétablir", keyBoardTip: "Ctrl + Y"},
+    {nom: "Supprimer", keyBoardTip: "Suppr"},
+    {nom: "Couper", keyBoardTip: "Ctrl + X"},
+    {nom: "Copier", keyBoardTip: "Ctrl + C"},
+    {nom: "Coller", keyBoardTip: "Ctrl + V"},
+    {nom: "Décomposer"},
+    {nom: "Délier tous les enfants"},
+    {nom: "Aligner la sélection ici"},
+]} selection="Délier tous les enfants" />
+
+Ou délier un élément de son parent via le menu contextuel en cliquant sur "Délier du parent".
+<ContextMenu elements={[
+    {nom: "Annuler", keyBoardTip: "Ctrl + Z"},
+    {nom: "Rétablir", keyBoardTip: "Ctrl + Y"},
+    {nom: "Supprimer", keyBoardTip: "Suppr"},
+    {nom: "Couper", keyBoardTip: "Ctrl + X"},
+    {nom: "Copier", keyBoardTip: "Ctrl + C"},
+    {nom: "Coller", keyBoardTip: "Ctrl + V"},
+    {nom: "Décomposer"},
+    {nom: "Délier du parent"},
+    {nom: "Aligner la sélection ici"},
+]} selection="Délier du parent" />

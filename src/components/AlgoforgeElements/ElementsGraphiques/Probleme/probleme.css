@@ -1,0 +1,155 @@
+.probleme-element {
+	display: flex;
+	width: calc(var(--sizeModifier) * 30vw);
+	height: fit-content;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transition: all var(--transitionTime) ease;
+	z-index: 2;
+	margin-bottom: 60px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.probleme-element > span.ouvrir {
+	position: absolute;
+	bottom: calc(var(--sizeModifier) * 0.5vw);
+	right: calc(var(--sizeModifier) * 10.5vw);
+	width: calc(var(--sizeModifier) * 0.75vw);
+	height: calc(var(--sizeModifier) * 0.75vw);
+	background-color: var(--fgColorTransparent);
+	border: 0.1vw solid var(--fgColor);
+	border-radius: calc(var(--sizeModifier) * 0.25vw);
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.probleme-element > div.containerDPR {
+	width: 100%;
+	height: calc(var(--sizeModifier) * 4vw);
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+}
+
+.probleme-element > div.containerDPR > div.donnees {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: right;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+	grid-column: 1;
+}
+
+.probleme-element > div.containerDPR > div.donnees > label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw);
+	transform: scaleX(0.75);
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 1.5vw);
+	line-height: 0.9;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	user-select: none;
+}
+
+.probleme-element > div.containerDPR > div.donnees > div.donneesEditable {
+	min-width: calc(var(--sizeModifier) * 1vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	resize: none;
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.probleme-element > div.containerDPR > div.donnees > div.donneesEditable:focus-visible {
+	outline: none;
+}
+
+.probleme-element > div.containerDPR > div.donnees:hover > label.accolades {
+	display: block !important;
+}
+
+.probleme-element > div.containerDPR > div.nom {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	text-align: center;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	background-color: var(--bgColor);
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.probleme-element > div.containerDPR > div.nom:focus-visible {
+	outline: none;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.8vw) var(--glowColor);
+}
+
+.probleme-element > div.containerDPR > div.resultat {
+	width: calc(var(--sizeModifier) * 10vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
+	column-gap: calc(var(--sizeModifier) * 0.2vw);
+	place-items: center;
+	grid-column: 3;
+}
+
+.probleme-element > div.containerDPR > div.resultat > label.accolades {
+	font-size: calc(var(--sizeModifier) * 4vw);
+	transform: scaleX(0.75);
+	height: calc(var(--sizeModifier) * 4vw);
+	width: calc(var(--sizeModifier) * 1.5vw);
+	line-height: 0.9;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	user-select: none;
+}
+
+.probleme-element > div.containerDPR > div.resultat > div.resultatEditable {
+	min-width: calc(var(--sizeModifier) * 1vw);
+	height: calc(var(--sizeModifier) * 4vw);
+	grid-column: 2;
+	resize: none;
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	word-wrap: break-word;
+	overflow: hidden;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.probleme-element > div.containerDPR > div.resultat > div.resultatEditable:focus-visible {
+	outline: none;
+}
+
+.probleme-element > div.containerDPR > div.resultat:hover > label.accolades {
+	display: block !important;
+}
