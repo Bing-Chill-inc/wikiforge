@@ -1,0 +1,70 @@
+.invite-bornes-pour-si {
+	min-width: calc(var(--sizeModifier) * 22vw);
+	height: calc(var(--sizeModifier) * 8vw);
+	border: calc(var(--sizeModifier) * 0.1vw) solid var(--fgColor);
+	border-radius: 0.5vw;
+	background-color: var(--bgColor);
+	transition: all var(--transitionTime) ease;
+	display: grid;
+	grid-template-columns: 2fr 2fr 1fr 2fr;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
+	place-items: center;
+	padding: calc(var(--sizeModifier) * 1.5vw);
+	z-index: 3;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.invite-bornes-pour-si > input {
+	border: none;
+	border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
+	background: none;
+	color: var(--fgColorForward);
+	font-weight: bold;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	width: 90%;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.invite-bornes-pour-si > label {
+	border: none;
+	background: none;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	white-space: nowrap;
+	width: 100%;
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+}
+
+.invite-bornes-pour-si > select {
+	border: none;
+	border-bottom: calc(var(--sizeModifier) * 0.2vw) solid var(--fgColor);
+	background: none;
+	color: var(--fgColorForward);
+	font-weight: bold;
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	display: inline-block;
+	width: 90%;
+	box-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	text-shadow: 0 0 calc(var(--sizeModifier) * 1.2vw) var(--glowColor);
+	height: calc(var(--sizeModifier) * 1.5vw);
+}
+
+.invite-bornes-pour-si > button {
+	border: none;
+	border-radius: calc(var(--sizeModifier) * 0.5vw);
+	background-color: var(--titleColor);
+	font-size: calc(var(--sizeModifier) * var(--font-size2));
+	display: inline-block;
+	white-space: nowrap;
+	padding: 6px 10px;
+	margin-top: 30px;
+	color: var(--bgColor);
+	cursor: pointer;
+}
+
+.invite-bornes-pour-si > button:hover {
+	background-color: var(--fgColorHover);
+	color: var(--bgColor);
+}

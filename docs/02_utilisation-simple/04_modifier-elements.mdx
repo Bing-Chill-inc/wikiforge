@@ -1,6 +1,8 @@
 import Probleme from '../../src/components/AlgoforgeElements/ElementsGraphiques/Probleme/probleme'
 import Procedure from '../../src/components/AlgoforgeElements/ElementsGraphiques/Procedure/procedure'
 import StructureSi from '../../src/components/AlgoforgeElements/ElementsGraphiques/StructureSi/structure-si'
+import StructureSwitch from '../../src/components/AlgoforgeElements/ElementsGraphiques/StructureSwitch/structure-switch'
+import StructureIterative from '../../src/components/AlgoforgeElements/ElementsGraphiques/StructureIterativeNonBornee/structure-iterative-non-bornee'
 
 # Modifier des éléments
 
@@ -27,8 +29,36 @@ Les procédures se modifient de la même manière que les [problèmes](#problèm
 Une structure alternative est composée de plusieurs conditions. Pour modifier une condition, cliquez sur la condition en question.
 Une fois le curseur placé dans la condition, vous pouvez modifier le texte.
 
-Pour ajouter une condition, survolez le côté droit de la structure alternative. Pour y faire apparaître le bouton +. Cliquez dessus.
-Pour ajouter une condition à un emplacement différent, cliquez sur le bouton + de la condition précédente (apparait au survol).
-Pour supprimer une condition, cliquez sur le bouton - de la condition (apparait au survol).
+Pour ajouter une condition, survolez le côté droit de la structure alternative. Pour y faire apparaître le bouton <code>+</code>. Cliquez dessus.
+Pour ajouter une condition à un emplacement différent, cliquez sur le bouton <code>+</code> de la condition précédente (apparait au survol).
+Pour supprimer une condition, cliquez sur le bouton <code>-</code> de la condition (apparait au survol).
+Note: Vous ne pouvez pas supprimer la dernière condition.
 
 Pour échanger deux conditions, cliquez sur les boutons de déplacement en bas de la condition (apparaissent au survol).
+
+## Structure Alternative Switch
+
+<StructureSwitch conditions={["bonjour", "camion", "algoforge", "hélicoptère"]} max={5} variable="mot" />
+
+Une structure alternative switch est composée d'une expression à tester (en haut) et de plusieurs cas possibles (en bas).
+Pour modifier l'expression à tester, cliquez sur l'expression en question.
+Une fois le curseur placé dans l'expression, vous pouvez modifier le texte.
+
+Pour modifier un cas, cliquez sur le cas en question.
+Une fois le curseur placé dans le cas, vous pouvez modifier le texte.
+
+Pour ajouter un cas, survolez le côté droit de la structure alternative switch. Pour y faire apparaître le bouton <code>+</code>. Cliquez dessus.
+Pour ajouter un cas à un emplacement différent, cliquez sur le bouton <code>+</code> du cas précédent (apparait au survol).
+Pour supprimer un cas, cliquez sur le bouton <code>-</code> du cas (apparait au survol).
+Note: Vous ne pouvez pas supprimer le dernier cas.
+
+Pour échanger deux cas, cliquez sur les boutons de déplacement en bas du cas (apparaissent au survol).
+
+## Structures Itératives
+
+<StructureIterative variable="i" pas="1" borneInf="1" borneSup="10" ordre="croissant" estBornée />
+
+En double cliquant sur une structure itérative, on peut la modifier. On peut alors paramétrer l'**indice à itérer**, 
+le **pas** et sa **direction** (croissant ou décroissant), ainsi les **borne inférieure** et **supérieure**.
+On peut aussi choisir l'option "Non bornée", pour que la boucle ne soit d'un nombre d'itérations fixe.
+(Note: Pour les boucles non bornées, pensez à ajouter une condition d'arrêt pour éviter les boucles infinies.)

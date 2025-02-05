@@ -1,18 +1,20 @@
 import { useState } from "react";
-import "./structure-si.css";
+import "./structure-switch.css";
 
-interface IStructureSi {
+interface IStructureSwitch {
 	conditions: string[];
 	max: number;
+	variable: string;
 }
 
-const StructureSi = ({ conditions, max }: IStructureSi) => {
+const StructureSwitch = ({ conditions, max, variable }: IStructureSwitch) => {
 	const [conditionsState, setConditionsState] = useState(conditions);
 	return (
-		<div className="structure-si-element">
+		<div className="structure-switch-element">
 			<div
 				className="triangleGauche triangle"
 				onClick={() => {
+					console.log("conditionsState", conditionsState);
 					if (conditionsState.length <= 1) return;
 					if (conditionsState[conditionsState.length - 1] === "") {
 						setConditionsState(conditionsState.slice(0, conditionsState.length - 1));
@@ -23,6 +25,14 @@ const StructureSi = ({ conditions, max }: IStructureSi) => {
 					-<span></span>
 				</span>
 			</div>
+			<div
+				className="expressionATester"
+				contentEditable="true"
+				onChange={(e) => (variable = (e.target as HTMLElement).innerText)}
+			>
+				{variable}
+			</div>
+			<hr className="diviseurGauche" />
 			<div className="conditionContainer">
 				{conditionsState.map((condition, index) => (
 					<div className="condition-element">
@@ -123,8 +133,9 @@ const StructureSi = ({ conditions, max }: IStructureSi) => {
 					+<span></span>
 				</span>
 			</div>
+			<hr className="diviseurDroit" />
 		</div>
 	);
 };
 
-export default StructureSi;
+export default StructureSwitch;
