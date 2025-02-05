@@ -34,6 +34,8 @@
 	--fgColorHover: #134d67;
 	--fgColorDisabled: #7e7d73;
 	--sizeModifier: 1;
+	font-family: "avenir next", avenir, sans-serif;
+	font-weight: 500;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -65,4 +67,6 @@
 	--fgColorHover: #bdc6c9;
 	--fgColorDisabled: rgba(166, 170, 169, 0.6);
 	--sizeModifier: 1;
+	font-family: "avenir next", avenir, sans-serif;
+	font-weight: 500;
 }
