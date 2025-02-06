@@ -9,85 +9,101 @@ Plusieurs options d'offrent à vous pour exporter ou sauvegarder votre projet.
 
 Vous pouvez exporter le projet en passant par la [barre de menu](../01_bases-interface/03_barre-menus.mdx), en pointant la souris sur "Fichier"
 puis "Exporter". Vous aurez alors plusieurs choix de fomats d'exportation.
-- `.json`: **Version éditable** de votre projet. Vous pourrez réimporter ce fichier pour continuer à travailler sur votre projet.
-- `.png`: **Image** de votre projet (sans fond). Vous pourrez utiliser cette image dans vos documents. Ce format est particulièrement adapté lorsque 
-votre document possède un fond clair mais pas complètement blanc.
-- `.jpg`: **Image** de votre projet (avec fond). Vous pourrez utiliser cette image dans vos documents. Ce format est particulièrement adapté lorsque
-votre document possède un fond blanc.
-- `.svg`: **Image vectorielle** de votre projet. Vous pourrez utiliser cette image dans vos documents. Ce format est d'une qualité supérieure aux images
-classiques, et vous pourrez la redimensionner sans perte de qualité. Il est en revanche moins supporté par les logiciels de traitement d'image et de texte.
-- `.pdf`: **Version imprimable** de votre projet. Vous pourrez imprimer ce fichier pour le partager.
+
+-   `.json`: **Version éditable** de votre projet. Vous pourrez réimporter ce fichier pour continuer à travailler sur votre projet.
+-   `.png`: **Image** de votre projet (sans fond). Vous pourrez utiliser cette image dans vos documents. Ce format est particulièrement adapté lorsque
+    votre document possède un fond clair mais pas complètement blanc.
+-   `.jpg`: **Image** de votre projet (avec fond). Vous pourrez utiliser cette image dans vos documents. Ce format est particulièrement adapté lorsque
+    votre document possède un fond blanc.
+-   `.svg`: **Image vectorielle** de votre projet. Vous pourrez utiliser cette image dans vos documents. Ce format est d'une qualité supérieure aux images
+    classiques, et vous pourrez la redimensionner sans perte de qualité. Il est en revanche moins supporté par les logiciels de traitement d'image et de texte.
+-   `.pdf`: **Version imprimable** de votre projet. Vous pourrez imprimer ce fichier pour le partager.
 
 Note: Pour les formats `.xls`, `.csv` et `.md`, référez à la section concernant le [dictionnaire de données](../01_bases-interface/05_dictionnaire.mdx).
 
 ## Exporter une sélection
 
-Vous pouvez également, au choix, exporter uniquement un sélection de votre projet. Pour cela, il vous suffit de sélectionner les éléments que vous souhaitez exporter, 
+Vous pouvez également, au choix, exporter uniquement un sélection de votre projet. Pour cela, il vous suffit de sélectionner les éléments que vous souhaitez exporter,
 puis d'effectuer un clic droit sur la sélection. Dans le menu contextuel, sélectionnez "Exporter la sélection". Vous aurez alors les mêmes choix de formats d'exportation.
 
-<ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
-    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
-    {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
-    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
-    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
-    {nom: "Exporter la sélection", sousMenu: [
-        {nom: "Tout", estTitre: true},
-        {nom: ".json"},
-        {nom: "Algorithme", estTitre: true},
-        {nom: ".png"},
-        {nom: ".jpg"},
-        {nom: ".svg"},
-        {nom: "Dictionnaire", estTitre: true},
-        {nom: ".xls"},
-        {nom: ".csv"},
-        {nom: ".md"},
-    ]},
-    {nom: "Ajouter à la bibliothèque"},
-    {nom: "Aligner la sélection ici"},
-]} selection="Exporter la sélection" />
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{
+			nom: "Exporter la sélection",
+			sousMenu: [
+				{ nom: "Tout", estTitre: true },
+				{ nom: ".json" },
+				{ nom: "Algorithme", estTitre: true },
+				{ nom: ".png" },
+				{ nom: ".jpg" },
+				{ nom: ".svg" },
+				{ nom: "Dictionnaire", estTitre: true },
+				{ nom: ".xls" },
+				{ nom: ".csv" },
+				{ nom: ".md" },
+			],
+		},
+		{ nom: "Ajouter à la bibliothèque" },
+		{ nom: "Aligner la sélection ici" },
+	]}
+	selection="Exporter la sélection"
+/>
 
 Cela exportera uniquement les éléments sélectionnés, et non pas l'ensemble du projet.
 
 ## Exporter un sous arbre
 
-Vous pouvez également exporter un sous arbre de votre projet. Pour cela, sélectionnez l'élément racine de l'arbre que vous souhaitez exporter, 
+Vous pouvez également exporter un sous arbre de votre projet. Pour cela, sélectionnez l'élément racine de l'arbre que vous souhaitez exporter,
 puis effectuez un clic droit sur cet élément. Dans le menu contextuel, sélectionnez "Exporter le sous arbre". Vous aurez alors les mêmes choix de formats d'exportation.
 
-<ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
-    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
-    {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
-    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
-    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
-    {nom: "Exporter le sous-arbre", sousMenu: [
-        {nom: "Tout", estTitre: true},
-        {nom: ".json"},
-        {nom: "Algorithme", estTitre: true},
-        {nom: ".png"},
-        {nom: ".jpg"},
-        {nom: ".svg"},
-        {nom: "Dictionnaire", estTitre: true},
-        {nom: ".xls"},
-        {nom: ".csv"},
-        {nom: ".md"},
-    ]},
-    {nom: "Exporter la sélection", sousMenu: [
-        {nom: "Tout", estTitre: true},
-        {nom: ".json"},
-        {nom: "Algorithme", estTitre: true},
-        {nom: ".png"},
-        {nom: ".jpg"},
-        {nom: ".svg"},
-        {nom: "Dictionnaire", estTitre: true},
-        {nom: ".xls"},
-        {nom: ".csv"},
-        {nom: ".md"},
-    ]},
-    {nom: "Ajouter à la bibliothèque"},
-    {nom: "Aligner la sélection ici"},
-]} selection="Exporter le sous-arbre" />
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{
+			nom: "Exporter le sous-arbre",
+			sousMenu: [
+				{ nom: "Tout", estTitre: true },
+				{ nom: ".json" },
+				{ nom: "Algorithme", estTitre: true },
+				{ nom: ".png" },
+				{ nom: ".jpg" },
+				{ nom: ".svg" },
+				{ nom: "Dictionnaire", estTitre: true },
+				{ nom: ".xls" },
+				{ nom: ".csv" },
+				{ nom: ".md" },
+			],
+		},
+		{
+			nom: "Exporter la sélection",
+			sousMenu: [
+				{ nom: "Tout", estTitre: true },
+				{ nom: ".json" },
+				{ nom: "Algorithme", estTitre: true },
+				{ nom: ".png" },
+				{ nom: ".jpg" },
+				{ nom: ".svg" },
+				{ nom: "Dictionnaire", estTitre: true },
+				{ nom: ".xls" },
+				{ nom: ".csv" },
+				{ nom: ".md" },
+			],
+		},
+		{ nom: "Ajouter à la bibliothèque" },
+		{ nom: "Aligner la sélection ici" },
+	]}
+	selection="Exporter le sous-arbre"
+/>
 
 Cela exportera l'élément sélectionné et tous ses enfants, mais pas les éléments parents.

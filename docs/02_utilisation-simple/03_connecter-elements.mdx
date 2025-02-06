@@ -5,26 +5,31 @@ import getAdequateModifier from "../../src/services/getAdequateModifier";
 # Connecter des éléments
 
 ## Créer un lien
+
 Pour connecter des éléments entre eux, vous commencez par sélectionner l'outil **Lien** de la barre d'outils.
 
 <BarreOutils selection="lien" />
 
 Vous pouvez ensuite connecter les éléments en cliquant sur l'élément de départ, puis en cliquant sur l'élément d'arrivée. Un lien sera créé entre les deux éléments.
 
-Une fois l'élément parent sélectionné, vous pouvez aussi maintenir la touche **Shift** enfoncée pour créer des liens avec plusieurs éléments en même temps, 
-en leur cliquant dessus sans lacher la touche Shift. 
+Une fois l'élément parent sélectionné, vous pouvez aussi maintenir la touche **Shift** enfoncée pour créer des liens avec plusieurs éléments en même temps,
+en leur cliquant dessus sans lacher la touche Shift.
 
-Vous pouvez également utiliser le menu contextuel sur un élément (clic droit) et sélectionner "décomposer", 
-<ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
-    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
-    {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
-    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
-    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
-    {nom: "Décomposer"},
-    {nom: "Aligner la sélection ici"},
-]} selection="Décomposer" />
+Vous pouvez également utiliser le menu contextuel sur un élément (clic droit) et sélectionner "décomposer",
+
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{ nom: "Décomposer" },
+		{ nom: "Aligner la sélection ici" },
+	]}
+	selection="Décomposer"
+/>
 puis cliquer sur un autre élément pour créer un lien entre les deux.
 
 ## Supprimer un lien
@@ -32,27 +37,35 @@ puis cliquer sur un autre élément pour créer un lien entre les deux.
 Pour supprimer un lien, vous répétez la liaison entre les deux éléments. Le lien sera supprimé.
 
 Vous pouvez délier un élément de tous ses enfants via le menu contextuel en cliquant sur "Délier tous les enfants".
-<ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
-    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
-    {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
-    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
-    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
-    {nom: "Décomposer"},
-    {nom: "Délier tous les enfants"},
-    {nom: "Aligner la sélection ici"},
-]} selection="Délier tous les enfants" />
+
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{ nom: "Décomposer" },
+		{ nom: "Délier tous les enfants" },
+		{ nom: "Aligner la sélection ici" },
+	]}
+	selection="Délier tous les enfants"
+/>
 
 Ou délier un élément de son parent via le menu contextuel en cliquant sur "Délier du parent".
-<ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
-    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
-    {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
-    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
-    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
-    {nom: "Décomposer"},
-    {nom: "Délier du parent"},
-    {nom: "Aligner la sélection ici"},
-]} selection="Délier du parent" />
+
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{ nom: "Décomposer" },
+		{ nom: "Délier du parent" },
+		{ nom: "Aligner la sélection ici" },
+	]}
+	selection="Délier du parent"
+/>
