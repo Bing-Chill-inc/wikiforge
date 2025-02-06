@@ -1,5 +1,5 @@
 .menu-contextuel {
-	width: 180px;
+	width: 220px;
 	height: fit-content;
 	min-height: 2vw;
 	border-radius: 10px;
@@ -56,12 +56,16 @@
 
 .menu-contextuel > .element-menu.selected,
 .menu-contextuel > .element-menu-compose.selected,
-.menu-contextuel > .element-menu-keyboard-tip.selected,
+.menu-contextuel > .element-menu-keyboard-tip.selected {
+	background-color: var(--bgColorSecondary);
+	color: var(--titleColor);
+	animation: selection-eye-catcher 1.5s infinite;
+}
 .menu-contextuel > .element-menu:hover,
 .menu-contextuel > .element-menu-compose:hover,
 .menu-contextuel > .element-menu-keyboard-tip:hover {
-	background-color: var(--fgColorHover);
-	color: var(--bgColor);
+	background-color: var(--fgColorHover) !important;
+	color: var(--bgColor) !important;
 }
 
 .menu-contextuel > .element-menu-compose > span,
@@ -101,6 +105,8 @@
 	padding-bottom: 6px;
 	text-align: left;
 	white-space: nowrap;
+	color: var(--titleColor);
+	margin: 0;
 }
 
 .menu-deroulant > div,
@@ -172,4 +178,19 @@
 .element-menu-keyboard-tip.disabled {
 	cursor: not-allowed;
 	color: var(--fgColorDisabled);
+}
+
+@keyframes selection-eye-catcher {
+	0% {
+		background-color: var(--bgColorSecondary);
+		color: var(--titleColor);
+	}
+	50% {
+		background-color: var(--bgColorSecondary);
+		color: var(--fgColor);
+	}
+	100% {
+		background-color: var(--bgColorSecondary);
+		color: var(--titleColor);
+	}
 }

@@ -1,5 +1,6 @@
 import BarreOutils from "../../src/components/AlgoforgeElements/BarreOutils/barre-outils-display";
 import ContextMenu from "../../src/components/AlgoforgeElements/ContextMenu/context-menu";
+import getAdequateModifier from "../../src/services/getAdequateModifier";
 
 # Connecter des éléments
 
@@ -15,12 +16,12 @@ en leur cliquant dessus sans lacher la touche Shift.
 
 Vous pouvez également utiliser le menu contextuel sur un élément (clic droit) et sélectionner "décomposer", 
 <ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: "Ctrl + Z"},
-    {nom: "Rétablir", keyBoardTip: "Ctrl + Y"},
+    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
+    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
     {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: "Ctrl + X"},
-    {nom: "Copier", keyBoardTip: "Ctrl + C"},
-    {nom: "Coller", keyBoardTip: "Ctrl + V"},
+    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
+    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
+    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
     {nom: "Décomposer"},
     {nom: "Aligner la sélection ici"},
 ]} selection="Décomposer" />
@@ -32,12 +33,12 @@ Pour supprimer un lien, vous répétez la liaison entre les deux éléments. Le 
 
 Vous pouvez délier un élément de tous ses enfants via le menu contextuel en cliquant sur "Délier tous les enfants".
 <ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: "Ctrl + Z"},
-    {nom: "Rétablir", keyBoardTip: "Ctrl + Y"},
+    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
+    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
     {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: "Ctrl + X"},
-    {nom: "Copier", keyBoardTip: "Ctrl + C"},
-    {nom: "Coller", keyBoardTip: "Ctrl + V"},
+    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
+    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
+    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
     {nom: "Décomposer"},
     {nom: "Délier tous les enfants"},
     {nom: "Aligner la sélection ici"},
@@ -45,12 +46,12 @@ Vous pouvez délier un élément de tous ses enfants via le menu contextuel en c
 
 Ou délier un élément de son parent via le menu contextuel en cliquant sur "Délier du parent".
 <ContextMenu elements={[
-    {nom: "Annuler", keyBoardTip: "Ctrl + Z"},
-    {nom: "Rétablir", keyBoardTip: "Ctrl + Y"},
+    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
+    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
     {nom: "Supprimer", keyBoardTip: "Suppr"},
-    {nom: "Couper", keyBoardTip: "Ctrl + X"},
-    {nom: "Copier", keyBoardTip: "Ctrl + C"},
-    {nom: "Coller", keyBoardTip: "Ctrl + V"},
+    {nom: "Couper", keyBoardTip: `${getAdequateModifier()}X`},
+    {nom: "Copier", keyBoardTip: `${getAdequateModifier()}C`},
+    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
     {nom: "Décomposer"},
     {nom: "Délier du parent"},
     {nom: "Aligner la sélection ici"},

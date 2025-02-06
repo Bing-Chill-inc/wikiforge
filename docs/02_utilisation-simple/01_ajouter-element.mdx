@@ -1,5 +1,6 @@
 import BarreOutils from "../../src/components/AlgoforgeElements/BarreOutils/barre-outils-display"
 import ContextMenu from "../../src/components/AlgoforgeElements/ContextMenu/context-menu"
+import getAdequateModifier from "../../src/services/getAdequateModifier";
 
 # Ajouter des éléments
 
@@ -17,7 +18,20 @@ Pour ajouter des éléments au plan de travail, nous avons plusieurs options.
 
 1. Cliquez avec le bouton droit de la souris sur le plan de travail.
 
-<ContextMenu />
+<ContextMenu elements={[
+    {nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z`},
+    {nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y`},
+    {nom: "Coller", keyBoardTip: `${getAdequateModifier()}V`},
+    {nom: "Ajouter un élément", sousMenu: [
+        {nom: "Problème"},
+        {nom: "Procédure"},
+        {nom: "Structure 'SI'"},
+        {nom: "Structure 'SWITCH'"},
+        {nom: "Structure itérative non bornée"},
+        {nom: "Structure itérative bornée"},
+        {nom: "Instruction d'arrêt"},
+    ]},
+]} selection="Ajouter un élément" />
 
 2. Passez votre souris sur "Ajouter un élément" pour afficher la liste des éléments disponibles.
 

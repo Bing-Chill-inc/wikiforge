@@ -40,17 +40,35 @@ const ContextMenu = ({ elements, selection }: ContextMenuProps) => {
 
 	return (
 		<div className="menu-contextuel">
-			{elements.map((element) => (
-				<div
-					key={element.nom}
-					className={`element-menu${element.keyBoardTip ? "-keyboard-tip" : ""} ${
-						selection == element.nom ? "selected" : ""
-					}`}
-				>
-					<p>{element.nom}</p>
-					{element.keyBoardTip && <span>{element.keyBoardTip}</span>}
-				</div>
-			))}
+			{elements.map((element) => {
+				if (element.sousMenu) {
+					return (
+						<div className={`element-menu-compose ${selection == element.nom ? "selected" : ""}`}>
+							{element.nom}
+							<span>&gt;</span>
+							<div className="menu-deroulant">
+								{element.sousMenu.map((sousElement) => {
+									if (sousElement.estTitre) {
+										return <h3 key={sousElement.nom}>{sousElement.nom}</h3>;
+									}
+									return <div key={sousElement.nom}>{sousElement.nom}</div>;
+								})}
+							</div>
+						</div>
+					);
+				}
+				return (
+					<div
+						key={element.nom}
+						className={`element-menu${element.keyBoardTip ? "-keyboard-tip" : ""} ${
+							selection == element.nom ? "selected" : ""
+						}`}
+					>
+						<p>{element.nom}</p>
+						{element.keyBoardTip && <span>{element.keyBoardTip}</span>}
+					</div>
+				);
+			})}
 		</div>
 	);
 };
