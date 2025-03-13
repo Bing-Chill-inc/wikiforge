@@ -1,1 +1,68 @@
+import Probleme from "../../src/components/AlgoforgeElements/ElementsGraphiques/Probleme/probleme";
+import ContextMenu from "../../src/components/AlgoforgeElements/ContextMenu/context-menu";
+import getAdequateModifier from "../../src/services/getAdequateModifier";
+
 # Sous plans de travail
+
+Un algorithme peut rapidement devenir assez large.
+Pour faciliter la lecture et la compréhension, il est possible de diviser un algorithme en plusieurs sous-plans de travail.
+
+## La logique des sous-plans de travail
+
+Un sous-plan de travail permet de détailler la décomposition d'un Problème sur un plan différent, afin de clarifier la logique de l'algorithme.
+Le sous-plan de travail est un plan de travail à part entière, mais qui est lié à un Problème de l'algorithme.
+Ce Problème peut lui-même faire partie du plan principal, ou faire partie d'un sous-plan de travail.
+
+Ainsi, il est possible de créer des sous-plans de travail imbriqués (à l'_infini_), pour détailler chaque Problème de manière plus précise.
+
+La durée de vie d'un sous-plan de travail est liée à celle du problème qu'il décompose.
+En supprimant un Problème décomposé sur un autre plan, le sous-plan de travail associé est également supprimé.
+
+## Créer un sous-plan de travail
+
+Pour créer un sous-plan de travail, il suffit de sélectionner un Problème,
+
+<Probleme titre="Recherche de première occurence" données="tab" résultats="trouvé, [index]" />
+
+puis de sélectionner l'option "Décomposer ailleurs" dans le menu contextuel.
+
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{ nom: "Décomposer" },
+		{ nom: "Décomposer ailleurs" },
+	]}
+	selection="Décomposer ailleurs"
+/>
+
+Un nouveau plan de travail est alors créé, et le Problème est dupliqué sur ce plan.
+Si le Problème possédait des enfants, ils sont déplacés sur le nouveau plan.
+
+Le Probleme original se voit alors ajouter un bouton "+" qui permet de naviguer vers le sous-plan de travail.
+
+<Probleme titre="Recherche de première occurence" données="tab" résultats="trouvé, [index]" estDecomposeAilleurs />
+
+## Supprimer un sous-plan de travail
+
+Si un sous-plan de travail n'est plus nécessaire, il est possible de le supprimer en sélectionnant l'option "Décomposer ici" dans le menu contextuel du Problème.
+
+<ContextMenu
+	elements={[
+		{ nom: "Annuler", keyBoardTip: `${getAdequateModifier()}Z` },
+		{ nom: "Rétablir", keyBoardTip: `${getAdequateModifier()}Y` },
+		{ nom: "Supprimer", keyBoardTip: "Suppr" },
+		{ nom: "Couper", keyBoardTip: `${getAdequateModifier()}X` },
+		{ nom: "Copier", keyBoardTip: `${getAdequateModifier()}C` },
+		{ nom: "Coller", keyBoardTip: `${getAdequateModifier()}V` },
+		{ nom: "Décomposer" },
+		{ nom: "Décomposer ici" },
+	]}
+	selection="Décomposer ici"
+/>
+
+Le contenu du sous-plan de travail est alors déplacé sur le plan principal, et le sous-plan de travail est supprimé.

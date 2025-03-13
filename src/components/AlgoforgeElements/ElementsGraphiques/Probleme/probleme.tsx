@@ -5,9 +5,10 @@ interface IProbleme {
 	titre: string;
 	données: string;
 	résultats: string;
+	estDecomposeAilleurs?: boolean;
 }
 
-const Probleme = ({ titre, données, résultats }: IProbleme) => {
+const Probleme = ({ titre, données, résultats, estDecomposeAilleurs }: IProbleme) => {
 	const [titreState, setTitreState] = useState(titre);
 	const [donnéesState, setDonnéesState] = useState(données);
 	const [résultatsState, setRésultatsState] = useState(résultats);
@@ -54,6 +55,7 @@ const Probleme = ({ titre, données, résultats }: IProbleme) => {
 					</label>
 				</div>
 			</div>
+			{estDecomposeAilleurs && <span className="ouvrir">+</span>}
 		</div>
 	);
 };

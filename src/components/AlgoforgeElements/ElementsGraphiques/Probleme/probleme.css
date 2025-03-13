@@ -10,6 +10,7 @@
 	margin-bottom: 60px;
 	margin-left: auto;
 	margin-right: auto;
+	position: relative;
 }
 
 .probleme-element > span.ouvrir {
@@ -152,4 +153,20 @@
 
 .probleme-element > div.containerDPR > div.resultat:hover > label.accolades {
 	display: block !important;
+}
+
+.probleme-element > span.ouvrir {
+	position: absolute;
+	bottom: calc(var(--sizeModifier) * 0.5vw);
+	right: calc(var(--sizeModifier) * 10.5vw);
+	width: calc(var(--sizeModifier) * 0.75vw);
+	height: calc(var(--sizeModifier) * 0.75vw);
+	background-color: var(--fgColorTransparent);
+	border: 0.1vw solid var(--fgColor);
+	border-radius: calc(var(--sizeModifier) * 0.25vw);
+	font-size: calc(var(--sizeModifier) * 0.75vw);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
