@@ -1,5 +1,41 @@
+import BoutonDico from "../../src/components/AlgoforgeElements/BoutonBarreOutils/bouton-dico";
+import BoutonValidation from "../../src/components/AlgoforgeElements/BoutonDico/bouton-validation";
+import BoutonSuppression from "../../src/components/AlgoforgeElements/BoutonDico/bouton-suppression";
+import Dictionnaire from "../../src/components/AlgoforgeElements/Dictionnaire/dictionnaire-elm";
+import BarreDeMenus from "../../src/components/AlgoforgeElements/BarreDeMenus/barre-de-menus";
+
 # Dictionnaire des données
 
-:::warning
-WIP
-:::
+Le dictionnaire de données répertorie toutes les variables utilisées par l'algorithme en cours.
+Chaque variable est décrite dans un tableau indiquant son nom, son type et sa signification.
+Ce dictionnaire permet ainsi de renommer une variable, d'assigner son type et de clarifier sa signification.
+Il est aussi possible d'exporter le dictionnaire au format CSV ou MARKDOWN.
+
+## Utilisation
+
+Pour accéder au dictionnaire des données, cliquez sur l'icône correspondante dans la barre d'outils.
+
+<BoutonDico />
+
+Lorsque le dictionnaire des données est ouvert, toutes les variables de votre algorithme s'affichent sous forme de tableau,
+avec leur nom, leur type et leur signification.
+
+<Dictionnaire />
+
+Vous pouvez sélectionner une ligne du tableau pour modifier son nom,
+son type ou sa signification à l'aide des champs de saisie situés en bas du dictionnaire.
+Plusieurs types sont déjà prédéfinis, tels que : Entier, Caractère, Chaîne de caractères, Booléen, Nombre décimal, etc.
+Lorsque vous commencez à saisir dans le champ "Type", en fonction des lettres que vous entrez,
+tous les types prédéfinis correspondants vous seront proposés. Si aucun type ne correspond à ce que vous souhaitez,
+saisissez simplement votre type, validez, et il sera ensuite ajouté aux types prédéfinis.
+
+Une fois la modification effectuée, il vous suffit de cliquer sur le bouton de validation. <BoutonValidation />
+
+Vous pouvez également supprimer une variable. Pour ce faire, sélectionnez la ligne correspondant à la variable à supprimer,
+puis cliquez sur le bouton de suppression. <BoutonSuppression />
+
+## Export
+
+Pour exporter le dictionnaire de données il vous suffit pour cela de vous rendre dans la barre de menus, puis le bouton Exporter.
+
+<BarreDeMenus />

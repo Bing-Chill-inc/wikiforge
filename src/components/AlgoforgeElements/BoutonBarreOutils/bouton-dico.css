@@ -1,0 +1,199 @@
+#boutonPointeur,
+#boutonStructureIterative,
+#boutonConditionSortie,
+#boutonLien,
+#boutonUndo,
+#boutonRedo,
+#dico_btn > svg#boutonDico,
+#biblio_btn > svg#boutonBiblio {
+    width: 24px;
+    height: 24px;
+    fill: var(--fgColor);
+    user-select: none;
+    cursor: pointer;
+}
+#boutonProbleme,
+#boutonProcedure,
+#boutonAccount,
+#boutonStructureSi,
+#boutonStructureSwitch {
+    width: 34px;
+    height: 34px;
+    fill: var(--fgColor);
+    user-select: none;
+    cursor: pointer;
+}
+
+.dico-selected {
+    cursor: pointer;
+    position: relative;
+}
+.dico-selected::after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: -11px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid red;
+    z-index: 3;
+}
+
+#boutonStructureIterativeBornee {
+    width: 28px;
+    height: 28px;
+    fill: var(--fgColor);
+    user-select: none;
+    cursor: pointer;
+}
+
+#boutonRedo,
+#boutonUndo,
+#boutonBiblio,
+#boutonDico {
+    transition: all 0.1s ease-in-out;
+}
+
+#biblio_btn > #boutonBiblio:active,
+#dico_btn > svg#boutonDico:active,
+.undoRedo > svg:active {
+    scale: 1;
+}
+
+/* button hover - update custom property values for button & label */
+.svg-wrapper {
+    position: relative;
+}
+
+#dicobiblioControl > button:hover,
+#dicobiblioControl > button:focus-visible,
+#itemsControl > .svg-wrapper:hover,
+#itemsControl > .svg-wrapper:focus-visible {
+    --label-opacity: 1;
+    --label-y: 0;
+    --label-delay: 150ms;
+    --label-scale: 1;
+}
+#dicobiblioControl > button:before,
+#itemsControl > .svg-wrapper:before {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    text-align: center;
+    background: var(--bgColor);
+    color: var(--fgColor);
+    border: 1px solid var(--borderColor2);
+    border-radius: 0.6em;
+    z-index: -1;
+    translate: -50% -2.5rem;
+    white-space: nowrap;
+    font-size: var(--font-size2);
+    padding: 0.3rem 1rem;
+    pointer-events: none;
+
+    opacity: var(--label-opacity, 0);
+    transform: translateY(var(--label-y, 30px)) scale(var(--label-scale, 0));
+    transition: transform 300ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+        opacity 300ms ease-in-out, scale 500ms ease-in-out;
+    transition-delay: var(--label-delay, 0ms);
+}
+
+div.barreOutilsHorizontale {
+    width: fit-content;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4%;
+    z-index: 4;
+    margin-top: 75px !important;
+    margin-bottom: 20px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#itemsControl,
+#actionsControl,
+#dicobiblioControl {
+    height: 100%;
+    border: none;
+    border-radius: 0.6em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    padding: 0 1em 0 1em;
+    background: var(--bgColorTertiary);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    outline: 2px solid var(--borderColor2);
+}
+
+.undoRedo {
+    display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8em;
+}
+
+div.barreOutilsHorizontale > img {
+    height: 90%;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+    overflow: visible;
+    padding-left: 0.2vw;
+    padding-right: 0.2vw;
+}
+
+img.dragging {
+    scale: 1.5;
+}
+#itemsControl > div > svg.selected {
+    border-radius: 0.3vw;
+    scale: 1.2;
+    fill: var(--titleColor) !important;
+}
+
+div.barreOutilsHorizontale > div.undoRedo {
+    width: 5%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#titre_wrapper {
+    position: absolute;
+    top: 20vh;
+    left: 30px;
+}
+
+div.barreOutilsHorizontale > div.undoRedo > img {
+    height: 80%;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+    overflow: visible;
+    padding-left: 0.2vw;
+    padding-right: 0.2vw;
+}
+
+#biblio_btn,
+#dico_btn {
+    position: relative;
+    background-color: transparent;
+    border: none;
+}
+
+#dico_wrapper,
+#biblio_wrapper {
+    position: absolute;
+    top: 45px;
+    left: 20px;
+    border: none;
+    border-radius: 0.8em;
+}
