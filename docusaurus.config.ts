@@ -63,6 +63,12 @@ const config: Config = {
 					label: "Tutoriel",
 				},
 				{
+					type: "docSidebar",
+					sidebarId: "technicalSidebar",
+					position: "left",
+					label: "Documentation technique",
+				},
+				{
 					href: "https://github.com/Bing-Chill-inc/Algoforge-main.git",
 					label: "GitHub",
 					position: "right",
