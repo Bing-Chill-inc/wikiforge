@@ -1,0 +1,149 @@
+# Classe `StructureIterative`
+
+## Description Générale
+
+La classe `StructureIterative` représente une structure de contrôle itérative (boucle) dans l'éditeur graphique d'Algoforge. Elle permet de gérer des boucles avec des bornes définies et leurs interactions avec d'autres éléments graphiques. Cette classe hérite de [`ElementGraphique`](./01_element_graphique.mdx) et ajoute des fonctionnalités spécifiques pour gérer les bornes, les enfants, et les interactions utilisateur.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `ElementGraphique`
+    -   La classe `StructureIterative` hérite de toutes les fonctionnalités de base de `ElementGraphique`, telles que la gestion des positions, des parents, et des enfants.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Bornes**
+
+-   **Invite pour les bornes** :
+    -   Propriété `_inviteBornes` : Représente une fenêtre interactive permettant de définir les bornes de la boucle.
+    -   Méthode `inviteBornes()` :
+        -   Affiche une fenêtre pour demander les bornes de la structure.
+        -   Supprime toute autre invite existante avant d'en créer une nouvelle.
+
+---
+
+### 2. **Gestion des Enfants**
+
+-   **Récupération des enfants** :
+
+    -   Méthode `getEnfants(typeRechercher)` :
+        -   Renvoie une liste des enfants de la structure itérative correspondant à un type donné.
+        -   Trie les enfants par position en abscisse.
+
+-   **Suppression des liens avec les enfants** :
+    -   Méthode `supprimer()` :
+        -   Supprime la structure itérative et déliera tous les enfants associés.
+
+---
+
+### 3. **Affichage**
+
+-   **Affichage de la structure itérative** :
+    -   Méthode `afficher()` :
+        -   Affiche la structure itérative sur le plan de travail.
+        -   Ajoute un élément visuel représentant une boucle (`boucleSVG`).
+
+---
+
+### 4. **Gestion des Ancrages**
+
+-   **Ancrages pour la composition et la décomposition** :
+    -   Méthode `getAncreDecomposition()` :
+        -   Renvoie l'ancre de décomposition de la structure itérative.
+        -   Coordonnées calculées en fonction de la position de la structure.
+    -   Méthode `getAncreComposition()` :
+        -   Renvoie l'ancre de composition de la structure itérative.
+        -   Coordonnées calculées en fonction de la position de la structure.
+
+---
+
+### 5. **Interactions Utilisateur**
+
+-   **Mise à jour des liens** :
+
+    -   Un événement `mousemove` met à jour les liens entre la structure itérative et ses enfants.
+
+-   **Double-clic pour définir les bornes** :
+    -   Un événement `dblclick` déclenche l'affichage de l'invite pour définir les bornes.
+
+---
+
+### 6. **Détection des Anomalies**
+
+-   **Détection des anomalies spécifiques** :
+    -   Méthode `rechercherAnomalies()` (héritée de `ElementGraphique`) :
+        -   Recherche les anomalies conceptuelles dans la structure itérative.
+        -   Exemples d'anomalies détectées :
+            -   Bornes non définies.
+            -   Boucles infinies potentielles.
+            -   Enfants mal positionnés.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_elemParent` : Référence à l'élément parent contenant les enfants de la structure itérative.
+-   `_inviteBornes` : Fenêtre interactive pour définir les bornes de la boucle.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des bornes :
+
+-   `inviteBornes()` : Affiche une fenêtre pour définir les bornes de la structure.
+
+### Méthodes de gestion des enfants :
+
+-   `getEnfants(typeRechercher)` : Renvoie une liste des enfants correspondant à un type donné.
+-   `supprimer()` : Supprime la structure itérative et ses liens avec les enfants.
+
+### Méthodes d'affichage :
+
+-   `afficher()` : Affiche la structure itérative sur le plan de travail.
+
+### Méthodes de gestion des ancrages :
+
+-   `getAncreDecomposition()` : Renvoie l'ancre de décomposition.
+-   `getAncreComposition()` : Renvoie l'ancre de composition.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Structure Itérative
+
+```javascript
+const structureIterative = new StructureIterative(10, 20);
+document.body.appendChild(structureIterative);
+```
+
+### Affichage de la Structure
+
+```javascript
+structureIterative.afficher();
+```
+
+### Définition des Bornes
+
+```javascript
+structureIterative.inviteBornes();
+```
+
+### Récupération des Enfants
+
+```javascript
+const enfants = structureIterative.getEnfants();
+console.log(enfants);
+```
+
+### Suppression de la Structure
+
+```javascript
+structureIterative.supprimer();
+```

@@ -1,0 +1,198 @@
+# Classe `Condition`
+
+## Description Générale
+
+La classe `Condition` représente une condition dans l'éditeur graphique d'Algoforge. Elle est utilisée dans des structures conditionnelles ([`StructureAlternative`](./04_structure_alt.mdx)) telles que [`StructureSi`](./05_si.mdx) ou [`StructureSwitch`](./06_switch.mdx) pour définir des branches conditionnelles. Cette classe hérite de `HTMLElement` et fournit des fonctionnalités pour gérer les libellés, les interactions utilisateur, les enfants, et les connexions graphiques.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `HTMLElement`
+    -   La classe `Condition` hérite des fonctionnalités de base de `HTMLElement`, telles que la gestion des événements et des propriétés DOM.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Propriétés**
+
+-   **Libellé** :
+
+    -   Propriété `_libelle` : Définit le texte de la condition.
+    -   Méthodes associées :
+        -   `get _libelle()` : Renvoie le libellé actuel.
+        -   `set _libelle(value)` : Définit un nouveau libellé.
+    -   Le libellé est modifiable directement via une zone de texte éditable dans l'interface utilisateur.
+
+-   **Parent et structure** :
+    -   Propriété `_elemParent` : Référence à l'élément parent contenant les enfants de la condition.
+    -   Propriété `_structure` : Référence à la structure conditionnelle contenant cette condition.
+    -   Méthodes associées :
+        -   `get _elemParent()` et `set _elemParent(value)` : Accès et modification de l'élément parent.
+        -   `get _structure()` et `set _structure(value)` : Accès et modification de la structure contenant la condition.
+
+---
+
+### 2. **Affichage**
+
+-   **Affichage des éléments graphiques** :
+
+    -   Méthode `afficher()` :
+        -   Affiche les éléments graphiques de la condition, notamment :
+            -   Un bouton pour supprimer la condition.
+            -   Une zone de texte éditable pour le libellé.
+            -   Des flèches pour déplacer la condition à gauche ou à droite.
+            -   Des boutons pour ajouter une nouvelle condition à gauche ou à droite.
+
+-   **Animation** :
+    -   Une animation de chute (`fall`) est appliquée lors de l'ajout de la condition pour améliorer l'expérience utilisateur.
+
+---
+
+### 3. **Interactions Utilisateur**
+
+-   **Modification du libellé** :
+
+    -   La zone de texte éditable permet de modifier le libellé.
+    -   Les opérateurs `&&` et `||` sont automatiquement remplacés par `ET` et `OU` dans les structures `StructureSi`.
+
+-   **Déplacement de la condition** :
+
+    -   Des flèches permettent de déplacer la condition à gauche ou à droite dans la structure.
+
+-   **Ajout de nouvelles conditions** :
+
+    -   Des boutons permettent d'ajouter une nouvelle condition à gauche ou à droite de la condition actuelle.
+
+-   **Suppression de la condition** :
+    -   Un bouton permet de supprimer la condition de la structure.
+
+---
+
+### 4. **Gestion des Enfants**
+
+-   **Récupération des enfants** :
+
+    -   Méthode `getEnfants(typeRechercher)` :
+        -   Renvoie une liste des enfants de la condition correspondant à un type donné.
+        -   Trie les enfants par position en abscisse.
+
+-   **Suppression des enfants** :
+    -   Méthode `supprimer()` :
+        -   Supprime la condition et déliera tous ses enfants.
+
+---
+
+### 5. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la condition sous forme JSON.
+        -   Inclut le libellé et les enfants.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+---
+
+### 6. **Gestion des Ancrages**
+
+-   **Ancre de décomposition** :
+    -   Méthode `getAncreDecomposition()` :
+        -   Renvoie les coordonnées de l'ancre de décomposition de la condition.
+        -   L'ancre est utilisée pour connecter visuellement la condition à d'autres éléments graphiques.
+
+---
+
+### 7. **Détection des Anomalies**
+
+-   **Détection des anomalies spécifiques** :
+    -   Méthode `rechercherAnomalies()` (héritée de `ElementGraphique`) :
+        -   Recherche les anomalies conceptuelles liées à la condition.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_libelle` : Texte de la condition.
+-   `_elemParent` : Référence à l'élément parent.
+-   `_structure` : Référence à la structure contenant la condition.
+-   `_ancienLib` : Stocke l'ancien libellé pour permettre l'annulation/rétablissement.
+-   `_maxLines` : Nombre maximal de lignes autorisées dans le libellé (par défaut, 4).
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des propriétés :
+
+-   `get _libelle()` et `set _libelle(value)` : Accès et modification du libellé.
+-   `get _elemParent()` et `set _elemParent(value)` : Accès et modification de l'élément parent.
+-   `get _structure()` et `set _structure(value)` : Accès et modification de la structure contenant la condition.
+
+### Méthodes d'affichage :
+
+-   `afficher()` : Affiche les éléments graphiques de la condition.
+
+### Méthodes d'interaction utilisateur :
+
+-   Déplacement : Flèches pour déplacer la condition à gauche ou à droite.
+-   Ajout : Boutons pour ajouter une condition à gauche ou à droite.
+-   Suppression : Bouton pour supprimer la condition.
+
+### Méthodes de gestion des enfants :
+
+-   `getEnfants(typeRechercher)` : Renvoie une liste des enfants correspondant à un type donné.
+-   `supprimer()` : Supprime la condition et ses enfants.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` : Exporte la condition sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` : Exporte la condition en spécifiant les enfants à conserver.
+
+### Méthodes de gestion des ancrages :
+
+-   `getAncreDecomposition()` : Renvoie l'ancre de décomposition de la condition.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Condition
+
+```javascript
+const condition = new Condition("x > 10");
+structure.ajouterCondition(condition);
+```
+
+### Modification du Libellé
+
+```javascript
+condition._libelle = "y < 5";
+console.log(condition._libelle);
+```
+
+### Déplacement de la Condition
+
+```javascript
+condition._structure.decalerCondition(condition, 1); // Déplace à droite
+```
+
+### Exportation en JSON
+
+```javascript
+const json = condition.toJSON();
+console.log(json);
+```
+
+### Suppression de la Condition
+
+```javascript
+condition.supprimer();
+```

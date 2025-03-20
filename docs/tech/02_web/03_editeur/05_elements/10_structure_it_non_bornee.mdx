@@ -1,0 +1,138 @@
+# Classe `StructureIterativeNonBornee`
+
+## Description Générale
+
+La classe `StructureIterativeNonBornee` représente une boucle itérative non bornée dans l'éditeur graphique d'Algoforge. Contrairement à une boucle bornée, cette structure continue d'itérer tant qu'une condition n'est pas remplie. Elle hérite de la classe [`StructureIterative`](./07_structure_it.mdx) et ajoute des fonctionnalités spécifiques pour gérer les conditions d'arrêt, détecter les anomalies, et exporter les données.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `StructureIterative`
+    -   La classe `StructureIterativeNonBornee` hérite de toutes les fonctionnalités de base de `StructureIterative`, telles que la gestion des enfants et des interactions utilisateur.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Conditions d'Arrêt**
+
+-   **Ajout de conditions d'arrêt** :
+    -   Méthode `genererOptionsContextuelles(editeur)` :
+        -   Ajoute une option contextuelle pour créer une condition d'arrêt.
+        -   Exemple d'implémentation :
+            -   Ajout d'une structure `Si` pour définir la condition d'arrêt.
+            -   Ajout d'une condition de sortie liée à la structure `Si`.
+
+---
+
+### 2. **Affichage**
+
+-   **Affichage de la structure** :
+    -   Méthode `afficher()` :
+        -   Affiche la structure itérative non bornée sur le plan de travail.
+        -   Utilise l'affichage hérité de `StructureIterative`.
+
+---
+
+### 3. **Détection des Anomalies**
+
+-   **Recherche des anomalies spécifiques** :
+    -   Méthode `rechercherAnomalies()` :
+        -   Recherche les anomalies conceptuelles dans la structure itérative non bornée.
+        -   Exemples d'anomalies détectées :
+            -   **ErreurBoucleSansSortie** : La boucle n'a pas de condition d'arrêt définie.
+            -   **AvertissementTropDeSousElements** : Trop de sous-éléments dans la boucle.
+
+---
+
+### 4. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la structure itérative non bornée sous forme JSON.
+        -   Inclut les coordonnées et les enfants.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+---
+
+### 5. **Gestion des Enfants**
+
+-   **Récupération des enfants** :
+
+    -   Méthode héritée `getEnfants(typeRechercher)` :
+        -   Renvoie une liste des enfants de la structure itérative non bornée correspondant à un type donné.
+
+-   **Suppression des liens avec les enfants** :
+    -   Méthode héritée `supprimer()` :
+        -   Supprime la structure itérative non bornée et déliera tous les enfants associés.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   Aucun attribut spécifique à cette classe. Elle repose sur les attributs hérités de `StructureIterative`.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des conditions d'arrêt :
+
+-   `genererOptionsContextuelles(editeur)` :
+    -   Ajoute une option pour créer une condition d'arrêt.
+
+### Méthodes d'affichage :
+
+-   `afficher()` :
+    -   Affiche la structure itérative non bornée sur le plan de travail.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` :
+    -   Recherche les anomalies spécifiques à la structure itérative non bornée.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` :
+    -   Exporte la structure itérative non bornée sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+    -   Exporte la structure en spécifiant les enfants à conserver.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Structure Itérative Non Bornée
+
+```javascript
+const structureIterativeNonBornee = new StructureIterativeNonBornee(10, 20);
+document.body.appendChild(structureIterativeNonBornee);
+```
+
+### Ajout d'une Condition d'Arrêt
+
+```javascript
+structureIterativeNonBornee.genererOptionsContextuelles(editeur);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = structureIterativeNonBornee.toJSON();
+console.log(json);
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = structureIterativeNonBornee.rechercherAnomalies();
+console.log(anomalies);
+```

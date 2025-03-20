@@ -1,0 +1,132 @@
+# `SmeltJS.ts`
+
+## Description Générale
+
+Le fichier `SmeltJS.ts` est un script [Bun](https://bun.sh) qui automatise le processus de construction et de préparation des fichiers pour l'application Algoforge. Il effectue plusieurs tâches, notamment la concaténation des scripts JavaScript, la minification des fichiers CSS, la copie des fichiers nécessaires, et la mise à jour du fichier `index.html` pour inclure les ressources optimisées.
+
+L'objectif principal de ce script est d'optimiser les performances de l'application en réduisant le nombre de requêtes HTTP et en minimisant la taille des fichiers téléchargés.
+
+Ce script est appelé par le [backend](../02_backend/01_introduction.mdx) de l'application pour préparer les fichiers avant de les servir au client.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Lecture et Analyse du Fichier `index.html`**
+
+-   Le script commence par lire le contenu du fichier `index.html` situé dans le répertoire `src`.
+-   Il utilise une expression régulière pour extraire les balises `<script>` contenant des chemins locaux (non externes) vers des fichiers JavaScript.
+-   Les chemins des scripts locaux sont stockés dans un tableau `localScriptSrcs`.
+
+### 2. **Concaténation des Scripts JavaScript**
+
+-   Les fichiers JavaScript référencés dans `localScriptSrcs` sont lus et leur contenu est concaténé en une seule chaîne.
+-   Cette chaîne est utilisée pour injecter directement les scripts dans le fichier `index.html` optimisé.
+
+### 3. **Création du Répertoire `out`**
+
+-   Un répertoire `out` est créé à la racine du projet pour stocker les fichiers optimisés.
+-   Si le répertoire existe déjà, il n'est pas recréé.
+
+### 4. **Minification et Copie des Fichiers CSS**
+
+-   Tous les fichiers CSS présents dans le répertoire `src` sont traités :
+    -   Si possible, ils sont minifiés à l'aide de la fonction `build` de Bun.
+    -   En cas d'échec (par exemple, si Bun ne peut pas traiter un fichier), le fichier est simplement copié dans le répertoire `out`.
+
+### 5. **Copie du Répertoire `modales`**
+
+-   Le contenu du répertoire `src/modales` est copié dans un sous-répertoire `modales` du répertoire `out`.
+
+### 6. **Mise à Jour du Fichier `index.html`**
+
+-   Le fichier `index.html` est modifié pour inclure les ressources optimisées :
+    -   Les anciennes balises `<script>` sont supprimées.
+    -   Les scripts concaténés sont injectés directement dans le fichier à l'intérieur d'une balise `<script>` avant la fermeture de la balise `</body>`.
+    -   La balise `<link>` pointant vers `style.css` est remplacée par une balise `<style>` contenant le contenu minifié du fichier CSS.
+
+### 7. **Écriture du Fichier Optimisé**
+
+-   Le fichier `index.html` mis à jour est écrit dans le répertoire `out`.
+
+---
+
+## Étapes du Processus
+
+1. **Extraction des Scripts JavaScript** :
+
+    - Les chemins des scripts locaux sont extraits de `index.html`.
+    - Les fichiers correspondants sont lus et concaténés.
+
+2. **Création du Répertoire `out`** :
+
+    - Si le répertoire `out` n'existe pas, il est créé.
+
+3. **Traitement des Fichiers CSS** :
+
+    - Les fichiers CSS sont minifiés ou copiés dans le répertoire `out`.
+
+4. **Copie des Fichiers `modales`** :
+
+    - Tous les fichiers du répertoire `src/modales` sont copiés dans `out/modales`.
+
+5. **Mise à Jour de `index.html`** :
+
+    - Les balises `<script>` et `<link>` sont remplacées par des versions optimisées.
+    - Les scripts concaténés et le CSS minifié sont injectés directement dans le fichier.
+
+6. **Écriture des Fichiers Optimisés** :
+    - Le fichier `index.html` mis à jour est écrit dans le répertoire `out`.
+
+---
+
+## Exemple de Résultat
+
+### Avant Optimisation (`src/index.html`) :
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<script src="script1.js"></script>
+		<script src="script2.js"></script>
+	</body>
+</html>
+```
+
+### Après Optimisation (`out/index.html`) :
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			/* Contenu minifié de style.css */
+		</style>
+	</head>
+	<body>
+		<script>
+			/* Contenu concaténé de script1.js et script2.js */
+		</script>
+	</body>
+</html>
+```
+
+---
+
+## Dépendances Utilisées
+
+-   **Bun** :
+    -   Utilisé pour minifier les fichiers CSS
+
+---
+
+## Points Techniques
+
+-   **Gestion des Erreurs** :
+    -   Si la minification d'un fichier CSS échoue, le fichier est simplement copié sans modification.
+-   **Injection Directe** :
+    -   Les scripts et le CSS sont injectés directement dans le fichier `index.html` pour réduire le nombre de requêtes HTTP.

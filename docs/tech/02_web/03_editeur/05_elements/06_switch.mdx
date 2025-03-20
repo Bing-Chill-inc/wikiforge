@@ -1,0 +1,184 @@
+# Classe `StructureSwitch`
+
+## Description Générale
+
+La classe `StructureSwitch` représente une structure de contrôle conditionnelle de type `switch` dans l'éditeur graphique d'Algoforge. Elle permet de gérer une expression à tester et des branches conditionnelles associées. Cette classe hérite de [`StructureAlternative`](./04_structure_alt.mdx) et ajoute des fonctionnalités spécifiques pour gérer l'expression à tester, détecter des anomalies, et exporter les données.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `StructureAlternative`
+    -   La classe `StructureSwitch` hérite de toutes les fonctionnalités de base de `StructureAlternative`, notamment la gestion des conditions, des enfants, et des interactions utilisateur.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion de l'Expression à Tester**
+
+-   **Expression à tester** :
+
+    -   Propriété `_expressionATester` : Contient l'expression utilisée dans le `switch`.
+    -   Propriété `_ancienneExpressionATester` : Stocke l'expression précédente pour permettre l'annulation/rétablissement des modifications.
+    -   Méthodes associées :
+        -   `get expressionATester()` : Renvoie l'expression actuelle.
+        -   `set expressionATester(value)` : Définit une nouvelle expression à tester.
+
+-   **Modification de l'expression** :
+    -   L'expression est modifiable directement via une zone de texte éditable dans l'interface utilisateur.
+    -   Méthode `afficher()` :
+        -   Ajoute un champ interactif pour modifier l'expression.
+        -   Enregistre les modifications via un événement `focusout`.
+
+---
+
+### 2. **Gestion des Conditions**
+
+-   **Liste des conditions** :
+
+    -   Propriété `_listeConditions` : Contient les conditions associées à la structure `Switch`.
+    -   Méthodes héritées de `StructureAlternative` :
+        -   `ajouterCondition()` : Ajoute une nouvelle condition.
+        -   `supprimerCondition()` : Supprime une condition spécifique ou vide.
+
+-   **Affichage des conditions** :
+    -   Méthode `afficher()` :
+        -   Affiche les conditions dans un conteneur dédié.
+        -   Ajoute des boutons interactifs (`+` et `-`) pour ajouter ou supprimer des conditions.
+
+---
+
+### 3. **Affichage**
+
+-   **Affichage de la structure `Switch`** :
+    -   Méthode `afficher()` :
+        -   Affiche la structure `Switch` sur le plan de travail.
+        -   Ajoute des éléments visuels, tels que :
+            -   Un champ pour l'expression à tester.
+            -   Des triangles interactifs pour ajouter ou supprimer des conditions.
+            -   Des séparateurs visuels (`<hr>`).
+
+---
+
+### 4. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la structure `Switch` sous forme JSON.
+        -   Inclut les coordonnées, l'expression à tester, et les conditions.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+---
+
+### 5. **Détection des Anomalies**
+
+-   **Recherche des anomalies** :
+    -   Méthode `rechercherAnomalies()` :
+        -   Recherche les anomalies spécifiques à la structure `Switch`.
+        -   Exemples d'anomalies détectées :
+            -   **ErreurSyntaxeComparaison** : Erreurs dans la syntaxe des comparaisons.
+            -   **AvertissementTropDeSousElements** : Trop de sous-éléments dans la structure.
+            -   **ErreurComparaisonSwitch** : Comparaisons incorrectes dans les conditions.
+            -   **ErreurTypesInconsistantsAlternatif** : Types incohérents dans les branches alternatives.
+
+---
+
+### 6. **Extraction des Informations**
+
+-   **Extraction des variables** :
+
+    -   Méthode `ExtraireVariables()` :
+        -   Extrait les variables utilisées dans l'expression à tester.
+
+-   **Extraction des informations** :
+    -   Méthode `extraireInformation()` :
+        -   Extrait les informations contenues dans la structure `Switch`.
+        -   Retourne une liste d'objets `Information`.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_expressionATester` : L'expression utilisée dans le `switch`.
+-   `_ancienneExpressionATester` : L'expression précédente pour permettre l'annulation/rétablissement.
+-   `_listeConditions` : Liste des conditions associées à la structure `Switch`.
+-   `_editeur` : Référence à l'éditeur principal.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion de l'expression :
+
+-   `get expressionATester()` : Renvoie l'expression actuelle.
+-   `set expressionATester(value)` : Définit une nouvelle expression à tester.
+
+### Méthodes de gestion des conditions :
+
+-   `ajouterCondition()` : Ajoute une nouvelle condition.
+-   `supprimerCondition()` : Supprime une condition spécifique ou vide.
+
+### Méthodes d'affichage :
+
+-   `afficher()` : Affiche la structure `Switch` sur le plan de travail.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` : Exporte la structure `Switch` sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` : Exporte la structure en spécifiant les enfants à conserver.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` : Recherche les anomalies spécifiques à la structure `Switch`.
+
+### Méthodes d'extraction des informations :
+
+-   `ExtraireVariables()` : Extrait les variables utilisées dans l'expression à tester.
+-   `extraireInformation()` : Extrait les informations contenues dans la structure `Switch`.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Structure `Switch`
+
+```javascript
+const structureSwitch = new StructureSwitch(10, 20, [], "variable");
+document.body.appendChild(structureSwitch);
+```
+
+### Modification de l'Expression à Tester
+
+```javascript
+structureSwitch.expressionATester = "nouvelleVariable";
+console.log(structureSwitch.expressionATester);
+```
+
+### Ajout d'une Condition
+
+```javascript
+const condition = new Condition();
+structureSwitch.ajouterCondition(condition);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = structureSwitch.toJSON();
+console.log(json);
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = structureSwitch.rechercherAnomalies();
+console.log(anomalies);
+```

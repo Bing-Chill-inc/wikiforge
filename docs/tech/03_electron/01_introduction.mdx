@@ -1,3 +1,5 @@
+import GitHubFolderStructure from "../../../src/components/FolderStructure/github-folder-structure.tsx";
+
 # Introduction
 
 Afin de pouvoir utiliser Algoforge hors ligne, nous avons mis en place une version desktop de l'application sous Electron.
@@ -9,3 +11,15 @@ telles que HTML, CSS et JavaScript. Il combine Chromium pour le rendu de l'inter
 fonctionnalités côté serveur.
 
 Il nous a permis de transformer Algoforge en une application de bureau sans avoir à réécrire l'application en entier.
+
+## Structure de dossiers de la version desktop
+
+<GitHubFolderStructure githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main" pathToDisplay="src/electron" />
+
+Le fichier `assetsDynamiquesForElectron.js` est un portage direct du fichier `assetsDynamiques.ts` de la version web. Il est utilisé pour générer des svg dynamiques dans la version desktop.
+
+Le fichier `electron-main.js` est le point d'entrée de l'application desktop. Il est utilisé pour initialiser Electron et charger l'application web.
+
+Le fichier `exam-mode.js` est utilisé pour gérer le mode examen dans la version desktop.
+
+Le fichier `getBibliothequesForElectron.js` est un portage direct du fichier `getBibliotheques.ts` de la version web. Il est utilisé pour récupérer les bibliothèques dans la version desktop.

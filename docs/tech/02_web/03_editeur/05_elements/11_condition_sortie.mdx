@@ -1,0 +1,136 @@
+# Classe `ConditionSortie`
+
+## Description Générale
+
+La classe `ConditionSortie` représente une condition de sortie dans une structure itérative (boucle) de l'éditeur graphique d'Algoforge. Elle est utilisée pour définir les points où une boucle peut se terminer. Cette classe hérite de [`ElementGraphique`](./01_element_graphique.mdx) et ajoute des fonctionnalités spécifiques pour détecter les anomalies liées aux conditions de sortie et pour exporter les données.
+
+:::note
+Même si certains l'utilisent dans cette optique, il n'est sémentiquement pas correct de l'utiliser pour dénoter la fin d'un programme. C'est plutôt une condition de sortie d'une boucle.
+:::
+
+---
+
+## Héritage
+
+-   **Classe parente** : `ElementGraphique`
+    -   La classe `ConditionSortie` hérite de toutes les fonctionnalités de base de `ElementGraphique`, telles que la gestion des positions, des parents, et des enfants.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Conditions de Sortie**
+
+-   **Définition des conditions de sortie** :
+    -   La classe est utilisée pour représenter graphiquement les points de sortie d'une boucle.
+    -   Les conditions de sortie sont définies par leur position (`abscisse` et `ordonnee`) et leur association à une structure itérative.
+
+---
+
+### 2. **Détection des Anomalies**
+
+-   **Recherche des anomalies spécifiques** :
+    -   Méthode `rechercherAnomalies()` :
+        -   Recherche les anomalies conceptuelles liées à la condition de sortie.
+        -   Exemples d'anomalies détectées :
+            -   **ErreurArretHorsIteratif** : La condition de sortie est placée en dehors d'une structure itérative.
+            -   **ErreurArretIteratifBornee** : La condition de sortie est utilisée dans une boucle bornée, ce qui est incohérent.
+            -   **AvertissementSProblemeJamaisExecute** : La condition de sortie empêche l'exécution d'une partie de la boucle.
+
+---
+
+### 3. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la condition de sortie sous forme JSON.
+        -   Inclut les coordonnées (`abscisse` et `ordonnee`).
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver (dans ce cas, identique à `toJSON()`).
+
+---
+
+### 4. **Gestion des Ancrages**
+
+-   **Ancre de composition** :
+    -   Méthode `getAncreComposition()` :
+        -   Renvoie les coordonnées de l'ancre de composition de la condition de sortie.
+        -   L'ancre est utilisée pour connecter visuellement la condition de sortie à d'autres éléments graphiques.
+
+---
+
+### 5. **Extraction des Informations**
+
+-   **Extraction des variables** :
+    -   Méthode `extraireInformation()` :
+        -   Renvoie une liste vide, car une condition de sortie ne contient pas d'informations spécifiques à extraire.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   Aucun attribut spécifique à cette classe. Elle repose sur les attributs hérités de `ElementGraphique`.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` :
+    -   Recherche les anomalies spécifiques à la condition de sortie.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` :
+    -   Exporte la condition de sortie sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+    -   Exporte la condition en spécifiant les enfants à conserver.
+
+### Méthodes de gestion des ancrages :
+
+-   `getAncreComposition()` :
+    -   Renvoie l'ancre de composition de la condition de sortie.
+
+### Méthodes d'extraction des informations :
+
+-   `extraireInformation()` :
+    -   Renvoie une liste vide, car aucune information spécifique n'est extraite.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Condition de Sortie
+
+```javascript
+const conditionSortie = new ConditionSortie(10, 20);
+document.body.appendChild(conditionSortie);
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = conditionSortie.rechercherAnomalies();
+console.log(anomalies);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = conditionSortie.toJSON();
+console.log(json);
+```
+
+### Récupération de l'Ancre de Composition
+
+```javascript
+const ancre = conditionSortie.getAncreComposition();
+console.log(ancre);
+```

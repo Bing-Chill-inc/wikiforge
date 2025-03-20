@@ -1,0 +1,176 @@
+# Classe `StructureIterativeBornee`
+
+## Description Générale
+
+La classe `StructureIterativeBornee` représente une boucle bornée dans l'éditeur graphique d'Algoforge. Elle hérite de la classe [`StructureIterative`](./07_structure_it.mdx) et ajoute des fonctionnalités spécifiques pour gérer les bornes, le pas, et la direction de l'itération. Cette classe permet de modéliser des boucles qui s'exécutent jusqu'à ce qu'une variable atteigne une borne définie.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `StructureIterative`
+    -   La classe `StructureIterativeBornee` hérite de toutes les fonctionnalités de base de `StructureIterative`, telles que la gestion des enfants et des interactions utilisateur.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Bornes et de l'Itération**
+
+-   **Attributs des bornes** :
+
+    -   `_variableAIterer` : La variable utilisée pour l'itération.
+    -   `_borneInferieure` : La borne inférieure de la boucle.
+    -   `_borneSuperieure` : La borne supérieure de la boucle.
+    -   `_pas` : Le pas de l'itération (valeur d'incrément ou de décrément).
+    -   `_estCroissant` : Indique si l'itération est croissante (`true`) ou décroissante (`false`).
+
+-   **Encapsulation des bornes** :
+
+    -   Méthodes associées :
+        -   `get _variableAIterer()` et `setVariableAIterer(value)` : Accès et modification de la variable à itérer.
+        -   `get _borneInferieure()` et `set _borneInferieure(value)` : Accès et modification de la borne inférieure.
+        -   `get _borneSuperieure()` et `set _borneSuperieure(value)` : Accès et modification de la borne supérieure.
+        -   `get _pas()` et `set _pas(value)` : Accès et modification du pas de l'itération.
+
+-   **Affichage des bornes** :
+
+    -   Méthode `afficher()` :
+        -   Affiche les informations sur les bornes et le pas dans un conteneur dédié.
+        -   Exemple d'affichage :
+            -   "Pour `i` allant de `1` à `10` par pas croissant de `1`".
+
+-   **Vérification de l'état classique** :
+    -   Méthode `etatClassique()` :
+        -   Vérifie si la boucle est dans un état classique (bornes numériques, pas de 1, et cohérence avec la direction).
+
+---
+
+### 2. **Gestion des Enfants**
+
+-   **Récupération des enfants** :
+
+    -   Méthode héritée `getEnfants(typeRechercher)` :
+        -   Renvoie une liste des enfants de la structure itérative bornée correspondant à un type donné.
+
+-   **Suppression des liens avec les enfants** :
+    -   Méthode héritée `supprimer()` :
+        -   Supprime la structure itérative bornée et déliera tous les enfants associés.
+
+---
+
+### 3. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la structure itérative bornée sous forme JSON.
+        -   Inclut les coordonnées, les bornes, le pas, la direction, et les enfants.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+---
+
+### 4. **Extraction des Informations**
+
+-   **Extraction des variables** :
+
+    -   Méthode `extraireInformation()` :
+        -   Extrait les informations sur la variable à itérer.
+        -   Retourne un objet `Information` contenant le nom et le type de la variable.
+
+-   **Recherche et renommage des informations** :
+    -   Méthode `include(nameInformation)` :
+        -   Vérifie si une chaîne donnée est incluse dans les bornes ou le pas.
+    -   Méthode `renameInformation(ancienNom, nouveauNom)` :
+        -   Renomme une variable utilisée dans la boucle.
+
+---
+
+### 5. **Détection des Anomalies**
+
+-   **Détection des anomalies spécifiques** :
+    -   Méthode `rechercherAnomalies()` :
+        -   Recherche les anomalies conceptuelles dans la structure itérative bornée.
+        -   Exemples d'anomalies détectées :
+            -   **ErreurBoucleBorneeSansFin** : La boucle n'a pas de fin (ex. : bornes incohérentes ou pas incorrect).
+            -   **AvertissementTropDeSousElements** : Trop de sous-éléments dans la boucle.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_variableAIterer` : La variable utilisée pour l'itération.
+-   `_borneInferieure` : La borne inférieure de la boucle.
+-   `_borneSuperieure` : La borne supérieure de la boucle.
+-   `_pas` : Le pas de l'itération.
+-   `_estCroissant` : Indique si l'itération est croissante ou décroissante.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des bornes :
+
+-   `get _variableAIterer()` et `setVariableAIterer(value)` : Accès et modification de la variable à itérer.
+-   `get _borneInferieure()` et `set _borneInferieure(value)` : Accès et modification de la borne inférieure.
+-   `get _borneSuperieure()` et `set _borneSuperieure(value)` : Accès et modification de la borne supérieure.
+-   `get _pas()` et `set _pas(value)` : Accès et modification du pas de l'itération.
+
+### Méthodes d'affichage :
+
+-   `afficher()` : Affiche la structure itérative bornée sur le plan de travail.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` : Exporte la structure itérative bornée sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` : Exporte la structure en spécifiant les enfants à conserver.
+
+### Méthodes d'extraction des informations :
+
+-   `extraireInformation()` : Extrait les informations sur la variable à itérer.
+-   `include(nameInformation)` : Vérifie si une chaîne est incluse dans les bornes ou le pas.
+-   `renameInformation(ancienNom, nouveauNom)` : Renomme une variable utilisée dans la boucle.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` : Recherche les anomalies spécifiques à la structure itérative bornée.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Structure Itérative Bornée
+
+```javascript
+const structureIterativeBornee = new StructureIterativeBornee(10, 20, "i", "1", "10", "1", true);
+document.body.appendChild(structureIterativeBornee);
+```
+
+### Modification des Bornes
+
+```javascript
+structureIterativeBornee._borneInferieure = "0";
+structureIterativeBornee._borneSuperieure = "20";
+structureIterativeBornee._pas = "2";
+console.log(structureIterativeBornee._borneInferieure);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = structureIterativeBornee.toJSON();
+console.log(json);
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = structureIterativeBornee.rechercherAnomalies();
+console.log(anomalies);
+```

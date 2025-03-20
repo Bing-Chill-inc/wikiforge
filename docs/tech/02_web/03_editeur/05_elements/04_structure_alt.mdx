@@ -1,0 +1,167 @@
+# Classe `StructureAlternative`
+
+## Description Générale
+
+La classe `StructureAlternative` représente une structure de contrôle conditionnelle dans l'éditeur graphique d'Algoforge. Elle permet de gérer des branches conditionnelles (par exemple, des blocs `if-else`) et leurs interactions avec d'autres éléments graphiques. Cette classe hérite de [`ElementGraphique`](./01_element_graphique.mdx) et ajoute des fonctionnalités spécifiques pour gérer les conditions et leurs enfants.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `ElementGraphique`
+    -   La classe `StructureAlternative` hérite de toutes les fonctionnalités de base de `ElementGraphique`, telles que la gestion des positions, des parents, et des enfants.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Conditions**
+
+-   **Liste des conditions** :
+
+    -   Propriété `_listeConditions` : Contient les conditions associées à la structure alternative.
+    -   Méthodes associées :
+        -   `get _listeConditions()` : Renvoie la liste des conditions.
+        -   `set _listeConditions(value)` : Définit une nouvelle liste de conditions.
+
+-   **Ajout et suppression de conditions** :
+
+    -   Méthode `ajouterCondition(condition)` :
+        -   Ajoute une nouvelle condition à la structure alternative.
+        -   Par défaut, une condition vide est ajoutée si aucune n'est spécifiée.
+    -   Méthode `supprimerCondition(condition)` :
+        -   Supprime une condition spécifique ou la première condition vide.
+        -   La dernière condition ne peut pas être supprimée.
+
+-   **Décalage des conditions** :
+
+    -   Méthode `decalerCondition(pCondition, decalage, estAnnulation)` :
+        -   Décale une condition vers la gauche ou la droite dans la structure alternative.
+        -   Met à jour les liens associés aux enfants après le décalage.
+
+-   **Ajout de conditions par rapport à une autre** :
+    -   Méthode `ajouterConditionParRapportA(pCondition, decalage, estAnnulation)` :
+        -   Ajoute une condition à gauche ou à droite d'une condition existante.
+
+---
+
+### 2. **Gestion des Enfants**
+
+-   **Récupération des enfants** :
+
+    -   Méthode `getEnfants(typeRechercher)` :
+        -   Renvoie les enfants de la structure alternative correspondant à un type spécifique.
+        -   Trie les enfants par position en abscisse.
+
+-   **Récupération des enfants par condition** :
+
+    -   Méthode `getEnfantsParCondition()` :
+        -   Renvoie une liste des enfants pour chaque condition de la structure alternative.
+
+-   **Suppression des liens avec les enfants** :
+    -   Méthode `supprimer()` :
+        -   Supprime la structure alternative et déliera tous les enfants de ses conditions.
+
+---
+
+### 3. **Affichage**
+
+-   **Affichage des informations** :
+    -   Méthode `afficher()` :
+        -   Affiche les coordonnées de la structure alternative et les informations sur ses conditions.
+
+---
+
+### 4. **Gestion des Dimensions**
+
+-   **Calcul des dimensions** :
+    -   Méthode `getTailleAbscisse()` :
+        -   Renvoie la largeur totale de la structure alternative en fonction du nombre de conditions.
+    -   Méthode `getTailleOrdonnee()` :
+        -   Renvoie la hauteur fixe de la structure alternative (par défaut, `4`).
+
+---
+
+### 5. **Interactions Utilisateur**
+
+-   **Options contextuelles** :
+    -   Méthode `genererOptionsContextuelles(editeur)` :
+        -   Génère une liste d'options contextuelles pour la structure alternative.
+        -   Exemples d'options :
+            -   "Délier toutes les conditions" : Supprime les liens entre les conditions et leurs enfants.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_listeConditions` : Liste des conditions associées à la structure alternative.
+-   `_editeur` : Référence à l'éditeur principal.
+-   `_mouseDownTime` : Temps du clic de souris (utilisé pour des interactions spécifiques).
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des conditions :
+
+-   `ajouterCondition(condition)` : Ajoute une nouvelle condition.
+-   `supprimerCondition(condition)` : Supprime une condition spécifique ou vide.
+-   `decalerCondition(pCondition, decalage, estAnnulation)` : Décale une condition vers la gauche ou la droite.
+-   `ajouterConditionParRapportA(pCondition, decalage, estAnnulation)` : Ajoute une condition par rapport à une autre.
+
+### Méthodes de gestion des enfants :
+
+-   `getEnfants(typeRechercher)` : Renvoie les enfants correspondant à un type spécifique.
+-   `getEnfantsParCondition()` : Renvoie les enfants triés par condition.
+
+### Méthodes d'affichage :
+
+-   `afficher()` : Affiche les informations de la structure alternative.
+
+### Méthodes de gestion des dimensions :
+
+-   `getTailleAbscisse()` : Renvoie la largeur totale de la structure alternative.
+-   `getTailleOrdonnee()` : Renvoie la hauteur fixe de la structure alternative.
+
+### Méthodes d'interaction utilisateur :
+
+-   `genererOptionsContextuelles(editeur)` : Génère les options contextuelles pour la structure alternative.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Structure Alternative
+
+```javascript
+const structureAlternative = new StructureAlternative(10, 20); // Utiliser plutôt une des classes qui héritent de StructureAlternative
+document.body.appendChild(structureAlternative);
+```
+
+### Ajout d'une Condition
+
+```javascript
+const condition = new Condition();
+structureAlternative.ajouterCondition(condition);
+```
+
+### Décalage d'une Condition
+
+```javascript
+structureAlternative.decalerCondition(condition, 1); // Décale vers la droite
+```
+
+### Récupération des Enfants
+
+```javascript
+const enfants = structureAlternative.getEnfants();
+console.log(enfants);
+```
+
+### Suppression d'une Condition
+
+```javascript
+structureAlternative.supprimerCondition(condition);
+```

@@ -1,0 +1,165 @@
+# Classe `StructureSi`
+
+## Description Générale
+
+La classe `StructureSi` représente une structure conditionnelle de type `if-else` dans l'éditeur graphique d'Algoforge. Elle permet de gérer des conditions multiples et leurs branches associées. Cette classe hérite de [`StructureAlternative`](./04_structure_alt.mdx) et ajoute des fonctionnalités spécifiques, telles que la transformation en structure `switch` et la détection d'anomalies liées aux conditions.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `StructureAlternative`
+    -   La classe `StructureSi` hérite de toutes les fonctionnalités de base de `StructureAlternative`, notamment la gestion des conditions, des enfants, et des interactions utilisateur.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Conditions**
+
+-   **Liste des conditions** :
+
+    -   Propriété `_listeConditions` : Contient les conditions associées à la structure `Si`.
+    -   Méthodes associées :
+        -   `get _listeConditions()` : Renvoie la liste des conditions.
+        -   `set _listeConditions(value)` : Définit une nouvelle liste de conditions.
+
+-   **Ajout et suppression de conditions** :
+    -   Méthode `ajouterCondition()` :
+        -   Ajoute une nouvelle condition à la structure `Si`.
+        -   Ajoute un bouton interactif (`+`) pour permettre l'ajout de conditions via l'interface utilisateur.
+    -   Méthode `supprimerCondition()` :
+        -   Supprime une condition spécifique ou vide.
+        -   Ajoute un bouton interactif (`-`) pour permettre la suppression de conditions via l'interface utilisateur.
+
+---
+
+### 2. **Affichage**
+
+-   **Affichage de la structure `Si`** :
+    -   Méthode `afficher()` :
+        -   Affiche la structure `Si` sur le plan de travail.
+        -   Ajoute des éléments visuels, tels que des triangles interactifs pour ajouter ou supprimer des conditions.
+        -   Affiche les conditions dans un conteneur dédié.
+
+---
+
+### 3. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la structure `Si` sous forme JSON.
+        -   Inclut les coordonnées et les conditions.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+---
+
+### 4. **Transformation en Structure Switch**
+
+-   **Détection de la possibilité de transformation** :
+
+    -   Méthode `detecterPotentielTransformationSwitch()` :
+        -   Vérifie si la structure `Si` peut être transformée en une structure `Switch`.
+        -   Conditions nécessaires :
+            -   Toutes les conditions doivent utiliser la même variable.
+            -   Les conditions doivent être des comparaisons simples (ex. : `a = 1`, `a = 2`).
+
+-   **Transformation en structure `Switch`** :
+    -   Méthode `genererOptionsContextuelles(editeur)` :
+        -   Ajoute une option contextuelle pour transformer la structure `Si` en une structure `Switch`.
+        -   Crée une nouvelle structure `Switch` et y transfère les conditions pertinentes.
+
+---
+
+### 5. **Détection des Anomalies**
+
+-   **Recherche des anomalies** :
+    -   Méthode `rechercherAnomalies()` :
+        -   Recherche les anomalies spécifiques à la structure `Si`.
+        -   Exemples d'anomalies détectées :
+            -   **ErreurSyntaxeComparaison** : Erreurs dans la syntaxe des comparaisons.
+            -   **AvertissementTropDeSousElements** : Trop de sous-éléments dans la structure.
+            -   **AvertissementInformationsInconsistantesSi** : Incohérences dans les informations des conditions.
+            -   **AvertissementStructureInoptimale** : Structure mal optimisée.
+            -   **ErreurTypesInconsistantsAlternatif** : Types incohérents dans les branches alternatives.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_listeConditions` : Liste des conditions associées à la structure `Si`.
+-   `_mouseDownTime` : Temps du clic de souris (utilisé pour des interactions spécifiques).
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des conditions :
+
+-   `ajouterCondition()` : Ajoute une nouvelle condition.
+-   `supprimerCondition()` : Supprime une condition spécifique ou vide.
+
+### Méthodes d'affichage :
+
+-   `afficher()` : Affiche la structure `Si` sur le plan de travail.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` : Exporte la structure `Si` sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` : Exporte la structure en spécifiant les enfants à conserver.
+
+### Méthodes de transformation :
+
+-   `detecterPotentielTransformationSwitch()` : Vérifie si la transformation en `Switch` est possible.
+-   `genererOptionsContextuelles(editeur)` : Ajoute une option pour transformer la structure `Si` en `Switch`.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` : Recherche les anomalies spécifiques à la structure `Si`.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Structure `Si`
+
+```javascript
+const structureSi = new StructureSi(10, 20);
+document.body.appendChild(structureSi);
+```
+
+### Ajout d'une Condition
+
+```javascript
+const condition = new Condition();
+structureSi.ajouterCondition(condition);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = structureSi.toJSON();
+console.log(json);
+```
+
+### Transformation en Structure `Switch`
+
+```javascript
+if (structureSi.detecterPotentielTransformationSwitch().result) {
+	structureSi.genererOptionsContextuelles(editeur);
+}
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = structureSi.rechercherAnomalies();
+console.log(anomalies);
+```
