@@ -1,0 +1,115 @@
+import { MultipleOptions, Option } from "../../../src/components/MultipleOptions/multiple-options";
+
+# Compiler l'application
+
+> Pour compiler l'application, commencez par cloner le dépôt Git d'Algoforge.
+
+```bash
+git clone https://github.com/Bing-Chill-inc/Algoforge-main.git
+```
+
+> Ensuite, assurez vous d'avoir Node.js ou Bun installé sur votre machine.
+<MultipleOptions>
+	<Option title="Node.js" key="nodejs">
+		<MultipleOptions>
+		    <Option title="Windows">
+			```bash 
+			# Download and install Chocolatey:
+			powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
+
+			# Download and install Node.js:
+			choco install nodejs-lts --version="22"
+			```
+			</Option>
+			<Option title="MacOS">
+			```bash 
+			# Download and install Homebrew
+			curl -o- https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+
+			# Download and install Node.js:
+			brew install node@22
+
+			# Verify the Node.js version:
+			node -v # Should print "v22.14.0".
+
+			# Verify npm version:
+			npm -v # Should print "10.9.2".
+
+			```
+			</Option>
+			<Option title="Linux">
+			```bash 
+			sudo apt update
+			sudo apt install nodejs npm
+			```
+			</Option>
+		</MultipleOptions>
+	</Option>
+	<Option title="Bun" key="bun">
+		<MultipleOptions>
+			<Option title="Windows">
+			```bash 
+			powershell -c "irm bun.sh/install.ps1 | iex"
+			```
+			</Option>
+			<Option title="MacOS / Linux">
+			```bash 
+			curl -fsSL https://bun.sh/install | bash
+			```
+			</Option>
+		</MultipleOptions>
+	</Option>
+</MultipleOptions>
+
+> Déplacez vous dans le dossier `Algoforge-main/src/electron` et installez les dépendances du projet.
+
+<MultipleOptions>
+	<Option title="npm" key="npm">
+	```bash
+	cd Algoforge-main/src/electron
+	npm install
+	```
+	</Option>
+	<Option title="pnpm" key="pnpm">
+	```bash
+	cd Algoforge-main/src/electron
+	pnpm install
+	```
+	</Option>
+	<Option title="Yarn" key="yarn">
+	```bash
+	cd Algoforge-main/src/electron
+	yarn install
+	```
+	</Option>
+	<Option title="Bun" key="bun">
+	```bash
+	cd Algoforge-main/src/electron
+	bun install
+	```
+	</Option>
+</MultipleOptions>
+
+> Enfin, vous pouvez compiler l'application en utilisant la commande suivante.
+<MultipleOptions>
+	<Option title="npm" key="npm">
+	```bash
+	npm run package
+	```
+	</Option>
+	<Option title="pnpm" key="pnpm">
+	```bash
+	pnpm run package
+	```
+	</Option>
+	<Option title="Yarn" key="yarn">
+	```bash
+	yarn run package
+	```
+	</Option>
+	<Option title="Bun" key="bun">
+	```bash
+	bun package
+	```
+	</Option>
+</MultipleOptions>

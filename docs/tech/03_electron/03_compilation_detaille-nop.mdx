@@ -1,0 +1,113 @@
+import { MultipleOptions, Option } from "../../../src/components/MultipleOptions/multiple-options";
+
+# Compilation détaillée
+
+:::note
+Cette section part du principe que vous avez lu et suivi les instructions de la section [précédente](./02_compiler-nop.mdx).
+:::
+
+Maintenant que vous avez ce qu'il faut pour compiler l'application, nous allons voir les options que vous avez pour le faire.
+
+## Mode examen
+
+Si vous souhaitez compiler la version examen de l'application, utilisez la commande suivante:
+<MultipleOptions>
+	<Option title="npm" key="npm">
+	```bash
+	npm run package:exam
+	```
+	</Option>
+	<Option title="pnpm" key="pnpm">
+	```bash
+	pnpm run package:exam
+	```
+	</Option>
+	<Option title="Yarn" key="yarn">
+	```bash
+	yarn run package:exam
+	```
+	</Option>
+	<Option title="Bun" key="bun">
+	```bash
+	bun package:exam
+	```
+	</Option>
+</MultipleOptions>
+
+## Compilation vers une plateforme spécifique
+
+Si vous souhaitez compiler l'application pour une plateforme spécifique, utilisez la commande suivante:
+<MultipleOptions>
+	<Option title="npm" key="npm">
+	```bash
+	npm run package:{os}:{arch}
+	```
+	</Option>
+	<Option title="pnpm" key="pnpm">
+	```bash
+	pnpm run package:{os}:{arch}
+	```
+	</Option>
+	<Option title="Yarn" key="yarn">
+	```bash
+	yarn run package:{os}:{arch}
+	```
+	</Option>
+	<Option title="Bun" key="bun">
+	```bash
+	bun package:{os}:{arch}
+	```
+	</Option>
+</MultipleOptions>
+
+Les options sont les suivantes:
+- *\{os}*: `win` (Windows), `mac` (Macos) ou `lnx` (Linux)
+- *\{arch}*: `x64`, `arm64`
+
+Par exemple, pour compiler l'application pour MacOS en architecture x64, utilisez la commande suivante:
+<MultipleOptions>
+	<Option title="npm" key="npm">
+	```bash
+	npm run package:mac:x64
+	```
+	</Option>
+	<Option title="pnpm" key="pnpm">
+	```bash
+	pnpm run package:mac:x64
+	```
+	</Option>
+	<Option title="Yarn" key="yarn">
+	```bash
+	yarn run package:mac:x64
+	```
+	</Option>
+	<Option title="Bun" key="bun">
+	```bash
+	bun package:mac:x64
+	```
+	</Option>
+</MultipleOptions>
+
+Et vous pouvez également compiler la version examen pour une plateforme spécifique:
+<MultipleOptions>
+	<Option title="npm" key="npm">
+	```bash
+	npm run package:exam:{os}:{arch}
+	```
+	</Option>
+	<Option title="pnpm" key="pnpm">
+	```bash
+	pnpm run package:exam:{os}:{arch}
+	```
+	</Option>
+	<Option title="Yarn" key="yarn">
+	```bash
+	yarn run package:exam:{os}:{arch}
+	```
+	</Option>
+	<Option title="Bun" key="bun">
+	```bash
+	bun package:exam:{os}:{arch}
+	```
+	</Option>
+</MultipleOptions>

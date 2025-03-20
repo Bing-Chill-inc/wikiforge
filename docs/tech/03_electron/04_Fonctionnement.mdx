@@ -1,0 +1,257 @@
+# Fonctionnement
+
+Cette application utilise **Electron** pour fournir une interface utilisateur de bureau basée sur le moteur de rendu web. Voici un résumé de son fonctionnement :
+
+## 1. Initialisation de l'application
+
+-   **Détection de l'environnement** :
+
+    -   En mode développement (`isDev`), les fichiers statiques sont chargés depuis `../front-editeur/src`.
+    -   En mode production, les fichiers sont chargés depuis `process.resourcesPath`.
+        ```js
+        const staticPath = isDev
+        	? path.join(path.resolve(), "../front-editeur/src") // Dev path
+        	: path.join(process.resourcesPath, "src"); // Production path
+        ```
+
+-   **Protocole personnalisé** :
+    -   Un protocole `app://` est enregistré pour servir les fichiers et gérer les routes dynamiques.
+        ```js
+        protocol.registerSchemesAsPrivileged([
+        	{
+        		scheme: "app",
+        		privileges: {
+        			standard: true,
+        			secure: true,
+        			supportFetchAPI: true,
+        			bypassCSP: true,
+        		},
+        	},
+        ]);
+        ```
+
+## 2. Gestion des routes et fichiers
+
+L'application gère plusieurs types de requêtes via le protocole `app://` :
+
+```js
+protocol.handle("app", async (request) => {
+    ...
+});
+```
+
+### a. Routes dynamiques
+
+-   **Structure de bibliothèque** :
+
+    -   Route : `/Bibliotheque/getStructure`
+    -   Appelle la fonction `getBibliothèque.callback` pour générer une réponse JSON dynamique.
+
+    ```js
+    if (url.pathname === "/Bibliotheque/getStructure") {
+    	console.log("Handling dynamic route: /Bibliotheque/getStructure");
+
+    	let responseData = null;
+
+    	// Simulate Express-like req/res objects
+    	const fakeReq = {}; // No query parameters needed here
+    	const fakeRes = {
+    		setHeader: () => {}, // No-op for headers
+    		send: (data) => (responseData = data), // Capture response data
+    	};
+
+    	// Invoke the `getBibliothèque` callback
+    	await getBibliothèque.callback(fakeReq, fakeRes);
+
+    	if (responseData) {
+    		return new Response(responseData, {
+    			headers: {
+    				"Content-Type": "application/json",
+    			},
+    		});
+    	}
+
+    	console.error("Failed to generate response for /Bibliotheque/getStructure");
+    	return new Response("Internal Server Error", { status: 500 });
+    }
+    ```
+
+-   **Assets dynamiques** :
+
+    -   Route : `/assetsDynamiques/*`
+    -   Utilise `AssetsDynamiques` pour générer des fichiers SVG dynamiques en fonction des paramètres de requête.
+
+    ```js
+    if (url.pathname.startsWith("/assetsDynamiques")) {
+    	const asset = AssetsDynamiques.find((a) => `/assetsDynamiques${a.route}` === url.pathname);
+    	if (asset) {
+    		// Simulate Express-like req/res objects
+    		const fakeReq = { query: Object.fromEntries(url.searchParams) };
+    		let responseData = null;
+
+    		const fakeRes = {
+    			setHeader: () => {}, // No-op since we're returning directly
+    			send: (data) => (responseData = data),
+    		};
+
+    		// Invoke the asset's callback to generate dynamic content
+    		await asset.callback(fakeReq, fakeRes);
+
+    		if (responseData) {
+    			console.log(`Serving dynamic asset: ${url.pathname}`);
+    			return new Response(responseData, {
+    				headers: {
+    					"Content-Type": "image/svg+xml",
+    				},
+    			});
+    		}
+    	}
+    	console.error("Dynamic asset not found:", url.pathname);
+    	return new Response("Not Found", { status: 404 });
+    }
+    ```
+
+-   **Icônes de bibliothèque** :
+
+    -   Route : `/Bibliotheque/*/icone.svg`
+    -   Charge un fichier SVG et remplace dynamiquement les placeholders PHP-style (`<?php echo $_GET[...] ?>`) par les paramètres de requête.
+
+    ```js
+    if (url.pathname.startsWith("/Bibliotheque/") && url.pathname.endsWith("/icone.svg")) {
+    	const cheminIcone = path.join(staticPath, url.pathname);
+
+    	console.log(cheminIcone);
+
+    	const lireContenuFichier = (chemin) => {
+    		return fs.existsSync(chemin) ? fs.readFileSync(chemin, "utf8") : "";
+    	};
+
+    	let fileContent = lireContenuFichier(cheminIcone);
+
+    	// Replace PHP-style placeholders with query parameters
+    	const regex = /<\?php echo \$_GET\[[^\]]+\] \?>/g;
+
+    	const matches = fileContent.match(regex);
+
+    	console.log(matches);
+    	console.log("url.searchParams", url.searchParams);
+
+    	if (matches) {
+    		matches.forEach((match) => {
+    			try {
+    				const variableRegex = /\$_GET\['([^\]]+)'\]/g;
+    				const variableObj = variableRegex.exec(match);
+    				console.log(variableObj);
+    				const variable = variableObj[1];
+    				const valeur = Object.fromEntries(url.searchParams)[variable];
+    				console.log(variable, valeur);
+    				fileContent = fileContent.replace(match, valeur);
+    			} catch (e) {
+    				console.error(e);
+    			}
+    		});
+    	}
+
+    	console.log(`Serving library icon: ${url.pathname}`);
+    	return new Response(fileContent, {
+    		headers: {
+    			"Content-Type": "image/svg+xml",
+    		},
+    	});
+    }
+    ```
+
+### b. Fichiers statiques
+
+-   Les fichiers statiques (HTML, CSS, JS, images, etc.) sont servis depuis le chemin défini par `staticPath`.
+
+    ```js
+    const filePath = path.join(staticPath, url.pathname);
+    if (fs.existsSync(filePath)) {
+    	console.log("Serving static file:", filePath);
+    	return new Response(fs.readFileSync(filePath), {
+    		headers: {
+    			"Content-Type": getMimeType(filePath),
+    		},
+    	});
+    }
+    ```
+
+-   Exemple : `/index.html` est modifié pour activer les modes `isExam` et `isElectron` si nécessaire.
+
+    ```js
+    if (url.pathname === "/index.html") {
+    	console.log("Serving exam index.html");
+    	// On lit index.html, et on trouve la déclaration de la variable `isExam` pour la remplacer par `true`
+    	const filePath = path.join(staticPath, url.pathname);
+    	let fileContent = fs.readFileSync(filePath, "utf8");
+    	if (isExam) {
+    		fileContent = fileContent.replace("const isExam = false;", "const isExam = true;");
+    	}
+
+    	fileContent = fileContent.replace("const isElectron = false;", "const isElectron = true;");
+
+    	console.log("Serving exam index.html");
+
+    	return new Response(fileContent, {
+    		headers: {
+    			"Content-Type": "text/html",
+    		},
+    	});
+    }
+    ```
+
+### c. Gestion des erreurs
+
+-   Si une route ou un fichier n'est pas trouvé, une réponse `404 Not Found` est retournée.
+
+    ```js
+    console.error("File or route not found:", url.pathname);
+    return new Response("Not Found", { status: 404 });
+    ```
+
+## 3. Création de la fenêtre principale
+
+-   Une fenêtre principale est créée avec les options suivantes :
+
+    -   **Dimensions** : 1200x800 pixels.
+    -   **Sécurité** :
+        -   `nodeIntegration` activé pour permettre l'utilisation de Node.js dans le processus de rendu.
+        -   `contextIsolation` désactivé.
+        -   `webSecurity` désactivé pour permettre l'accès aux cookies et au contenu non sécurisé.
+    -   **Outils de développement** :
+        -   Désactivés en mode examen (`isExam`).
+
+-   La fenêtre charge l'URL `app://edit/index.html`.
+
+```js
+mainWindow = new BrowserWindow({
+	width: 1200,
+	height: 800,
+	webPreferences: {
+		nodeIntegration: true,
+		contextIsolation: false, // Allows the renderer process to use Node.js features directly
+		webSecurity: false, // Disable certain security features to allow cookie access
+		allowRunningInsecureContent: true,
+		devTools: !isExam,
+	},
+});
+
+// Point to the custom protocol URL
+mainWindow.loadURL("app://edit/index.html");
+```
+
+## 4. Gestion des événements
+
+-   **Fermeture de toutes les fenêtres** :
+    -   Quitte l'application sauf sur macOS (comportement natif).
+-   **Réactivation de l'application** :
+    -   Si aucune fenêtre n'est ouverte, une nouvelle fenêtre est créée.
+
+```js
+app.on("window-all-closed", () => {
+	if (process.platform !== "darwin") {
+		app.quit();
+	}
+});
+```

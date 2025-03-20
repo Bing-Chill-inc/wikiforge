@@ -1,0 +1,40 @@
+import GitHubFolderStructure from "../../src/components/FolderStructure/github-folder-structure.tsx";
+import { fetchRepoWithSubmodules } from "../../src/services/getFolderStructureFromGit.ts";
+
+# Introduction
+
+Algoforge est un projet constitué de plusieurs parties qui ont leurs propres spécificités.
+Cette documentation est divisée en plusieurs sections, chacune correspondant à une partie du projet.
+
+## Structure du projet
+
+Le projet est agencé de la manière suivante :
+
+<GitHubFolderStructure githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main" />
+
+Comme vous pouvez le constater, la partie principale du projet est le dossier `src` qui contient les différentes parties du projet.
+
+En dehors de cela, vous pouvez également trouver le dossier `.github` qui contient les actions GitHub utilisées pour le projet,
+ainsi que la configuration de Dependabot.
+
+Les fichiers `.gitignore`, `.prettierignore` et `.prettierrc` sont utilisés pour ignorer certains fichiers lors de la gestion du code source,
+et pour configurer Prettier.
+
+Le fichier `.gitmodules` est utilisé pour définir les sous-modules du projet. Ici, nos sous-modules correspondent aux frontends de l'éditeur et du cloud.
+
+Le fichier `docker-compose.yml` est utilisé pour définir les services Docker utilisés pour le projet.
+
+Les fichiers `run-docker.bat`, `run-docker.sh` et `run-docker.ps1` sont utilisés pour démarrer les services Docker selon la plateforme.
+
+Le fichier `run-local.sh` est utilisé quant à lui pour démarrer les services sans Docker.
+
+Enfin, les fichiers `template-docker.env` et `template-local.env` sont utilisés pour définir les variables d'environnement nécessaires pour le projet.
+
+## Sections
+
+Le projet est divisé en 4 sections principales :
+
+-   [Frontend de l'Éditeur](./02_web/03_editeur/01_introduction.mdx)
+-   [Frontend du cloud](./02_web/04_cloud/01_introduction.mdx)
+-   [Backend](./02_web/02_backend/01_introduction.mdx)
+-   [Version de bureau](./03_electron/01_introduction.mdx)
