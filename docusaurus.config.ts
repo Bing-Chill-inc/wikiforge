@@ -57,6 +57,12 @@ const config: Config = {
 			},
 			items: [
 				{
+					label: "Télécharger",
+					to: "/download",
+					position: "left",
+					activeBasePath: "/download",
+				},
+				{
 					type: "docSidebar",
 					sidebarId: "tutorialSidebar",
 					position: "left",
@@ -85,25 +91,12 @@ const config: Config = {
 							label: "Tutorial",
 							to: "/docs/intro",
 						},
+						{
+							label: "Technical",
+							to: "/docs/technical/intro",
+						},
 					],
 				},
-				// {
-				// 	title: "Community",
-				// 	items: [
-				// 		{
-				// 			label: "Stack Overflow",
-				// 			href: "https://stackoverflow.com/questions/tagged/docusaurus",
-				// 		},
-				// 		{
-				// 			label: "Discord",
-				// 			href: "https://discordapp.com/invite/docusaurus",
-				// 		},
-				// 		{
-				// 			label: "X",
-				// 			href: "https://x.com/docusaurus",
-				// 		},
-				// 	],
-				// },
 				{
 					title: "More",
 					items: [

@@ -17,9 +17,12 @@ function HomepageHeader() {
 					{siteConfig.title}
 				</Heading>
 				<p className="hero__subtitle">{siteConfig.tagline}</p>
-				<div className={styles.buttons}>
+				<div className={styles.buttons} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 					<Link className="button button--secondary button--lg" to="/docs/intro">
 						Comment utiliser Algoforge ?
+					</Link>
+					<Link className="button button--secondary button--lg" to="/download">
+						Télécharger Algoforge
 					</Link>
 				</div>
 			</div>
