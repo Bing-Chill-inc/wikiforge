@@ -1,0 +1,171 @@
+# Liens
+
+## Description Générale
+
+Le système de liens dans l'éditeur graphique d'Algoforge est conçu pour représenter graphiquement les relations entre différents éléments graphiques ([`ElementGraphique`](./05_elements/01_element_graphique.mdx)). Ces liens permettent de connecter des éléments parent-enfant, de décomposer des structures, ou de représenter des relations spécifiques. Le système repose sur une classe abstraite `Lien` et plusieurs classes dérivées qui implémentent des types spécifiques de liens.
+
+---
+
+## Structure du Système de Liens
+
+### 1. **Classe `Ligne`**
+
+La classe `Ligne` représente une ligne graphique reliant deux points. Elle est utilisée comme composant de base pour dessiner des liens.
+
+#### Attributs :
+
+-   `_abscisse1`, `_ordonnee1` : Coordonnées du premier point.
+-   `_abscisse2`, `_ordonnee2` : Coordonnées du second point.
+-   `_abscisseMilieu`, `_ordonneeMilieu` : Coordonnées du milieu de la ligne.
+
+#### Méthodes :
+
+-   `update()` :
+    -   Met à jour la position, la largeur, et la rotation de la ligne en fonction des coordonnées des deux points.
+-   `setDebut(abscisse, ordonnee)` :
+    -   Définit la position du premier point.
+-   `setFin(abscisse, ordonnee)` :
+    -   Définit la position du second point.
+
+---
+
+### 2. **Classe Abstraite : `Lien`**
+
+La classe `Lien` est une classe abstraite qui définit les propriétés et méthodes de base pour tous les types de liens. Elle n'est pas destinée à être instanciée directement, mais à être héritée par des classes spécifiques.
+
+#### Attributs :
+
+-   `_elemGraphiqueParent` : L'élément graphique parent de la relation.
+-   `_elemGraphiqueEnfant` : L'élément graphique enfant de la relation.
+-   `_espaceTravail` : L'espace de travail où le lien est affiché.
+
+#### Méthodes :
+
+-   `update()` :
+    -   Méthode abstraite destinée à être implémentée dans les classes dérivées.
+    -   Met à jour la position et l'apparence du lien.
+-   `supprimer()` :
+    -   Méthode abstraite destinée à être implémentée dans les classes dérivées.
+    -   Supprime le lien de l'espace de travail.
+
+---
+
+### 3. **Classe `LienDroit`**
+
+La classe `LienDroit` représente un lien graphique simple constitué d'une seule ligne droite.
+
+Elle est utilisée pour relier une [`Condition`](./05_elements/07_condition.mdx) d'une [`StructureAlternative` ](./05_elements/04_structure_alt.mdx) à un élément enfant, et ce seulement si la condition n'a qu'un seul enfant.
+
+#### Attributs :
+
+-   `_ligne` : Une instance de la classe `Ligne` représentant le lien.
+
+#### Méthodes :
+
+-   `update()` :
+    -   Met à jour la position de la ligne en fonction des ancres de décomposition et de composition des éléments parent et enfant.
+-   `supprimer()` :
+    -   Supprime la ligne de l'espace de travail.
+
+---
+
+### 4. **Classe `LienTriple`**
+
+La classe `LienTriple` représente un lien graphique complexe composé de trois lignes perpendiculaires.
+
+Elle est utilisée pour relier une [`StructureIterative`](./05_elements/08_structure_it.mdx) à ses sous-éléments, ou une [`Condition`](./05_elements/07_condition.mdx) d'une [`StructureAlternative` ](./05_elements/04_structure_alt.mdx) à plusieurs éléments enfants.
+
+#### Attributs :
+
+-   `_ligneDecomp` : Ligne verticale représentant la décomposition.
+-   `_ligneH` : Ligne horizontale reliant les sous-éléments.
+-   `_ligneV` : Ligne verticale reliant un sous-élément.
+
+#### Méthodes :
+
+-   `update()` :
+    -   Met à jour les trois lignes en fonction des ancres des éléments parent et enfant.
+    -   Si le parent n'a qu'un seul enfant et qu'ils sont proches, une seule ligne droite est tracée.
+-   `supprimer()` :
+    -   Supprime les trois lignes de l'espace de travail.
+
+---
+
+### 5. **Classe `LienCompositionProbleme`**
+
+La classe `LienCompositionProbleme` est utilisée pour représenter la décomposition d'un problème en sous-problèmes. Elle utilise un symbole de décomposition (double barre) et deux lignes.
+
+Elle est utilisée pour relier un [`Probleme`](./05_elements/02_probleme.mdx) à ses enfants.
+
+#### Attributs :
+
+-   `_symboleDecomposition` : Symbole graphique représentant la décomposition.
+-   `_ligneH` : Ligne horizontale reliant les sous-problèmes.
+-   `_ligneV` : Ligne verticale reliant un sous-problème.
+
+#### Méthodes :
+
+-   `update()` :
+    -   Met à jour la position du symbole de décomposition et des lignes.
+    -   Si le parent n'a qu'un seul enfant et qu'ils sont proches, le symbole est masqué et deux lignes droites sont tracées.
+-   `supprimer()` :
+    -   Supprime le symbole et les lignes de l'espace de travail.
+
+---
+
+## Fonctionnement Général
+
+### 1. **Création d'un Lien**
+
+Lorsqu'un lien est créé, une instance de la classe appropriée (`LienDroit`, `LienTriple`, ou `LienCompositionProbleme`) est instanciée avec les paramètres suivants :
+
+-   L'élément graphique parent.
+-   L'élément graphique enfant.
+-   L'espace de travail.
+
+### 2. **Mise à Jour du Lien**
+
+La méthode `update()` est appelée pour ajuster la position et l'apparence du lien en fonction des coordonnées des ancres des éléments parent et enfant. Chaque type de lien implémente cette méthode différemment pour répondre à ses besoins spécifiques.
+
+### 3. **Suppression d'un Lien**
+
+Lorsqu'un lien doit être supprimé, la méthode `supprimer()` est appelée. Cette méthode supprime les composants graphiques du lien (lignes, symboles, etc.) de l'espace de travail.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'un Lien Droit
+
+```javascript
+const lienDroit = new LienDroit(parentElement, childElement, workspace);
+workspace.appendChild(lienDroit);
+```
+
+### Mise à Jour d'un Lien
+
+```javascript
+lienDroit.update();
+```
+
+### Suppression d'un Lien
+
+```javascript
+lienDroit.supprimer();
+```
+
+---
+
+## Points Techniques
+
+### 1. **Ancres de Décomposition et de Composition**
+
+Les ancres sont des points spécifiques sur les éléments graphiques qui déterminent où les liens doivent se connecter. Chaque élément graphique dispose de méthodes comme `getAncreDecomposition()` et `getAncreComposition()` pour fournir ces coordonnées.
+
+### 2. **Gestion des Distances et Angles**
+
+Pour les liens complexes comme `LienTriple` et `LienCompositionProbleme`, la distance et l'angle entre les ancres parent et enfant sont calculés pour déterminer si une ligne droite ou une forme en "L" doit être tracée.
+
+### 3. **Personnalisation des Liens**
+
+Les classes dérivées de `Lien` peuvent être étendues pour créer de nouveaux types de liens avec des comportements spécifiques.
