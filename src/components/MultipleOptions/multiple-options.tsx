@@ -1,4 +1,5 @@
 import { Children, useEffect, useState } from "react";
+import "./multiple-options.css";
 
 interface MultipleOptionsProps {
 	children: React.ReactNode;
@@ -44,6 +45,7 @@ const MultipleOptions = ({ children }: MultipleOptionsProps) => {
 					padding: "20px",
 					borderRadius: "0 0 10px 10px",
 				}}
+				className="multiple-options-content"
 			>
 				{childrenArray.find((child) => child.props.title === selected)?.props.children}
 			</div>
