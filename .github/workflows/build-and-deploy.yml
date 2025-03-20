@@ -20,7 +20,7 @@ jobs:
               run: bun install
 
             - name: Build Docusaurus project
-              run: bun run build -- --no-ssr
+              run: bun run build
 
             - name: Upload Pages artifact
               uses: actions/upload-pages-artifact@v3
