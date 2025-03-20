@@ -1,0 +1,189 @@
+# Classe `Editeur`
+
+## Description Générale
+
+La classe `Editeur` représente l'interface principale de l'éditeur graphique d'Algoforge. Elle est responsable de la gestion des interactions utilisateur, de la manipulation des éléments graphiques, de l'import/export des données, et de la gestion des événements. Cette classe est conçue pour être instanciée une seule fois et étend la classe native `HTMLElement`.
+
+---
+
+## Responsabilités Principales
+
+### **Gestion de l'Interface Utilisateur**
+
+-   **Initialisation des éléments de l'interface** :
+
+    -   Référencement des outils, menus déroulants, boutons d'annulation/rétablissement, et autres composants graphiques.
+    -   Ajout des thèmes disponibles dans un sélecteur (`_themeSelect`) et gestion de leur application.
+    -   Gestion des raccourcis clavier et des modales (ex. : raccourcis clavier, "À propos", etc.).
+
+-   **Gestion des événements utilisateur** :
+
+    -   Écoute des événements tels que clics, déplacements de souris, glisser-déposer, copier-coller, et raccourcis clavier.
+    -   Gestion des interactions avec les outils (ex. : création d'éléments graphiques, sélection, déplacement, suppression).
+
+-   **Personnalisation de l'apparence** :
+    -   Application des thèmes via la classe `ThemeEditeur`.
+    -   Gestion des curseurs personnalisés en fonction de l'outil sélectionné.
+
+---
+
+### **Manipulation des Éléments Graphiques**
+
+-   **Création et gestion des éléments** :
+
+    -   Référencement des types d'éléments graphiques disponibles (ex. : `Lien`, `Probleme`, `Procedure`, etc.).
+    -   Ajout d'éléments graphiques au plan de travail en fonction de l'outil sélectionné.
+
+-   **Sélection et déplacement** :
+
+    -   Gestion de la sélection multiple via un rectangle de sélection.
+    -   Déplacement des éléments sélectionnés avec la souris ou les flèches du clavier.
+
+-   **Suppression et modification** :
+    -   Suppression des éléments sélectionnés.
+    -   Modification des propriétés des éléments graphiques (ex. : bornes des boucles, conditions des structures).
+
+---
+
+### **Gestion des Événements**
+
+-   **Annulation et rétablissement** :
+
+    -   Maintien d'une pile d'annulation (`_pileAnnuler`) et d'une pile de rétablissement (`_pileRétablir`).
+    -   Ajout d'événements à la pile d'annulation via `ajouterEvenement`.
+    -   Annulation et rétablissement des actions utilisateur via `annuler` et `retablir`.
+
+-   **Événements composites** :
+    -   Regroupement d'événements multiples en un seul événement composite pour simplifier l'annulation/rétablissement.
+
+---
+
+### **Import/Export des Données**
+
+-   **Importation** :
+
+    -   Chargement de fichiers JSON contenant des données d'éléments graphiques via `importerJSON`.
+    -   Gestion du glisser-déposer et du copier-coller pour importer des données JSON.
+
+-   **Exportation** :
+    -   Exportation des données de l'éditeur au format JSON, SVG, PNG, ou JPG.
+    -   Création de fichiers téléchargeables via des blobs et des liens dynamiques.
+    -   Conversion des éléments graphiques en images bitmap pour les formats PNG et JPG.
+
+---
+
+### **Gestion des Thèmes**
+
+-   **Ajout de thèmes** :
+
+    -   Les thèmes sont définis via la classe `ThemeEditeur` et ajoutés au sélecteur `_themeSelect`.
+
+-   **Application des thèmes** :
+    -   Les thèmes modifient les couleurs, polices, et autres propriétés CSS de l'éditeur.
+    -   Le thème sélectionné est appliqué automatiquement au chargement de l'éditeur.
+
+---
+
+### **Gestion des Cookies**
+
+-   **Stockage des préférences utilisateur** :
+    -   Méthodes `setCookie` et `getCookie` pour enregistrer et récupérer des préférences utilisateur (ex. : thème sélectionné).
+
+---
+
+### **Gestion des Raccourcis Clavier**
+
+-   **Raccourcis globaux** :
+
+    -   Annulation (`Ctrl+Z`), rétablissement (`Ctrl+Y`), copier (`Ctrl+C`), coller (`Ctrl+V`), supprimer (`Suppr`), etc.
+    -   Navigation et manipulation des éléments avec les flèches du clavier.
+
+-   **Raccourcis spécifiques aux outils** :
+    -   Sélection rapide des outils via des combinaisons clavier (`Ctrl+1`, `Ctrl+2`, etc.).
+
+---
+
+### **Gestion des Modales**
+
+-   **Modales intégrées** :
+    -   Modale "À propos" : Affiche des informations sur l'application.
+    -   Modale "Raccourcis clavier" : Liste les raccourcis disponibles.
+    -   Modale "Non implémenté" : Affiche un message pour les fonctionnalités non encore disponibles.
+
+---
+
+### **Gestion des Événements de la Fenêtre**
+
+-   **Avant fermeture** :
+    -   Avertit l'utilisateur si des modifications non enregistrées sont présentes.
+-   **Impression** :
+    -   Ajuste le zoom pour optimiser l'impression.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_pileAnnuler` : Pile des événements pour l'annulation.
+-   `_pileRétablir` : Pile des événements pour le rétablissement.
+-   `_currentTool` : Identifiant de l'outil actuellement sélectionné.
+-   `_selection` : Instance de la classe `Selection` pour gérer les éléments sélectionnés.
+-   `_themeSelect` : Sélecteur de thème.
+-   `_espacePrincipal` : Référence au plan de travail principal.
+
+### Autres attributs :
+
+-   `_listeTools` : Liste des outils disponibles.
+-   `_typesElements` : Liste des types d'éléments graphiques disponibles.
+-   `_modaleRaccourcisClavier`, `_modaleAPropos`, `_modaleNoPaste`, `_modaleNonImp` : Références aux modales.
+
+---
+
+## Méthodes Clés
+
+### Méthodes d'édition :
+
+-   `undo()` : Annule la dernière action.
+-   `redo()` : Rétablit la dernière action annulée.
+-   `cut()` : Coupe les éléments sélectionnés.
+-   `copy()` : Copie les éléments sélectionnés.
+-   `paste()` : Colle les éléments copiés.
+-   `selectAll()` : Sélectionne tous les éléments graphiques.
+-   `delete()` : Supprime les éléments sélectionnés.
+
+### Méthodes d'import/export :
+
+-   `importerJSON()` : Importe des données JSON dans l'éditeur.
+-   `exporterJSON(jsonString)` : Exporte les données au format JSON.
+-   `exporterSVG(nodeToCopy)` : Exporte les données au format SVG.
+-   `exporterPNG(nodeToCopy)` : Exporte les données au format PNG.
+-   `exporterJPG(nodeToCopy)` : Exporte les données au format JPG.
+
+### Méthodes de gestion des thèmes :
+
+-   `setCookie(cname, cvalue, exdays)` : Définit un cookie.
+-   `getCookie(cname)` : Récupère la valeur d'un cookie.
+
+---
+
+## Exemple d'Utilisation
+
+### Initialisation de l'Éditeur
+
+```javascript
+const editeur = new Editeur();
+document.body.appendChild(editeur);
+```
+
+### Importation de Données JSON
+
+```javascript
+editeur.importerJSON();
+```
+
+### Exportation en PNG
+
+```javascript
+editeur.exporterPNG(editeur._planActif);
+```

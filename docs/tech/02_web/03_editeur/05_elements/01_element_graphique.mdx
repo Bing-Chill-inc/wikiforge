@@ -1,0 +1,188 @@
+# Classe `ElementGraphique`
+
+## Description Générale
+
+La classe `ElementGraphique` est une classe abstraite qui sert de base pour tous les éléments graphiques manipulés dans l'éditeur d'algorithmes d'Algoforge. Elle gère les propriétés fondamentales des éléments graphiques, telles que leur position, leur parent, leurs enfants, et leurs interactions avec l'éditeur. Cette classe étend la classe native `HTMLElement`.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Propriétés de Base**
+
+-   **Positionnement** :
+
+    -   Les propriétés `_abscisse` et `_ordonnee` définissent la position de l'élément graphique.
+    -   Méthodes associées :
+        -   `setPosition(abscisse, ordonnee)` : Définit la position de l'élément graphique.
+        -   `getPosition()` : Renvoie la position actuelle sous forme d'objet `{ abscisse, ordonnee }`.
+        -   `getCentre()` : Renvoie les coordonnées du centre de l'élément graphique.
+
+-   **Dimensions** :
+
+    -   Méthodes associées :
+        -   `getTailleAbscisse()` : Renvoie la largeur de l'élément en unités `vw`.
+        -   `getTailleOrdonnee()` : Renvoie la hauteur de l'élément en unités `vh`.
+
+-   **Parent et enfants** :
+    -   L'attribut `_parent` représente le parent de l'élément graphique.
+    -   Méthodes associées :
+        -   `getParent(typeRechercher)` : Renvoie le parent de l'élément graphique correspondant au type spécifié.
+        -   `getEnfants(typeRechercher)` : Renvoie les enfants de l'élément graphique correspondant au type spécifié.
+        -   `getDescendants(typeRechercher)` : Renvoie tous les descendants de l'élément graphique.
+        -   `getAntescedants(typeRechercher)` : Renvoie tous les antécédents de l'élément graphique.
+
+---
+
+### 2. **Gestion des Interactions**
+
+-   **Options contextuelles** :
+
+    -   Méthode `genererOptionsContextuelles(editeur)` :
+        -   Génère une liste d'options contextuelles pour l'élément graphique.
+        -   Exemples d'options :
+            -   "Décomposer" : Permet de décomposer l'élément graphique.
+            -   "Délier tous les enfants" : Supprime les liens entre l'élément et ses enfants.
+            -   "Délier du parent" : Supprime le lien entre l'élément et son parent.
+
+-   **Suppression** :
+    -   Méthode `supprimer()` :
+        -   Supprime l'élément graphique de son parent et de l'éditeur.
+
+---
+
+### 3. **Détection des Anomalies**
+
+-   **Recherche des anomalies** :
+    -   Méthode `rechercherAnomalies(mesAnomalies)` :
+        -   Recherche les anomalies conceptuelles dans l'élément graphique et ses enfants.
+        -   Retourne une liste d'anomalies trouvées.
+
+---
+
+### 4. **Gestion des Ancrages**
+
+-   **Ancrages pour la composition et la décomposition** :
+
+    -   Méthodes associées :
+        -   `getAncreDecomposition()` : Renvoie l'ancre de décomposition de l'élément graphique.
+        -   `getAncreComposition()` : Renvoie l'ancre de composition de l'élément graphique.
+
+-   **Ancre de sélection** :
+    -   Méthode `selectAnchor` :
+        -   Renvoie les coordonnées de l'ancre de sélection de l'élément graphique.
+
+---
+
+### 5. **Import/Export des Données**
+
+-   **Extraction des informations** :
+
+    -   Méthode `extraireInformation()` :
+        -   Renvoie une liste d'informations extraites de l'élément graphique.
+
+-   **Renommage des informations** :
+    -   Méthode `renameInformation(ancienNom, nouveauNom)` :
+        -   Renomme une information dans l'élément graphique.
+
+---
+
+### 6. **Affichage et Couleurs**
+
+-   **Affichage** :
+
+    -   Méthode `afficher()` :
+        -   Affiche dans la console la position de l'élément graphique.
+
+-   **Coloration** :
+    -   Méthode `colorierElement()` :
+        -   Colore l'élément graphique en fonction de ses propriétés.
+
+---
+
+### 7. **Comportements Abstraits**
+
+-   **Décomposition** :
+
+    -   Méthode `peutEtreDecompose()` :
+        -   Vérifie si l'élément graphique peut être décomposé.
+        -   Renvoie `false` par défaut.
+
+-   **Résultats et données** :
+    -   Méthodes associées :
+        -   `getInformationResultat()` : Renvoie les informations contenues dans les résultats de l'élément graphique.
+        -   `getInformationDonnee()` : Renvoie les informations contenues dans les données de l'élément graphique.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_abscisse` : Position en abscisse de l'élément graphique.
+-   `_ordonnee` : Position en ordonnée de l'élément graphique.
+-   `_parent` : Référence au parent de l'élément graphique.
+-   `_listeAnomalie` : Liste des anomalies conceptuelles associées à l'élément graphique.
+-   `_elementGraphique` : Référence à l'instance actuelle de l'élément graphique.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des propriétés :
+
+-   `setPosition(abscisse, ordonnee)` : Définit la position de l'élément graphique.
+-   `getPosition()` : Renvoie la position actuelle de l'élément graphique.
+-   `getCentre()` : Renvoie les coordonnées du centre de l'élément graphique.
+
+### Méthodes de gestion des relations :
+
+-   `getParent(typeRechercher)` : Renvoie le parent de l'élément graphique.
+-   `getEnfants(typeRechercher)` : Renvoie les enfants de l'élément graphique.
+-   `getDescendants(typeRechercher)` : Renvoie tous les descendants de l'élément graphique.
+-   `getAntescedants(typeRechercher)` : Renvoie tous les antécédents de l'élément graphique.
+
+### Méthodes de gestion des interactions :
+
+-   `genererOptionsContextuelles(editeur)` : Génère les options contextuelles pour l'élément graphique.
+-   `supprimer()` : Supprime l'élément graphique.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies(mesAnomalies)` : Recherche les anomalies dans l'élément graphique et ses enfants.
+
+### Méthodes d'import/export :
+
+-   `extraireInformation()` : Extrait les informations de l'élément graphique.
+-   `renameInformation(ancienNom, nouveauNom)` : Renomme une information dans l'élément graphique.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'un Élément Graphique
+
+```javascript
+const element = new ElementGraphique(10, 20);
+document.body.appendChild(element);
+```
+
+### Déplacement d'un Élément Graphique
+
+```javascript
+element.setPosition(50, 100);
+console.log(element.getPosition());
+```
+
+### Suppression d'un Élément Graphique
+
+```javascript
+element.supprimer();
+```
+
+### Génération des Options Contextuelles
+
+```javascript
+const options = element.genererOptionsContextuelles(editeur);
+console.log(options);
+```

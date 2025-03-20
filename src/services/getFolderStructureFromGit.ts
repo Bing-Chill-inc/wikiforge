@@ -11,8 +11,18 @@ interface Folder {
 	children: Array<Folder | File>;
 }
 
+const cache = new Map<string, Folder>();
+
 async function fetchZipAndParse(repoUrl: string, branch = "main"): Promise<Folder> {
-	const zipUrl = `https://corsproxy.io/?url=${repoUrl}/archive/refs/heads/${branch}.zip`;
+	const cacheKey = `${repoUrl}@${branch}`;
+	if (cache.has(cacheKey)) {
+		return cache.get(cacheKey)!;
+	}
+
+	const zipUrl = `https://corsproxy.feror.fr/https://codeload.github.com/${repoUrl.replace(
+		"https://github.com/",
+		""
+	)}/zip/${branch}`;
 	const res = await fetch(zipUrl);
 	if (!res.ok) throw new Error(`Failed fetching ${zipUrl}`);
 
@@ -42,11 +52,12 @@ async function fetchZipAndParse(repoUrl: string, branch = "main"): Promise<Folde
 		});
 	});
 
+	cache.set(cacheKey, root);
 	return root;
 }
 
 async function fetchGitmodules(repoUrl: string, branch = "main"): Promise<Record<string, string>> {
-	const rawUrl = `https://corsproxy.io/?url=${repoUrl.replace(
+	const rawUrl = `https://corsproxy.feror.fr/${repoUrl.replace(
 		"github.com",
 		"raw.githubusercontent.com"
 	)}/${branch}/.gitmodules`;
@@ -65,6 +76,11 @@ async function fetchGitmodules(repoUrl: string, branch = "main"): Promise<Record
 }
 
 async function fetchRepoWithSubmodules(repoUrl: string, branch = "main"): Promise<Folder> {
+	const cacheKey = `${repoUrl}@${branch}`;
+	if (cache.has(cacheKey)) {
+		return cache.get(cacheKey)!;
+	}
+
 	const root = await fetchZipAndParse(repoUrl, branch);
 	const submodules = await fetchGitmodules(repoUrl, branch);
 
@@ -88,6 +104,7 @@ async function fetchRepoWithSubmodules(repoUrl: string, branch = "main"): Promis
 		});
 	}
 
+	cache.set(cacheKey, root);
 	return root;
 }
 

@@ -1,0 +1,159 @@
+# Classe `PlanTravail`
+
+## Description Générale
+
+La classe `PlanTravail` représente le plan de travail principal de l'éditeur graphique d'Algoforge. Elle est responsable de la gestion des éléments graphiques, de leur positionnement, de la détection des anomalies, et de l'import/export des données. Cette classe étend la classe native `HTMLElement` et est utilisée comme conteneur pour les éléments graphiques manipulés par l'utilisateur.
+
+---
+
+## Responsabilités Principales
+
+### **Gestion des Éléments Graphiques**
+
+-   **Ajout d'éléments** :
+
+    -   Méthode `ajouterElement` : Permet d'ajouter un élément graphique au plan de travail en spécifiant ses coordonnées.
+
+-   **Suppression et déplacement** :
+
+    -   Méthode `toutDeplacer` : Déplace tous les éléments graphiques d'un certain décalage en abscisse et ordonnée.
+
+-   **Filtrage et tri** :
+
+    -   Méthode statique `FiltrerElementsGraphique` : Filtre les éléments graphiques d'un type donné.
+    -   Méthode statique `trierElementsGraphique` : Trie les éléments graphiques par leur position en abscisse.
+
+-   **Mise à jour des lignes** :
+    -   Méthode `updateAllLines` : Met à jour toutes les lignes reliant les éléments graphiques.
+
+---
+
+### **Gestion des Données**
+
+-   **Accès au dictionnaire des données** :
+
+    -   Propriété `leDictionnaireDesDonnees` : Fournit un accès au dictionnaire des données de l'éditeur.
+
+-   **Effectuer le dictionnaire des données** :
+
+    -   Méthode `effectuerDictionnaireDesDonnee` : Supprime toutes les informations existantes et les recrée à partir des éléments graphiques présents dans le plan de travail.
+
+-   **Renommage des informations** :
+    -   Méthode `renameInformation` : Renomme une information dans tous les éléments graphiques.
+
+---
+
+### **Détection des Anomalies**
+
+-   **Recherche des anomalies** :
+    -   Méthode `rechercherAnomalies` : Recherche les anomalies conceptuelles dans le plan de travail, telles que des éléments mal positionnés ou des plans trop grands.
+
+---
+
+### **Import/Export des Données**
+
+-   **Exportation** :
+
+    -   Méthode `exporterEnJSON` : Exporte le plan de travail au format JSON.
+    -   Méthode `exporterEnJSONSpecifier` : Exporte le plan de travail en JSON en spécifiant les enfants à conserver.
+
+-   **Importation** :
+    -   Méthode `chargerFichier` : Charge un fichier JSON dans le plan de travail.
+    -   Méthode `chargerDepuisJSON` : Charge un corps JSON dans le plan de travail et crée les éléments graphiques correspondants.
+
+---
+
+### **Gestion des Problèmes**
+
+-   **Problèmes principaux** :
+
+    -   Méthode `getProblemePrincipal` : Retourne les problèmes du plan de travail n'ayant pas de parent.
+
+-   **Problème le plus haut** :
+    -   Méthode `getProblemeLePlusHaut` : Retourne le problème le plus haut dans le plan de travail.
+
+---
+
+### **Gestion des Coordonnées**
+
+-   **Coordonnées minimales et maximales** :
+    -   Méthode `getCoordMinEtMax` : Retourne les coordonnées minimales et maximales des éléments graphiques présents dans le plan de travail.
+
+---
+
+### **Gestion Automatique**
+
+-   **Surveillance des éléments hors limites** :
+    -   Un intervalle vérifie toutes les 30 millisecondes si des éléments sont en dehors des limites du plan de travail et ajuste leur position en conséquence.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_editeur` : Référence à l'éditeur principal.
+-   `_refScroll` : Élément HTML utilisé pour ajuster dynamiquement la hauteur du plan de travail.
+-   `_pageSizeIndicator` : Indicateur visuel de la taille de la page.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des éléments graphiques :
+
+-   `ajouterElement(element, abscisse, ordonnee, estEnVW)` : Ajoute un élément graphique au plan de travail.
+-   `toutDeplacer(x, y)` : Déplace tous les éléments graphiques d'un certain décalage.
+-   `updateAllLines()` : Met à jour toutes les lignes reliant les éléments graphiques.
+
+### Méthodes d'import/export :
+
+-   `exporterEnJSON()` : Exporte le plan de travail au format JSON.
+-   `exporterEnJSONSpecifier(listeElemEnfantsAConcerver)` : Exporte le plan de travail en JSON en spécifiant les enfants à conserver.
+-   `chargerFichier(fichier)` : Charge un fichier JSON dans le plan de travail.
+-   `chargerDepuisJSON(corpsJSON, cancellable, dico)` : Charge un corps JSON dans le plan de travail.
+
+### Méthodes de gestion des problèmes :
+
+-   `getProblemePrincipal()` : Retourne les problèmes principaux du plan de travail.
+-   `getProblemeLePlusHaut()` : Retourne le problème le plus haut dans le plan de travail.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` : Recherche les anomalies conceptuelles dans le plan de travail.
+
+### Méthodes de gestion des données :
+
+-   `effectuerDictionnaireDesDonnee()` : Recrée le dictionnaire des données à partir des éléments graphiques.
+-   `renameInformation(ancienNom, nouveauNom)` : Renomme une information dans tous les éléments graphiques.
+
+---
+
+## Exemple d'Utilisation
+
+### Initialisation du Plan de Travail
+
+```javascript
+const planTravail = new PlanTravail();
+monConteneur.appendChild(planTravail);
+```
+
+### Ajout d'un Élément Graphique
+
+```javascript
+planTravail.ajouterElement(Probleme, 50, 100, true);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = planTravail.exporterEnJSON();
+console.log(json);
+```
+
+### Recherche des Anomalies
+
+```javascript
+const anomalies = planTravail.rechercherAnomalies();
+console.log(anomalies);
+```

@@ -1,0 +1,138 @@
+# Classe `Procedure`
+
+## Description Générale
+
+La classe `Procedure` représente une procédure dans l'éditeur graphique d'Algoforge. Elle hérite de la classe [`Probleme`](./02_probleme.mdx) et partage la plupart de ses fonctionnalités tout en permettant de représenter des procédures spécifiques dans un algorithme. Une procédure est un type particulier de problème, souvent utilisé pour encapsuler des actions ou des sous-algorithmes.
+
+---
+
+## Héritage
+
+-   **Classe parente** : `Probleme`
+    -   La classe `Procedure` hérite de toutes les fonctionnalités de la classe `Probleme`, notamment la gestion des données, des résultats, des sous-plans, et des interactions utilisateur.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Propriétés**
+
+-   **Positionnement** :
+
+    -   Les propriétés `abscisse` et `ordonnee` définissent la position de la procédure sur le plan de travail.
+    -   Ces propriétés sont héritées de la classe `Probleme`.
+
+-   **Libellé** :
+
+    -   Le libellé de la procédure est défini via le paramètre `libelle` du constructeur.
+    -   Par défaut, un espace insécable (` `) est utilisé pour permettre au navigateur de placer le curseur.
+
+-   **Données et résultats** :
+    -   Les propriétés `listeDonnes` et `listeResultats` sont héritées de la classe `Probleme`.
+    -   Ces propriétés sont marquées comme obsolètes dans le constructeur.
+
+---
+
+### 2. **Affichage**
+
+-   **Affichage de la procédure** :
+    -   Méthode `afficher()` :
+        -   Appelle la méthode `afficher()` de la classe parente `Probleme`.
+        -   Permet d'afficher la procédure avec ses propriétés et ses interactions utilisateur.
+
+---
+
+### 3. **Encapsulation**
+
+-   La classe `Procedure` n'ajoute pas de nouvelles propriétés ou méthodes encapsulées. Elle repose entièrement sur les fonctionnalités héritées de `Probleme`.
+
+---
+
+### 4. **Interactions Utilisateur**
+
+-   **Options contextuelles** :
+
+    -   Les options contextuelles pour une procédure sont héritées de la classe `Probleme`.
+    -   Exemples d'options disponibles :
+        -   Décomposer la procédure dans un sous-plan.
+        -   Exporter la procédure et ses descendants dans différents formats.
+
+-   **Suppression** :
+    -   La suppression d'une procédure est gérée par la méthode `supprimer()` héritée de `Probleme`.
+
+---
+
+### 5. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON, PNG, JPG, SVG, CSV, XLSX, Markdown.
+    -   Ces formats sont hérités de la classe `Probleme`.
+
+-   **Méthodes associées** :
+    -   `toJSON()` :
+        -   Exporte les informations de la procédure sous forme JSON.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+---
+
+### 6. **Détection des Anomalies**
+
+-   **Recherche des anomalies** :
+    -   La méthode `rechercherAnomalies()` héritée de `Probleme` est utilisée pour détecter les anomalies conceptuelles dans la procédure.
+
+---
+
+## Attributs Internes
+
+### Attributs hérités de `Probleme` :
+
+-   `_libelle` : Libellé de la procédure.
+-   `_listeDonnes` : Liste des données associées à la procédure (obsolète).
+-   `_listeResultats` : Liste des résultats associés à la procédure (obsolète).
+-   `_elemParent` : Référence au parent de l'élément.
+-   `_sousPlan` : Référence au sous-plan associé à la procédure.
+
+---
+
+## Méthodes Clés
+
+### Méthodes héritées de `Probleme` :
+
+-   `afficher()` : Affiche la procédure à l'écran.
+-   `genererOptionsContextuelles(editeur)` : Génère les options contextuelles pour la procédure.
+-   `supprimer()` : Supprime la procédure.
+-   `toJSON()` : Exporte la procédure sous forme JSON.
+-   `rechercherAnomalies()` : Recherche les anomalies dans la procédure.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'une Procédure
+
+```javascript
+const procedure = new Procedure(10, 20, "Exemple de procédure");
+document.body.appendChild(procedure);
+```
+
+### Affichage de la Procédure
+
+```javascript
+procedure.afficher();
+```
+
+### Exportation en JSON
+
+```javascript
+const json = procedure.toJSON();
+console.log(json);
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = procedure.rechercherAnomalies();
+console.log(anomalies);
+```

@@ -1,0 +1,211 @@
+# Classe `Probleme`
+
+## Description Générale
+
+La classe `Probleme` représente l'élément de base d'un algorithme dans l'éditeur graphique d'Algoforge. Elle hérite de la classe [`ElementGraphique`](./01_element_graphique.mdx) et ajoute des fonctionnalités spécifiques pour gérer les données, les résultats, les sous-plans, et les interactions utilisateur. Chaque instance de `Probleme` peut être manipulée graphiquement et exportée dans différents formats.
+
+---
+
+## Responsabilités Principales
+
+### 1. **Gestion des Propriétés**
+
+-   **Libellé** :
+
+    -   Propriété `_libelle` : Définit le nom ou la description du problème.
+    -   Méthodes associées :
+        -   `get libelle()` : Renvoie le libellé du problème.
+        -   `set libelle(value)` : Définit un nouveau libellé.
+
+-   **Données et résultats** :
+
+    -   Propriétés `_listeDonnes` et `_listeResultats` : Contiennent les données et résultats associés au problème.
+    -   Méthodes associées :
+        -   `get listeDonnes()` et `set listeDonnes(value)` : Accès et modification des données.
+        -   `get listeResultats()` et `set listeResultats(value)` : Accès et modification des résultats.
+
+-   **Parent et sous-plan** :
+    -   Propriété `_elemParent` : Définit le parent de l'élément.
+    -   Propriété `_sousPlan` : Référence à un sous-plan de travail associé au problème.
+    -   Méthodes associées :
+        -   `get _elemParent()` et `set _elemParent(value)` : Accès et modification du parent.
+        -   `peutEtreDecompose()` : Vérifie si le problème peut être décomposé.
+
+---
+
+### 2. **Gestion des Interactions**
+
+-   **Affichage** :
+
+    -   Méthode `afficher()` :
+        -   Affiche le problème à l'écran avec ses données, résultats, et libellé.
+        -   Ajoute des événements pour gérer les interactions utilisateur (ex. : modification des données ou du libellé).
+
+-   **Options contextuelles** :
+
+    -   Méthode `genererOptionsContextuelles(editeur)` :
+        -   Génère une liste d'options contextuelles pour le problème.
+        -   Exemples d'options :
+            -   "Décomposer ailleurs" : Crée un sous-plan pour le problème.
+            -   "Exporter le sous-arbre" : Exporte le problème et ses descendants dans différents formats.
+
+-   **Suppression** :
+    -   Méthode `supprimer()` :
+        -   Supprime le problème, ses liens avec le parent et les enfants, ainsi que son sous-plan (le cas échéant).
+
+---
+
+### 3. **Gestion des Sous-Plans**
+
+-   **Décomposition** :
+
+    -   Méthode `decomposerAutrePlan()` :
+        -   Crée un sous-plan pour le problème et y déplace ses descendants.
+        -   Applique un décalage aux coordonnées des éléments pour les ajuster au nouveau plan.
+
+-   **Recomposition** :
+    -   Méthode `genererOptionsContextuelles()` :
+        -   Ajoute une option pour recomposer le problème sur le même plan en supprimant le sous-plan.
+
+---
+
+### 4. **Exportation des Données**
+
+-   **Formats supportés** :
+
+    -   JSON, PNG, JPG, SVG, CSV, XLSX, Markdown.
+
+-   **Méthodes associées** :
+
+    -   `toJSON()` :
+        -   Exporte les informations du problème sous forme JSON.
+        -   Inclut les données, résultats, libellé, et enfants.
+    -   `toJSONspecifier(listeElemEnfantsAConcerver)` :
+        -   Exporte les informations en spécifiant les enfants à conserver.
+
+-   **Options contextuelles d'exportation** :
+    -   Méthode `genererOptionsContextuelles()` :
+        -   Ajoute des options pour exporter le problème et ses descendants dans différents formats.
+
+---
+
+### 5. **Détection des Anomalies**
+
+-   **Recherche des anomalies** :
+    -   Méthode `rechercherAnomalies()` :
+        -   Recherche les anomalies conceptuelles dans le problème.
+        -   Exemples d'anomalies détectées :
+            -   Données magiques.
+            -   Données inutilisées.
+            -   Résultats inutilisés.
+            -   Syntaxe incorrecte dans les assignations.
+            -   Trop de sous-éléments.
+            -   Données dynamiquement typées.
+
+---
+
+### 6. **Manipulation des Données**
+
+-   **Extraction des informations** :
+
+    -   Méthode `extraireInformation()` :
+        -   Extrait les informations du problème, y compris les données, résultats, et variables du texte.
+
+-   **Renommage des informations** :
+
+    -   Méthode `renameInformation(ancienNom, nouveauNom)` :
+        -   Renomme une information dans le libellé, les données, et les résultats.
+
+-   **Recherche et remplacement** :
+    -   Méthodes associées :
+        -   `replaceTexte(chaineAChercher, chaineARemplacer)` : Remplace une chaîne dans le libellé.
+        -   `replaceTexteDonnee(chaineAChercher, chaineARemplacer)` : Remplace une chaîne dans les données.
+        -   `replaceTexteResultat(chaineAChercher, chaineARemplacer)` : Remplace une chaîne dans les résultats.
+
+---
+
+### 7. **Gestion des Coordonnées**
+
+-   **Positionnement** :
+
+    -   Méthodes associées :
+        -   `getTailleAbscisse()` : Renvoie la largeur du problème.
+        -   `getTailleOrdonnee()` : Renvoie la hauteur du problème.
+
+-   **Ancrages** :
+    -   Méthodes associées :
+        -   `getAncreDecomposition()` : Renvoie l'ancre de décomposition.
+        -   `getAncreComposition()` : Renvoie l'ancre de composition.
+
+---
+
+## Attributs Internes
+
+### Attributs principaux :
+
+-   `_libelle` : Libellé du problème.
+-   `_listeDonnes` : Liste des données associées au problème.
+-   `_listeResultats` : Liste des résultats associés au problème.
+-   `_elemParent` : Référence au parent de l'élément.
+-   `_sousPlan` : Référence au sous-plan associé au problème.
+
+---
+
+## Méthodes Clés
+
+### Méthodes de gestion des propriétés :
+
+-   `get libelle()` et `set libelle(value)` : Accès et modification du libellé.
+-   `get listeDonnes()` et `set listeDonnes(value)` : Accès et modification des données.
+-   `get listeResultats()` et `set listeResultats(value)` : Accès et modification des résultats.
+
+### Méthodes de gestion des interactions :
+
+-   `afficher()` : Affiche le problème à l'écran.
+-   `genererOptionsContextuelles(editeur)` : Génère les options contextuelles pour le problème.
+-   `supprimer()` : Supprime le problème.
+
+### Méthodes de gestion des sous-plans :
+
+-   `decomposerAutrePlan()` : Crée un sous-plan pour le problème.
+
+### Méthodes d'exportation :
+
+-   `toJSON()` : Exporte le problème sous forme JSON.
+-   `toJSONspecifier(listeElemEnfantsAConcerver)` : Exporte le problème en spécifiant les enfants à conserver.
+
+### Méthodes de détection des anomalies :
+
+-   `rechercherAnomalies()` : Recherche les anomalies dans le problème.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'un Problème
+
+```javascript
+const probleme = new Probleme(10, 20, "Exemple de problème");
+document.body.appendChild(probleme);
+```
+
+### Modification des Données
+
+```javascript
+probleme.listeDonnes = ["donnée1", "donnée2"];
+console.log(probleme.listeDonnes);
+```
+
+### Exportation en JSON
+
+```javascript
+const json = probleme.toJSON();
+console.log(json);
+```
+
+### Détection des Anomalies
+
+```javascript
+const anomalies = probleme.rechercherAnomalies();
+console.log(anomalies);
+```

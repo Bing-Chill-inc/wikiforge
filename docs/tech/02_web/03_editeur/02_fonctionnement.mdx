@@ -1,0 +1,31 @@
+# Fonctionnement de l'Éditeur
+
+L'Éditeur Algoforge utilise l'API des Web Components pour créer des composants réutilisables et modulaires.
+Si vous êtes familier avec les frameworks modernes tels que React, Angular ou Vue, vous trouverez que le fonctionnement de l'Éditeur est similaire,
+cela étant dit, la création de ces composants peut être un peu plus complexe.
+
+## [Editeur](./03_editeur.mdx)
+
+La classe `Editeur` est le "point d'entrée" de l'application. Il s'agit du composant racine qui est responsable de l'orchestration des autres composants.
+Il est responsable de la gestion des intéractions de l'utilisateur, de la gestion des événements, ...
+
+## [Le Plan de Travail](./04_plan_travail.mdx)
+
+La classe `PlanTravail` représente le plan de travail sur lequel les éléments de l'algorithme sont placés.
+Il est responsable de la gestion des éléments et de leur positionnement.
+
+## [Les Éléments](./05_elements/01_element_graphique.mdx)
+
+Les éléments de l'algorithme héritent tous de la classe `ElementGraphique`,
+qui fournit des méthodes de base pour la manipulation des éléments (notamment leur position et leur parent).
+Chaque élément est responsable de son propre rendu et de son comportement.
+
+## Les Liens
+
+Pour représenter une relation de décomposition (qu'elle soit séquentielle, alternative ou itérative),
+nous utilisons des classes qui héritent de `Lien`.
+
+Un `Lien` possède un élément parent (`_elemGraphiqueParent`) et un élément enfant (`_elemGraphiqueEnfant`).
+Il est aussi placé sur un plan de travail (`_espaceTravail`).
+
+Les liens sont responsables de leur propre rendu et de leur comportement.
