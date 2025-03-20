@@ -89,11 +89,11 @@ const config: Config = {
 					items: [
 						{
 							label: "Tutorial",
-							to: "/docs/intro",
+							to: "/docs/tutorial/intro",
 						},
 						{
 							label: "Technical",
-							to: "/docs/technical/intro",
+							to: "/docs/tech/intro",
 						},
 					],
 				},
