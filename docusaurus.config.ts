@@ -60,8 +60,15 @@ const config: Config = {
 				{
 					label: "Télécharger",
 					to: "/download",
-					position: "left",
+					position: "right",
 					activeBasePath: "/download",
+					
+				},
+				{
+					label: "Autohébergement",
+					to: "/docs/tutorial/self-host/install/",
+					position: "right",
+					activeBasePath: "/docs/tutorial/self-host/install/",
 				},
 				{
 					type: "docSidebar",
