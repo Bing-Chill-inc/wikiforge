@@ -92,7 +92,7 @@ const FolderStructure = ({ folderStructure }: FolderStructureProps) => {
 	return (
 		<div
 			style={{
-				width: "40%",
+				width: "100%",
 				marginBottom: "10px",
 			}}
 		>
