@@ -6,9 +6,10 @@ interface GitHubFolderStructureProps {
 	githubUrl: string;
 	branch?: string;
 	pathToDisplay?: string;
+	openByDefault?: boolean;
 }
 
-const GitHubFolderStructure = ({ githubUrl, branch, pathToDisplay }: GitHubFolderStructureProps) => {
+const GitHubFolderStructure = ({ githubUrl, branch, pathToDisplay, openByDefault }: GitHubFolderStructureProps) => {
 	const [folderStructure, setFolderStructure] = useState<FolderInterface | null>(null);
 
 	useEffect(() => {
@@ -31,9 +32,9 @@ const GitHubFolderStructure = ({ githubUrl, branch, pathToDisplay }: GitHubFolde
 			currentFolder = existingChild.isFolder ? existingChild : currentFolder;
 		});
 
-		return <FolderStructure folderStructure={currentFolder} />;
+		return <FolderStructure folderStructure={currentFolder} openByDefault />;
 	}
 
-	return <FolderStructure folderStructure={folderStructure} />;
+	return <FolderStructure folderStructure={folderStructure} openByDefault />;
 };
 export default GitHubFolderStructure;

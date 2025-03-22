@@ -1,0 +1,161 @@
+# Constants
+
+## Description Générale
+
+Le fichier `responses.const.ts` contient un ensemble de constantes utilisées pour standardiser les messages de réponse dans le backend de l'application Algoforge. Ces messages sont organisés par catégories (utilisateurs, tokens, authentification, algorithmes, etc.) et couvrent les cas de succès, d'erreurs, et de retours généraux. Ce fichier permet de centraliser les messages pour garantir la cohérence et faciliter la maintenance.
+
+---
+
+## Structure des Réponses
+
+### 1. **Catégorie : `User`**
+
+Cette catégorie regroupe les messages liés aux utilisateurs.
+
+#### Messages d'Erreur :
+
+-   **`Email_already_exists`** : "Email déjà utilisé."
+-   **`Not_found_or_already_verified`** : "Utilisateur introuvable ou déjà vérifié."
+-   **`Not_verified`** : "Utilisateur non vérifié."
+-   **`Invalid_password`** : "Mot de passe incorrect."
+-   **`Invalid_profile_url`** : "URL de photo de profil invalide."
+-   **`Not_found`** : "Utilisateur introuvable."
+
+#### Sous-Catégorie : `Errors`
+
+-   **`While_creating_user`** : "Erreur lors de la création de l'utilisateur."
+-   **`While_confirming_user`** : "Erreur lors de la confirmation de l'inscription."
+
+#### Sous-Catégorie : `Success`
+
+-   **`Created`** : "Utilisateur créé."
+-   **`Updated`** : "Utilisateur mis à jour."
+-   **`Deleted`** : "Utilisateur supprimé."
+-   **`Confirmed`** : "Inscription confirmée."
+-   **`Found`** : "Utilisateur trouvé."
+
+---
+
+### 2. **Catégorie : `Token`**
+
+Cette catégorie regroupe les messages liés aux tokens d'authentification.
+
+#### Messages d'Erreur :
+
+-   **`Missing`** : "Token manquant."
+-   **`Not_found`** : "Token introuvable."
+-   **`Invalid`** : "Token invalide."
+-   **`Expired`** : "Token expiré."
+
+#### Sous-Catégorie : `Errors`
+
+-   **`While_creating_token`** : "Erreur lors de la création du token de confirmation."
+
+#### Sous-Catégorie : `Success`
+
+-   **`Token_created`** : "Token créé."
+-   **`Valid`** : "Token valide."
+
+---
+
+### 3. **Catégorie : `Auth`**
+
+Cette catégorie regroupe les messages liés à l'authentification.
+
+#### Sous-Catégorie : `Success`
+
+-   **`Logged_in`** : "Connexion réussie."
+-   **`Logged_out`** : "Déconnexion réussie."
+
+---
+
+### 4. **Catégorie : `Algo`**
+
+Cette catégorie regroupe les messages liés aux algorithmes.
+
+#### Messages d'Erreur :
+
+-   **`Forbidden_create`** : "Vous n'avez pas les droits pour créer cet algorithme."
+-   **`Forbidden_update`** : "Vous n'avez pas les droits pour modifier cet algorithme."
+-   **`Not_found`** : "Algorithme non trouvé."
+-   **`Invalid`** : "Algorithme invalide."
+
+#### Sous-Catégorie : `By_User`
+
+-   **`Not_found`** : "Aucun algorithme trouvé."
+-   **`Found`** : "Algorithmes trouvés."
+
+#### Sous-Catégorie : `Errors`
+
+-   **`While_deleting_algo`** : "Erreur lors de la suppression de l'algorithme."
+
+#### Sous-Catégorie : `Success`
+
+-   **`Created`** : "Algorithme créé."
+-   **`Updated`** : "Algorithme mis à jour."
+-   **`Deleted`** : "Algorithme supprimé."
+-   **`Found`** : "Algorithme trouvé."
+
+---
+
+### 5. **Catégorie : `General`**
+
+Cette catégorie regroupe les messages généraux applicables à plusieurs contextes.
+
+#### Messages Généraux :
+
+-   **`Invalid_data`** : "Données invalides."
+-   **`Missing_data`** : "Il manque des données."
+-   **`Forbidden`** : "Permission refusée."
+
+---
+
+## Utilisation dans le Code
+
+### Exemple : Utilisation dans un Contrôleur
+
+Les constantes définies dans ce fichier sont utilisées pour standardiser les réponses dans les contrôleurs et services.
+
+#### Exemple de Code :
+
+```typescript
+import { Responses } from "../../constants/responses.const";
+
+private async register(req: Request, res: Response) {
+	const { email, password, pseudo } = req.body;
+
+	if (!email || !password || !pseudo) {
+		return res
+			.status(400)
+			.json({ message: Responses.General.Missing_data });
+	}
+
+	const emailExists = await this.usersService.checkEmailExists(email);
+	if (emailExists) {
+		return res
+			.status(409)
+			.json({ message: Responses.User.Email_already_exists });
+	}
+
+	// Suite de la logique...
+}
+```
+
+---
+
+## Avantages de l'Approche
+
+1. **Cohérence** :
+
+    - Les messages de réponse sont uniformes dans toute l'application.
+
+2. **Facilité de Maintenance** :
+
+    - Les messages peuvent être modifiés en un seul endroit sans avoir à parcourir tout le code.
+
+3. **Lisibilité** :
+
+    - Les développeurs peuvent facilement comprendre le type de réponse attendu en consultant les constantes.
+
+4. **Réutilisabilité** :
+    - Les mêmes messages peuvent être utilisés dans plusieurs parties de l'application (contrôleurs, services, middlewares).

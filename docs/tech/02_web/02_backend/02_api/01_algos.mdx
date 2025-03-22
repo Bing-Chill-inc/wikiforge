@@ -1,0 +1,195 @@
+import GitHubFolderStructure from "../../../../../src/components/FolderStructure/github-folder-structure.tsx";
+
+# Algos
+
+<GitHubFolderStructure
+	githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main"
+	pathToDisplay="src/back/api/algos"
+/>
+
+Ce document explique le fonctionnement des fichiers liés à la gestion des algorithmes dans le backend d'Algoforge.
+Ces fichiers incluent le contrôleur, le service, et les DTOs associés.
+
+---
+
+## 1. `algos.controller.ts`
+
+### Description
+
+Le fichier `algos.controller.ts` définit le contrôleur pour les algorithmes. Il expose les routes HTTP permettant de gérer les algorithmes (création, récupération, mise à jour, suppression). Ce contrôleur utilise le service `AlgosService` pour effectuer les opérations métier.
+
+### Routes Disponibles
+
+-   **GET `/byUserId/:id`** :
+    -   Récupère tous les algorithmes appartenant à un utilisateur donné.
+-   **GET `/:id`** :
+    -   Récupère un algorithme spécifique par son ID.
+-   **POST `/`** :
+    -   Crée un nouvel algorithme.
+-   **PUT `/:id`** :
+    -   Met à jour un algorithme existant.
+-   **DELETE `/:id`** :
+    -   Supprime un algorithme.
+
+### Fonctionnement
+
+1. **Initialisation** :
+    - Le contrôleur initialise un routeur Express et applique le middleware `authMiddleware` pour vérifier les droits de l'utilisateur sur toutes les routes.
+2. **Gestion des Routes** :
+    - Chaque route est associée à une méthode asynchrone qui utilise le service `AlgosService` pour effectuer les opérations nécessaires.
+3. **Gestion des Réponses** :
+    - Les réponses sont standardisées à l'aide des classes de réponse (`OkRes`, `NotFoundRes`, etc.).
+
+### Exemple de Code
+
+#### Création d'un Algorithme (POST `/`)
+
+```typescript
+private async createAlgo(req: Request, res: Response) {
+	const { ownerId, nom, sourceCode } = req.body;
+	if (!ownerId || !nom || !sourceCode) {
+		return res
+			.status(BadRequestRes.statut)
+			.json(new BadRequestRes(Responses.General.Missing_data));
+	}
+
+	const data = new AlgoCreateDTO();
+	data.nom = nom;
+	data.ownerId = ownerId;
+	data.sourceCode = sourceCode;
+	data.requestedUserId = (res.locals.user as Utilisateur).id;
+
+	const result = await this.usersService.createAlgo(data);
+	if (result instanceof Res) {
+		return res.status(result.statut).json(result);
+	}
+
+	return res
+		.status(CreatedRes.statut)
+		.json(new CreatedRes(Responses.Algo.Success.Created, result));
+}
+```
+
+---
+
+## 2. `algos.service.ts`
+
+### Description
+
+Le fichier `algos.service.ts` contient la logique métier pour la gestion des algorithmes. Il interagit avec la base de données et le système de fichiers pour effectuer des opérations telles que la création, la mise à jour, et la suppression d'algorithmes.
+
+### Fonctionnalités Principales
+
+1. **Récupération des Algorithmes** :
+
+    - `getAlgosOfUser(id: number)` : Récupère tous les algorithmes accessibles par un utilisateur.
+    - `getAlgo(id: number, requestedUserId: number)` : Récupère un algorithme spécifique en vérifiant les droits de l'utilisateur.
+
+2. **Création d'un Algorithme** :
+
+    - `createAlgo(algo: AlgoCreateDTO)` :
+        - Valide les données de l'algorithme.
+        - Enregistre l'algorithme en base de données.
+        - Crée un fichier JSON pour stocker le code source de l'algorithme.
+
+3. **Mise à Jour d'un Algorithme** :
+
+    - `updateAlgo(algo: AlgoUpdateDTO)` :
+        - Vérifie les droits de l'utilisateur.
+        - Met à jour les données de l'algorithme en base de données et dans le système de fichiers.
+
+4. **Suppression d'un Algorithme** :
+
+    - `deleteAlgo(id: number, requestedUserId: number)` :
+        - Vérifie que l'utilisateur est le propriétaire de l'algorithme.
+        - Supprime l'algorithme de la base de données et du système de fichiers.
+
+5. **Gestion des Fichiers** :
+    - `readAlgoFromDisk(id: number)` : Lit le fichier JSON contenant le code source d'un algorithme.
+    - `writeAlgoToDisk(id: number, algo: Object)` : Écrit le code source d'un algorithme dans un fichier JSON.
+    - `deleteAlgoFromDisk(id: number)` : Supprime le fichier JSON d'un algorithme.
+
+### Exemple de Code
+
+#### Création d'un Algorithme
+
+```typescript
+async createAlgo(algo: AlgoCreateDTO) {
+	if (algo.requestedUserId !== algo.ownerId) {
+		return new ForbiddenRes(Responses.Algo.Forbidden_create);
+	}
+
+	const validationResult = AlgoValidator.validateAlgo(algo.sourceCode);
+	if (!validationResult.success) {
+		return new BadRequestRes(Responses.Algo.Invalid, validationResult);
+	}
+
+	const algoRepository = AppDataSource.manager.getRepository(Algorithme);
+	const newAlgo = new Algorithme();
+	newAlgo.nom = algo.nom;
+	newAlgo.dateCreation = new Date().getTime();
+	newAlgo.dateModification = new Date().getTime();
+	const savedAlgo = await algoRepository.save(newAlgo);
+
+	this.writeAlgoToDisk(savedAlgo.id, algo.sourceCode);
+
+	return savedAlgo;
+}
+```
+
+---
+
+## 3. `algos.dto.ts`
+
+### Description
+
+Le fichier `algos.dto.ts` contient les classes de validation pour les données des algorithmes. Ces classes sont utilisées pour valider les données reçues dans les requêtes HTTP avant de les traiter.
+
+### Classes Disponibles
+
+1. **`AlgoCreateDTO`** :
+
+    - Utilisée pour valider les données lors de la création d'un algorithme.
+    - Attributs :
+        - `id` (optionnel) : Identifiant de l'algorithme.
+        - `nom` : Nom de l'algorithme (entre 3 et 255 caractères).
+        - `dateCreation` (optionnel) : Date de création.
+        - `dateModification` (optionnel) : Date de modification.
+        - `ownerId` : Identifiant du propriétaire.
+        - `requestedUserId` : Identifiant de l'utilisateur effectuant la requête.
+        - `sourceCode` : Code source de l'algorithme (au format JSON).
+
+2. **`AlgoUpdateDTO`** :
+    - Utilisée pour valider les données lors de la mise à jour d'un algorithme.
+    - Attributs :
+        - `id` : Identifiant de l'algorithme.
+        - `nom` : Nom de l'algorithme (entre 3 et 255 caractères).
+        - `requestedUserId` : Identifiant de l'utilisateur effectuant la requête.
+        - `permsAlgorithme` (optionnel) : Permissions associées à l'algorithme.
+        - `sourceCode` : Code source de l'algorithme (au format JSON).
+
+### Exemple de Code
+
+#### Classe `AlgoCreateDTO`
+
+```typescript
+export class AlgoCreateDTO {
+	@IsNumber()
+	@IsOptional()
+	id?: number;
+
+	@IsString()
+	@MinLength(3)
+	@MaxLength(255)
+	nom: string;
+
+	@IsNumber()
+	ownerId: number;
+
+	@IsNumber()
+	requestedUserId: number;
+
+	@IsJSON()
+	sourceCode: Object;
+}
+```
