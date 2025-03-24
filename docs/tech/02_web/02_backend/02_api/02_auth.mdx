@@ -1,0 +1,126 @@
+import GitHubFolderStructure from "../../../../../src/components/FolderStructure/github-folder-structure.tsx";
+
+# Auth
+
+<GitHubFolderStructure githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main" pathToDisplay="src/back/api/auth" />
+
+## Description Générale
+
+Le fichier `auth.service.ts` contient le service d'authentification pour l'application backend d'Algoforge. Ce service est responsable de la vérification des droits d'accès des utilisateurs sur les ressources, de l'extraction des tokens d'authentification, et de l'ajout d'informations utilisateur dans les requêtes Express. Il repose sur le service `UsersService` pour effectuer les vérifications nécessaires.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Vérification des Droits d'Accès**
+
+La méthode `verifyUser` vérifie si un utilisateur a les droits nécessaires pour accéder à une ressource. Elle utilise le token d'authentification fourni dans les en-têtes de la requête pour effectuer cette vérification.
+
+#### Fonctionnement :
+
+1. **Extraction du Token** :
+    - Le token est extrait des en-têtes de la requête à l'aide de la méthode `extractToken`.
+2. **Vérification via `UsersService`** :
+    - Le token est envoyé au service `UsersService` pour validation.
+    - Si le token est invalide ou expiré, une réponse avec un statut HTTP 400 ou 401 est renvoyée.
+3. **Ajout d'Informations à la Requête** :
+    - Si le token est valide, l'utilisateur associé est ajouté à `res.locals.user` pour être accessible dans les middlewares ou contrôleurs suivants.
+    - Le token est également ajouté aux en-têtes de la réponse sous la clé `Authorization`.
+
+#### Exemple de Code :
+
+```typescript
+public async verifyUser(req: Request, res: Response) {
+	const verify = await this.usersService.verify(this.extractToken(req));
+	if ([400, 401].includes(verify.statut)) {
+		res.status(verify.statut).json(verify);
+		return false;
+	}
+
+	// Ajout de l'utilisateur dans les informations de la requête.
+	const token = verify.data as Token;
+	const user = token.utilisateur as Utilisateur;
+	res.locals.user = user;
+	// Ajout du token dans les headers de la réponse.
+	res.header("Authorization", token.token);
+
+	return true;
+}
+```
+
+---
+
+### 2. **Extraction du Token**
+
+La méthode `extractToken` extrait le token d'authentification des en-têtes de la requête HTTP.
+
+#### Fonctionnement :
+
+-   Le token est attendu dans l'en-tête `Authorization` sous la forme `Bearer <token>`.
+-   Si l'en-tête est absent ou mal formé, une chaîne vide est renvoyée.
+
+#### Exemple de Code :
+
+```typescript
+public extractToken(req: Request) {
+	return req.headers.authorization
+		? req.headers.authorization.split(" ")[1]
+		: "";
+}
+```
+
+---
+
+## Dépendances
+
+### 1. **`UsersService`**
+
+-   Le service `UsersService` est utilisé pour valider les tokens et récupérer les informations utilisateur associées.
+
+### 2. **Schemas de Base de Données**
+
+-   **`Utilisateur`** :
+    -   Représente les utilisateurs dans la base de données.
+-   **`Token`** :
+    -   Représente les tokens d'authentification stockés dans la base de données.
+
+---
+
+## Exemple d'Utilisation
+
+### Vérification des Droits d'Accès dans un Middleware
+
+Le service `AuthService` peut être utilisé dans un middleware pour protéger les routes nécessitant une authentification.
+
+#### Exemple :
+
+```typescript
+import { AuthService } from "./auth.service";
+
+const authService = new AuthService();
+
+app.use(async (req, res, next) => {
+	const isAuthorized = await authService.verifyUser(req, res);
+	if (!isAuthorized) {
+		return; // La réponse est déjà envoyée par `verifyUser` en cas d'échec.
+	}
+	next();
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Ajout d'Informations à la Requête**
+
+-   La méthode `verifyUser` modifie l'objet `res.locals` pour y ajouter l'utilisateur authentifié. Cela permet aux contrôleurs et middlewares suivants d'accéder facilement aux informations utilisateur.
+
+### 2. **Gestion des Erreurs**
+
+-   Si le token est invalide ou expiré, une réponse avec un statut HTTP approprié (400 ou 401) est renvoyée. Cela empêche l'accès non autorisé aux ressources protégées.
+
+### 3. **Sécurité**
+
+-   Le token est extrait de manière sécurisée depuis l'en-tête `Authorization`.
+-   Le token validé est renvoyé dans les en-têtes de la réponse pour permettre une réutilisation côté client.

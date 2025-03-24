@@ -1,0 +1,226 @@
+import GitHubFolderStructure from "../../../../src/components/FolderStructure/github-folder-structure.tsx";
+
+# Mails
+
+<GitHubFolderStructure githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main" pathToDisplay="src/back/mail" />
+
+## Description Générale
+
+Le dossier `mail/` contient les fichiers nécessaires pour gérer l'envoi d'emails dans l'application backend d'Algoforge. Il inclut la configuration du transporteur d'emails, les services pour envoyer des emails, et les modèles HTML utilisés pour formater les emails. Ce système est conçu pour envoyer des emails transactionnels tels que les confirmations d'inscription ou les réinitialisations de mot de passe.
+
+---
+
+## Structure du Dossier
+
+### Contenu Principal
+
+-   **`mail.service.ts`** : Service principal pour l'envoi d'emails.
+-   **`transporter.ts`** : Configuration du transporteur d'emails (via Nodemailer).
+-   **`templates/`** : Contient les modèles HTML pour les emails.
+    -   **`confirm-inscription.html`** : Modèle pour les emails de confirmation d'inscription.
+    -   **`reset-password.html`** : Modèle pour les emails de réinitialisation de mot de passe.
+
+---
+
+## 1. Fichier `mail.service.ts`
+
+### Description
+
+Le fichier `mail.service.ts` contient la logique métier pour l'envoi d'emails. Il utilise le transporteur défini dans `transporter.ts` et les modèles HTML situés dans le dossier `templates/`.
+
+### Fonctionnalités Principales
+
+1. **Activation/Désactivation du Service** :
+
+    - Le service est activé ou désactivé en fonction des variables d'environnement :
+        - `BUILD=test` : Service activé pour les tests.
+        - `MAIL_ACTIVE=true` : Service activé en production.
+        - Sinon, le service est désactivé.
+
+2. **Envoi d'Emails** :
+    - Méthode `sendConfirmationMail` :
+        - Envoie un email de confirmation d'inscription.
+        - Utilise un modèle HTML pour formater l'email.
+        - Ajoute un lien de confirmation contenant un token.
+
+### Exemple de Code
+
+#### Envoi d'un Email de Confirmation
+
+```typescript
+async sendConfirmationMail(
+	destination: string,
+	user: Utilisateur,
+	token: string,
+) {
+	if (!this.active) return;
+	try {
+		if (!destination) {
+			throw new Error("No email provided.");
+		}
+
+		let file = readFileSync(
+			`${TEMPLATES_FOLDER}/confirm-inscription.html`,
+			"utf8",
+		);
+		let template = Handlebars.compile(file);
+		let html = template({
+			url: `${process.env.EDITOR_URL}/api/users/confirm/${token}`,
+			user: user.pseudo,
+		});
+
+		Logger.debug("Sending mail...", "mail: service", 2);
+		await Transporter.sendMail({
+			from: process.env.MAIL_USER,
+			to: destination,
+			subject: "Confirmation mail",
+			html: html,
+		});
+		Logger.debug("Mail sent", "mail: service", 2);
+	} catch (err) {
+		Logger.error(`Error sending mail: \n${err.stack}`, "mail: service");
+		throw err;
+	}
+}
+```
+
+---
+
+## 2. Fichier `transporter.ts`
+
+### Description
+
+Le fichier `transporter.ts` configure le transporteur d'emails utilisé pour envoyer les messages. Il utilise **Nodemailer**, une bibliothèque populaire pour l'envoi d'emails en Node.js.
+
+### Fonctionnalités Principales
+
+1. **Configuration du Transporteur** :
+
+    - Les paramètres du transporteur sont définis via les variables d'environnement :
+        - `MAIL_HOST` : Hôte SMTP.
+        - `MAIL_PORT` : Port SMTP.
+        - `MAIL_USER` : Nom d'utilisateur pour l'authentification SMTP.
+        - `MAIL_PASSWORD` : Mot de passe pour l'authentification SMTP.
+
+2. **Mock pour les Tests** :
+    - En mode `test`, un mock de Nodemailer est utilisé pour simuler l'envoi d'emails sans réellement envoyer de messages.
+
+### Exemple de Code
+
+#### Configuration du Transporteur
+
+```typescript
+const TRANSPORTER_CONFIG: SMTPTransport.Options = {
+	host: process.env.MAIL_HOST,
+	port: Number(process.env.MAIL_PORT),
+	secure: true, // true pour le port 465, false pour autres
+	auth: {
+		user: process.env.MAIL_USER,
+		pass: process.env.MAIL_PASSWORD,
+	},
+	connectionTimeout: 30000,
+	dnsTimeout: 30000,
+	greetingTimeout: 30000,
+	debug: true,
+};
+
+export const Transporter =
+	process.env.BUILD !== "test"
+		? nodemailer.createTransport(TRANSPORTER_CONFIG)
+		: mocked.createTransport(TRANSPORTER_CONFIG);
+```
+
+---
+
+## 3. Dossier `templates/`
+
+### Description
+
+Le dossier `templates/` contient les modèles HTML utilisés pour formater les emails envoyés par le service. Ces modèles utilisent **Handlebars**, un moteur de templates, pour insérer dynamiquement des données dans les emails.
+
+### Contenu
+
+-   **`confirm-inscription.html`** :
+    -   Modèle pour les emails de confirmation d'inscription.
+    -   Contient un lien de confirmation avec un token.
+-   **`reset-password.html`** :
+    -   Modèle pour les emails de réinitialisation de mot de passe.
+    -   Contient un lien pour réinitialiser le mot de passe.
+
+### Exemple : `confirm-inscription.html`
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Confirmation d'inscription</title>
+	</head>
+	<body>
+		<h1>Bienvenue, {{user}} !</h1>
+		<p>Merci de vous être inscrit sur Algoforge.</p>
+		<p>Veuillez confirmer votre inscription en cliquant sur le lien suivant :</p>
+		<a href="{{url}}">Confirmer mon inscription</a>
+	</body>
+</html>
+```
+
+---
+
+## Fonctionnement Global
+
+1. **Initialisation** :
+
+    - Le service `MailService` est initialisé avec l'état actif ou inactif en fonction des variables d'environnement.
+
+2. **Envoi d'un Email** :
+
+    - Une méthode du service (par exemple, `sendConfirmationMail`) est appelée.
+    - Le modèle HTML correspondant est chargé depuis le dossier `templates/`.
+    - Les données dynamiques (par exemple, le pseudo de l'utilisateur, le lien de confirmation) sont insérées dans le modèle à l'aide de Handlebars.
+    - Le transporteur (`Transporter`) envoie l'email.
+
+3. **Gestion des Tests** :
+    - En mode `test`, un mock de Nodemailer est utilisé pour simuler l'envoi d'emails.
+
+---
+
+## Exemple d'Utilisation
+
+### Envoi d'un Email de Confirmation
+
+```typescript
+import { MailService } from "./mail.service";
+import { Utilisateur } from "../db/schemas/Utilisateur.schema";
+
+const mailService = new MailService();
+
+const user: Utilisateur = {
+	id: 1,
+	pseudo: "JohnDoe",
+	adresseMail: "johndoe@example.com",
+	// Autres champs...
+};
+
+const token = "abc123";
+
+mailService.sendConfirmationMail(user.adresseMail, user, token);
+```
+
+---
+
+## Points Techniques
+
+1. **Sécurité** :
+
+    - Les informations sensibles (hôte SMTP, utilisateur, mot de passe) sont stockées dans des variables d'environnement.
+
+2. **Flexibilité** :
+
+    - Les modèles HTML permettent de personnaliser facilement le contenu des emails.
+
+3. **Tests** :
+
+    - Le mock de Nodemailer garantit que les tests n'envoient pas de vrais emails.
+
+4. **Logs** :
+    - Les envois d'emails sont loggés pour faciliter le débogage.

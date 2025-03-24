@@ -13,10 +13,11 @@ interface IFolder {
 
 interface FolderStructureProps {
 	folderStructure: IFolder;
+	openByDefault?: boolean;
 }
 
-const Folder = ({ folder }: { folder: IFolder }) => {
-	const [isOpen, setIsOpen] = useState(false);
+const Folder = ({ folder, open }: { folder: IFolder; open?: boolean }) => {
+	const [isOpen, setIsOpen] = useState(open || false);
 	if (!folder) return null;
 	return (
 		<div
@@ -88,7 +89,7 @@ const File = ({ file }: { file: IFile }) => {
 	);
 };
 
-const FolderStructure = ({ folderStructure }: FolderStructureProps) => {
+const FolderStructure = ({ folderStructure, openByDefault }: FolderStructureProps) => {
 	return (
 		<div
 			style={{
@@ -96,7 +97,7 @@ const FolderStructure = ({ folderStructure }: FolderStructureProps) => {
 				marginBottom: "10px",
 			}}
 		>
-			<Folder folder={folderStructure} />
+			<Folder folder={folderStructure} open={openByDefault} />
 		</div>
 	);
 };

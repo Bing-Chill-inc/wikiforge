@@ -1,0 +1,140 @@
+# Datasource
+
+## Description Générale
+
+Le fichier `data-source.ts` configure la connexion à la base de données pour l'application backend d'Algoforge. Il utilise **TypeORM**, un ORM (Object-Relational Mapping) pour TypeScript et JavaScript, pour gérer les entités, les relations, et les opérations sur la base de données. Ce fichier centralise les paramètres de connexion et initialise la source de données (`AppDataSource`), qui est utilisée dans tout le projet pour interagir avec la base de données.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Configuration Dynamique**
+
+La configuration de la base de données est déterminée dynamiquement en fonction des variables d'environnement définies dans le fichier `.env`. Cela permet de prendre en charge plusieurs types de bases de données (par exemple, MySQL, PostgreSQL, SQLite).
+
+#### Types de Bases de Données Supportés :
+
+-   **MySQL**
+-   **PostgreSQL**
+-   **SQLite**
+
+#### Exemple de Configuration dans `.env` :
+
+```env
+DATABASE_TYPE=postgres
+DATABASE_NAME=algoforge
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASSWORD=yourpassword
+BUILD=dev
+```
+
+### 2. **Gestion des Paramètres**
+
+Les paramètres de connexion sont configurés en fonction du type de base de données spécifié dans `DATABASE_TYPE`. Les paramètres incluent :
+
+-   **`type`** : Type de base de données (MySQL, PostgreSQL, SQLite).
+-   **`database`** : Nom de la base de données.
+-   **`host`** : Adresse du serveur de base de données (par défaut : `localhost`).
+-   **`port`** : Port de connexion (par défaut : `5432` pour PostgreSQL).
+-   **`username`** : Nom d'utilisateur pour la connexion.
+-   **`password`** : Mot de passe pour la connexion.
+
+Si aucune configuration valide n'est trouvée, une erreur est levée.
+
+---
+
+## Initialisation de la Source de Données
+
+### 1. **Création de `AppDataSource`**
+
+La source de données est créée à l'aide de la classe `DataSource` de TypeORM. Elle inclut les paramètres suivants :
+
+-   **`dropSchema`** : Supprime le schéma existant si l'environnement est en mode `test`.
+-   **`synchronize`** : Synchronise automatiquement les entités avec la base de données en mode `dev` ou `test`.
+-   **`logging`** : Désactive les logs SQL pour éviter un surplus d'informations.
+-   **`entities`** : Liste des entités utilisées dans l'application.
+
+#### Exemple de Code :
+
+```typescript
+export const AppDataSource = new DataSource({
+	...dataSource,
+	dropSchema: process.env.BUILD == "test" ? true : false,
+	synchronize: ["dev", "test"].includes(process.env.BUILD) ? true : false,
+	logging: false,
+	entities: [Utilisateur, Algorithme, Token, Dossier, PermDossier, PermAlgorithme],
+});
+```
+
+---
+
+## Entités Gérées
+
+### Liste des Entités :
+
+1. **`Utilisateur`** : Représente les utilisateurs de l'application.
+2. **`Algorithme`** : Représente les algorithmes créés par les utilisateurs.
+3. **`Token`** : Représente les tokens d'authentification.
+4. **`Dossier`** : Représente les dossiers contenant des algorithmes.
+5. **`PermDossier`** : Représente les permissions sur les dossiers.
+6. **`PermAlgorithme`** : Représente les permissions sur les algorithmes.
+
+Ces entités sont définies dans le dossier `schemas/` et synchronisées avec la base de données.
+
+---
+
+## Exemple d'Utilisation
+
+### 1. **Connexion à la Base de Données**
+
+Avant d'utiliser la base de données, il est nécessaire d'initialiser la connexion avec `AppDataSource.initialize()`.
+
+#### Exemple :
+
+```typescript
+import { AppDataSource } from "./db/data-source";
+
+AppDataSource.initialize()
+	.then(() => {
+		console.log("Base de données connectée !");
+	})
+	.catch((error) => {
+		console.error("Erreur de connexion à la base de données :", error);
+	});
+```
+
+### 2. **Utilisation des Repositories**
+
+Une fois la connexion établie, les repositories peuvent être utilisés pour interagir avec les entités.
+
+#### Exemple : Récupérer tous les utilisateurs
+
+```typescript
+import { AppDataSource } from "./db/data-source";
+import { Utilisateur } from "./db/schemas/Utilisateur.schema";
+
+const utilisateursRepository = AppDataSource.getRepository(Utilisateur);
+
+const utilisateurs = await utilisateursRepository.find();
+console.log(utilisateurs);
+```
+
+---
+
+## Points Techniques
+
+### 1. **Support Multi-Base de Données**
+
+Le fichier prend en charge plusieurs types de bases de données grâce à la configuration dynamique basée sur les variables d'environnement.
+
+### 2. **Synchronisation Automatique**
+
+En mode `dev` ou `test`, les entités sont automatiquement synchronisées avec la base de données, ce qui simplifie le développement. Cependant, cette fonctionnalité est désactivée en production pour éviter des modifications accidentelles.
+
+### 3. **Gestion des Tests**
+
+En mode `test`, le schéma de la base de données est supprimé et recréé à chaque exécution grâce à l'option `dropSchema`.
+
+---

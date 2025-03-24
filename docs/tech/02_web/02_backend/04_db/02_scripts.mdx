@@ -1,0 +1,164 @@
+import GitHubFolderStructure from "../../../../../src/components/FolderStructure/github-folder-structure.tsx";
+
+# Scripts
+
+<GitHubFolderStructure
+	githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main"
+	pathToDisplay="src/back/db/scripts"
+/>
+
+## Description Générale
+
+Le fichier `init.sql` contient les instructions SQL nécessaires pour initialiser la base de données de l'application Algoforge. Il crée les tables principales et définit leurs relations. Ces tables modélisent les entités clés de l'application, telles que les utilisateurs, les dossiers, les algorithmes, et les permissions.
+
+---
+
+## Structure des Tables
+
+### 1. **Table `utilisateur`**
+
+Cette table stocke les informations des utilisateurs de l'application.
+
+#### Colonnes :
+
+-   **`id`** : Identifiant unique de l'utilisateur (clé primaire, auto-incrémenté).
+-   **`adressemail`** : Adresse email de l'utilisateur (non nul).
+-   **`pseudo`** : Pseudo de l'utilisateur (non nul).
+-   **`mdphash`** : Mot de passe hashé de l'utilisateur (non nul).
+-   **`dateinscription`** : Date d'inscription de l'utilisateur (timestamp, non nul).
+-   **`theme`** : Identifiant du thème de l'utilisateur (par défaut : 0).
+-   **`urlpfp`** : URL de la photo de profil de l'utilisateur (optionnel).
+-   **`isverified`** : Indique si l'utilisateur a vérifié son email (par défaut : `FALSE`).
+
+---
+
+### 2. **Table `token`**
+
+Cette table stocke les tokens d'authentification des utilisateurs.
+
+#### Colonnes :
+
+-   **`token`** : Valeur unique du token (clé primaire).
+-   **`datecreation`** : Date de création du token (timestamp, non nul).
+-   **`dateexpiration`** : Date d'expiration du token (timestamp, non nul).
+-   **`idutilisateur`** : Identifiant de l'utilisateur associé au token (clé étrangère vers `utilisateur.id`).
+
+---
+
+### 3. **Table `dossier`**
+
+Cette table représente les dossiers qui peuvent contenir des algorithmes.
+
+#### Colonnes :
+
+-   **`id`** : Identifiant unique du dossier (clé primaire, auto-incrémenté).
+-   **`nom`** : Nom du dossier (par défaut : "Nouveau dossier").
+-   **`datecreation`** : Date de création du dossier (timestamp, non nul).
+-   **`datemodification`** : Date de dernière modification du dossier (timestamp, non nul).
+-   **`idparent`** : Identifiant du dossier parent (clé étrangère vers `dossier.id`, optionnel).
+
+---
+
+### 4. **Table `algorithme`**
+
+Cette table stocke les informations des algorithmes créés par les utilisateurs.
+
+#### Colonnes :
+
+-   **`id`** : Identifiant unique de l'algorithme (clé primaire, auto-incrémenté).
+-   **`nom`** : Nom de l'algorithme (par défaut : "Nouvel algorithme").
+-   **`datecreation`** : Date de création de l'algorithme (timestamp, non nul).
+-   **`datemodification`** : Date de dernière modification de l'algorithme (timestamp, non nul).
+-   **`iddossier`** : Identifiant du dossier contenant l'algorithme (clé étrangère vers `dossier.id`).
+
+---
+
+### 5. **Table `permdossier`**
+
+Cette table gère les permissions des utilisateurs sur les dossiers.
+
+#### Colonnes :
+
+-   **`idutilisateur`** : Identifiant de l'utilisateur ayant la permission (clé étrangère vers `utilisateur.id`).
+-   **`iddossier`** : Identifiant du dossier sur lequel la permission s'applique (clé étrangère vers `dossier.id`).
+-   **`droits`** : Droits accordés à l'utilisateur (par exemple : lecture, écriture).
+
+#### Clé Primaire :
+
+-   Combinaison de `idutilisateur` et `iddossier`.
+
+---
+
+### 6. **Table `permalgorithme`**
+
+Cette table gère les permissions des utilisateurs sur les algorithmes.
+
+#### Colonnes :
+
+-   **`idutilisateur`** : Identifiant de l'utilisateur ayant la permission (clé étrangère vers `utilisateur.id`).
+-   **`idalgorithme`** : Identifiant de l'algorithme sur lequel la permission s'applique (clé étrangère vers `algorithme.id`).
+-   **`droits`** : Droits accordés à l'utilisateur (par exemple : lecture, écriture).
+
+#### Clé Primaire :
+
+-   Combinaison de `idutilisateur` et `idalgorithme`.
+
+---
+
+## Relations entre les Tables
+
+1. **`utilisateur` ↔ `token`** :
+
+    - Un utilisateur peut avoir plusieurs tokens.
+    - Relation définie par la clé étrangère `token.idutilisateur` vers `utilisateur.id`.
+
+2. **`dossier` ↔ `dossier`** :
+
+    - Un dossier peut avoir un dossier parent.
+    - Relation définie par la clé étrangère `dossier.idparent` vers `dossier.id`.
+
+3. **`dossier` ↔ `algorithme`** :
+
+    - Un dossier peut contenir plusieurs algorithmes.
+    - Relation définie par la clé étrangère `algorithme.iddossier` vers `dossier.id`.
+
+4. **`utilisateur` ↔ `permdossier` ↔ `dossier`** :
+
+    - Un utilisateur peut avoir des permissions sur plusieurs dossiers.
+    - Relation définie par les clés étrangères `permdossier.idutilisateur` vers `utilisateur.id` et `permdossier.iddossier` vers `dossier.id`.
+
+5. **`utilisateur` ↔ `permalgorithme` ↔ `algorithme`** :
+    - Un utilisateur peut avoir des permissions sur plusieurs algorithmes.
+    - Relation définie par les clés étrangères `permalgorithme.idutilisateur` vers `utilisateur.id` et `permalgorithme.idalgorithme` vers `algorithme.id`.
+
+---
+
+## Exemple d'Utilisation
+
+### Création d'un Utilisateur
+
+```sql
+INSERT INTO utilisateur (adressemail, pseudo, mdphash, dateinscription)
+VALUES ('example@mail.com', 'Pseudo', 'hashed_password', 1678901234567);
+```
+
+### Ajout d'un Dossier
+
+```sql
+INSERT INTO dossier (nom, datecreation, datemodification)
+VALUES ('Mon Dossier', 1678901234567, 1678901234567);
+```
+
+### Ajout d'un Algorithme
+
+```sql
+INSERT INTO algorithme (nom, datecreation, datemodification, iddossier)
+VALUES ('Mon Algorithme', 1678901234567, 1678901234567, 1);
+```
+
+### Ajout d'une Permission sur un Dossier
+
+```sql
+INSERT INTO permdossier (idutilisateur, iddossier, droits)
+VALUES (1, 1, 'lecture');
+```

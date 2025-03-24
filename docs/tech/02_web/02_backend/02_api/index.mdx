@@ -1,0 +1,187 @@
+import GitHubFolderStructure from "../../../../../src/components/FolderStructure/github-folder-structure.tsx";
+
+# API
+
+<GitHubFolderStructure
+	githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main"
+	pathToDisplay="src/back/api"
+	openByDefault
+/>
+
+## Description Générale
+
+Le dossier `api/` contient les modules responsables de la gestion des différentes fonctionnalités de l'application backend d'Algoforge. Chaque module est organisé en sous-dossiers (par exemple, `algos/`, `auth/`, `users/`, etc.), et chaque sous-dossier regroupe les fichiers nécessaires pour implémenter une fonctionnalité spécifique. Ces fichiers suivent une architecture modulaire et respectent le modèle **Controller-Service-DTO**.
+
+---
+
+## Structure du Dossier `api/`
+
+### Sous-Dossiers
+
+Chaque sous-dossier représente une fonctionnalité ou une entité de l'application. Par exemple :
+
+-   [**`algos/`** : Gestion des algorithmes.](./01_algos.mdx)
+-   [**`auth/`** : Gestion de l'authentification.](./02_auth.mdx)
+-   [**`dirs/`** : Gestion des dossiers.](./03_dirs.mdx)
+-   [**`libs/`** : Gestion des bibliothèques.](./04_libs.mdx)
+-   [ **`users/`** : Gestion des utilisateurs.](./05_users.mdx)
+
+### Fichiers Types
+
+Chaque sous-dossier contient généralement trois types de fichiers :
+
+1. **Fichiers `.controller.ts`** : Gèrent les routes HTTP et les interactions avec les clients.
+2. **Fichiers `.service.ts`** : Contiennent la logique métier et interagissent avec la base de données ou d'autres services.
+3. **Fichiers `.dto.ts`** : Définissent les objets de transfert de données (DTO) pour valider et structurer les données des requêtes.
+
+---
+
+## Explication des Fichiers Types
+
+### 1. **Fichiers `.controller.ts`**
+
+Les fichiers `controller` sont responsables de la gestion des requêtes HTTP. Ils définissent les routes et les associent à des méthodes spécifiques pour traiter les requêtes.
+
+#### Rôles :
+
+-   Recevoir les requêtes des clients.
+-   Valider les données de la requête (souvent à l'aide des DTOs).
+-   Appeler les méthodes du service correspondant pour exécuter la logique métier.
+-   Retourner une réponse standardisée au client.
+
+#### Exemple : `algos.controller.ts`
+
+```typescript
+export class AlgosController {
+	private async createAlgo(req: Request, res: Response) {
+		const { ownerId, nom, sourceCode } = req.body;
+
+		// Validation des données
+		if (!ownerId || !nom || !sourceCode) {
+			return res.status(400).json({ message: "Il manque des données." });
+		}
+
+		// Appel au service
+		const result = await this.usersService.createAlgo({
+			ownerId,
+			nom,
+			sourceCode,
+		});
+
+		// Retour de la réponse
+		return res.status(201).json({ message: "Algorithme créé.", data: result });
+	}
+}
+```
+
+---
+
+### 2. **Fichiers `.service.ts`**
+
+Les fichiers `service` contiennent la logique métier. Ils sont responsables de l'exécution des opérations nécessaires pour répondre aux requêtes, comme l'interaction avec la base de données ou d'autres services.
+
+#### Rôles :
+
+-   Implémenter la logique métier.
+-   Interagir avec la base de données via des repositories.
+-   Effectuer des validations complexes ou des calculs.
+-   Retourner les résultats au contrôleur.
+
+#### Exemple : `algos.service.ts`
+
+```typescript
+export class AlgosService {
+	async createAlgo(data: AlgoCreateDTO) {
+		// Validation des données
+		if (!data.nom || !data.sourceCode) {
+			throw new Error("Données invalides.");
+		}
+
+		// Création de l'algorithme dans la base de données
+		const algo = new Algorithme();
+		algo.nom = data.nom;
+		algo.sourceCode = data.sourceCode;
+		algo.ownerId = data.ownerId;
+
+		// Sauvegarde dans la base de données
+		return await AppDataSource.getRepository(Algorithme).save(algo);
+	}
+}
+```
+
+---
+
+### 3. **Fichiers `.dto.ts`**
+
+Les fichiers `dto` (Data Transfer Object) définissent les structures de données utilisées pour valider et transférer les informations entre le client et le backend. Ils garantissent que les données reçues dans les requêtes respectent un format spécifique.
+
+#### Rôles :
+
+-   Valider les données des requêtes HTTP.
+-   Définir les types et les contraintes des données (par exemple, longueur minimale, format d'email, etc.).
+-   Faciliter la sérialisation et la désérialisation des données.
+
+#### Exemple : `algos.dto.ts`
+
+```typescript
+export class AlgoCreateDTO {
+	@IsString()
+	@MinLength(3)
+	@MaxLength(255)
+	nom: string;
+
+	@IsNumber()
+	ownerId: number;
+
+	@IsJSON()
+	sourceCode: Object;
+}
+```
+
+Dans cet exemple :
+
+-   Le champ `nom` doit être une chaîne de caractères entre 3 et 255 caractères.
+-   Le champ `ownerId` doit être un nombre.
+-   Le champ `sourceCode` doit être un objet JSON valide.
+
+---
+
+## Exemple de Flux de Données
+
+1. **Requête Client** :
+
+    - Un client envoie une requête HTTP (par exemple, POST `/algos` pour créer un algorithme).
+
+2. **Contrôleur** :
+
+    - Le contrôleur (`algos.controller.ts`) reçoit la requête.
+    - Il valide les données à l'aide d'un DTO (`AlgoCreateDTO`).
+    - Il appelle le service (`algos.service.ts`) pour exécuter la logique métier.
+
+3. **Service** :
+
+    - Le service effectue les opérations nécessaires (par exemple, sauvegarder l'algorithme dans la base de données).
+    - Il retourne le résultat au contrôleur.
+
+4. **Réponse au Client** :
+    - Le contrôleur formate la réponse et la renvoie au client.
+
+---
+
+## Avantages de cette Architecture
+
+1. **Séparation des Responsabilités** :
+
+    - Les contrôleurs, services, et DTOs ont des responsabilités distinctes, ce qui rend le code plus lisible et maintenable.
+
+2. **Réutilisabilité** :
+
+    - Les services peuvent être réutilisés dans plusieurs contrôleurs.
+    - Les DTOs peuvent être partagés entre différentes routes.
+
+3. **Validation Centralisée** :
+
+    - Les DTOs garantissent que les données reçues respectent un format spécifique avant d'être traitées.
+
+4. **Extensibilité** :
+    - De nouvelles fonctionnalités peuvent être ajoutées facilement en créant de nouveaux modules dans le dossier `api/`.
