@@ -7,3 +7,73 @@ import GitHubFolderStructure from "../../../../../src/components/FolderStructure
 	pathToDisplay="src/back/tests"
 	openByDefault
 />
+
+## Description Générale
+
+Le dossier `tests/` contient l'ensemble des tests automatisés pour valider les fonctionnalités du backend de l'application Algoforge. Ces tests couvrent les principales fonctionnalités, notamment la gestion des utilisateurs, des algorithmes, et la validation des données. Ils utilisent le framework **Bun** pour exécuter les tests et garantir la robustesse et la fiabilité de l'application.
+
+---
+
+## Structure du Dossier `tests/`
+
+### Organisation
+
+Le dossier est organisé de manière modulaire pour faciliter la maintenance et l'ajout de nouveaux tests. Voici la structure principale :
+
+```
+tests/
+├── algos.test.ts         # Tests pour les fonctionnalités liées aux algorithmes.
+├── users.test.ts         # Tests pour les fonctionnalités liées aux utilisateurs.
+├── setup.test.ts         # Initialisation de l'environnement de test.
+├── user.set.ts           # Données de test pour les utilisateurs.
+├── json/                 # Données JSON pour les tests des algorithmes.
+│   ├── algo-1.json
+│   ├── algo-2.json
+│   ├── ...
+│   └── algo-complet.json
+```
+
+---
+
+## Cahier des tests
+
+Télécharger le [cahier des tests](./cahier-test.pdf) pour plus de détails sur les tests effectués.
+
+---
+
+## Points Techniques
+
+### 1. **Initialisation Automatique**
+
+Le fichier `setup.test.ts` garantit que l'environnement de test est prêt avant l'exécution des tests. Cela inclut la réinitialisation de la base de données et la création des utilisateurs et algorithmes de test.
+
+### 2. **Validation des Données**
+
+Les tests utilisent des DTOs (Data Transfer Objects) pour valider les données envoyées aux API. Cela garantit que seules des données conformes sont acceptées.
+
+### 3. **Gestion des Erreurs**
+
+Les tests vérifient que les erreurs sont correctement gérées et que des messages d'erreur appropriés sont renvoyés au client.
+
+### 4. **Utilisation de Données JSON**
+
+Les fichiers JSON dans le dossier `json/` permettent de tester les algorithmes avec des données réalistes et variées.
+
+---
+
+## Exemple de Flux de Test
+
+1. **Initialisation** :
+
+    - Le fichier `setup.test.ts` réinitialise la base de données et prépare l'environnement de test.
+
+2. **Exécution des Tests** :
+
+    - Les tests des utilisateurs (`users.test.ts`) et des algorithmes (`algos.test.ts`) sont exécutés.
+
+3. **Validation des Résultats** :
+
+    - Les réponses des API sont vérifiées pour s'assurer qu'elles correspondent aux attentes.
+
+4. **Nettoyage** :
+    - Après l'exécution des tests, l'environnement est nettoyé pour éviter les conflits avec les tests futurs.../../../../../src/components/FolderStructure/github-folder-structure.jsx../../../../../src/components/FolderStructure/github-folder-structure.jsx

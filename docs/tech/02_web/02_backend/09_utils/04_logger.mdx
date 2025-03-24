@@ -1,1 +1,239 @@
 # Logger
+
+## Description Générale
+
+Le fichier `logger.ts` contient une classe utilitaire appelée `Logger` qui permet de journaliser des messages, avertissements, erreurs, et informations de débogage. Les logs sont affichés dans la console et enregistrés dans des fichiers journaux. Ce système de journalisation est conçu pour remplacer les appels à `console.log()` et fournir une solution centralisée et structurée pour la gestion des logs.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Journalisation Structurée**
+
+-   Les messages sont formatés avec des horodatages, des niveaux de log (INFO, WARN, ERROR, DEBUG), et des couleurs pour une meilleure lisibilité dans la console.
+
+### 2. **Enregistrement dans des Fichiers**
+
+-   Les logs sont enregistrés dans des fichiers journaux situés dans un dossier `logs/`. Un fichier est créé pour chaque jour.
+
+### 3. **Support des Niveaux de Débogage**
+
+-   Les messages de débogage sont affichés uniquement si le mode débogage est activé via la variable d'environnement `DEBUG`.
+
+### 4. **Création Automatique du Dossier `logs/`**
+
+-   Si le dossier `logs/` n'existe pas, il est automatiquement créé.
+
+---
+
+## Classe : `Logger`
+
+### Description
+
+La classe `Logger` est une classe utilitaire statique qui ne peut pas être instanciée. Elle fournit des méthodes pour journaliser différents types de messages.
+
+### Attributs Statique
+
+-   **`filePath`** : Chemin du dossier où les fichiers journaux sont enregistrés (par défaut : `logs/` dans le répertoire courant).
+
+---
+
+### Méthodes
+
+#### 1. **`log`**
+
+-   Journalise un message d'information.
+-   Affiche le message dans la console avec un symbole ℹ️ et l'enregistre dans un fichier journal.
+
+##### Signature
+
+```typescript
+static log(message: string, exec: string = "", color: clic.Format = clic.white): void
+```
+
+##### Paramètres
+
+-   **`message`** : Message à journaliser.
+-   **`exec`** : Chemin ou contexte d'origine du message (optionnel).
+-   **`color`** : Couleur du message dans la console (par défaut : blanc).
+
+##### Exemple
+
+```typescript
+Logger.log("Application démarrée avec succès", "app:startup");
+```
+
+---
+
+#### 2. **`warn`**
+
+-   Journalise un avertissement.
+-   Affiche le message dans la console avec un symbole ⚠️ en jaune et l'enregistre dans un fichier journal.
+
+##### Signature
+
+```typescript
+static warn(message: string, exec: string = ""): void
+```
+
+##### Exemple
+
+```typescript
+Logger.warn("Espace disque faible", "system:monitor");
+```
+
+---
+
+#### 3. **`error`**
+
+-   Journalise une erreur.
+-   Affiche le message dans la console avec un symbole ❗ en rouge et l'enregistre dans un fichier journal.
+
+##### Signature
+
+```typescript
+static error(message: string, exec: string = ""): void
+```
+
+##### Exemple
+
+```typescript
+Logger.error("Erreur de connexion à la base de données", "db:connection");
+```
+
+---
+
+#### 4. **`debug`**
+
+-   Journalise un message de débogage.
+-   Affiche le message dans la console avec un symbole 🔧 et l'enregistre dans un fichier journal uniquement si le mode débogage est activé (`DEBUG=true`).
+
+##### Signature
+
+```typescript
+static debug(message: string, exec: string, level: number = 1): void
+```
+
+##### Paramètres
+
+-   **`message`** : Message de débogage.
+-   **`exec`** : Contexte ou chemin d'origine du message.
+-   **`level`** : Niveau de débogage (par défaut : 1). Le message est affiché uniquement si `DEBUG_LEVEL` est supérieur ou égal à ce niveau.
+
+##### Exemple
+
+```typescript
+Logger.debug("Chargement des données utilisateur", "user:service", 2);
+```
+
+---
+
+## Fonctions Utilitaires
+
+### 1. **`initLogFile`**
+
+-   Initialise le fichier journal pour la journée en cours.
+-   Crée le dossier `logs/` s'il n'existe pas.
+
+##### Exemple
+
+```typescript
+const logFilePath = initLogFile("logs/");
+```
+
+---
+
+### 2. **`parsingConsole`**
+
+-   Formate un message pour l'affichage dans la console.
+-   Ajoute un horodatage, un style, et une couleur.
+
+##### Exemple
+
+```typescript
+const formattedMessage = parsingConsole("Message d'information", clic.green, "ℹ️", "app:startup");
+```
+
+---
+
+### 3. **`parsingFile`**
+
+-   Formate un message pour l'enregistrement dans un fichier journal.
+-   Ajoute un horodatage et un style.
+
+##### Exemple
+
+```typescript
+const formattedLog = parsingFile("Message d'information", "INFO", "app:startup");
+```
+
+---
+
+### 4. **`writeLog`**
+
+-   Écrit un message formaté dans le fichier journal.
+
+##### Exemple
+
+```typescript
+writeLog("Message d'information", "INFO", "app:startup", "logs/");
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `cli-color`**
+
+-   La bibliothèque **cli-color** est utilisée pour ajouter des couleurs aux messages affichés dans la console.
+
+### 2. **Gestion des Fichiers**
+
+-   Les fichiers journaux sont créés automatiquement avec un nom basé sur la date (`YYYY-MM-DD.log`).
+-   Les messages sont ajoutés au fichier correspondant à la journée en cours.
+
+### 3. **Support des Niveaux de Débogage**
+
+-   Les messages de débogage sont affichés uniquement si la variable d'environnement `DEBUG` est définie à `true`.
+-   Le niveau de débogage est contrôlé par la variable `DEBUG_LEVEL`.
+
+---
+
+## Exemple d'Utilisation
+
+### Journalisation dans une Application
+
+```typescript
+import { Logger } from "../utils/logger";
+
+Logger.log("Application démarrée", "app:startup");
+Logger.warn("Espace disque faible", "system:monitor");
+Logger.error("Erreur critique", "system:crash");
+Logger.debug("Chargement des données utilisateur", "user:service", 2);
+```
+
+### Configuration dans `.env`
+
+```env
+DEBUG=true
+DEBUG_LEVEL=2
+```
+
+---
+
+## Avantages
+
+1. **Centralisation des Logs** :
+
+    - Toutes les opérations de journalisation passent par la classe `Logger`, ce qui facilite la gestion et la maintenance.
+
+2. **Lisibilité Améliorée** :
+
+    - Les messages sont formatés avec des couleurs et des horodatages, ce qui améliore leur lisibilité dans la console.
+
+3. **Persistance des Logs** :
+
+    - Les messages sont enregistrés dans des fichiers journaux, permettant une analyse ultérieure.
+
+4. **Support des Niveaux de Débogage** :
+    - Les développeurs peuvent contrôler la quantité de messages de débogage affichés en ajustant le niveau de débogage.

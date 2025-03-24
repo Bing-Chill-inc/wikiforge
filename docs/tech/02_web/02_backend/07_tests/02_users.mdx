@@ -1,1 +1,224 @@
 # Test des Utilisateurs
+
+## Description Générale
+
+Le fichier `users.test.ts` contient une suite de tests automatisés pour valider les fonctionnalités liées aux utilisateurs dans le backend de l'application Algoforge. Ces tests couvrent les opérations principales telles que l'inscription, la connexion, la confirmation d'inscription, la mise à jour des informations utilisateur, et la suppression d'un compte. Ils utilisent le framework de test **Bun** pour exécuter les tests et vérifier les résultats.
+
+---
+
+## Objectifs des Tests
+
+### 1. **Vérification des Routes API**
+
+Les tests valident les différentes routes de l'API liées aux utilisateurs, notamment :
+
+-   **POST** : Inscription, connexion, récupération de mot de passe.
+-   **GET** : Confirmation d'inscription, récupération des informations utilisateur, déconnexion.
+-   **PUT** : Mise à jour des informations utilisateur.
+-   **DELETE** : Suppression d'un utilisateur.
+
+### 2. **Gestion des Erreurs**
+
+Les tests s'assurent que les erreurs sont correctement gérées, avec des réponses appropriées (par exemple, statut HTTP 400, 401, ou 404).
+
+### 3. **Validation des Données**
+
+Les tests vérifient que les données envoyées respectent les contraintes définies dans les DTOs (par exemple, format d'email, longueur minimale du mot de passe).
+
+### 4. **Robustesse et Sécurité**
+
+Les tests garantissent que les fonctionnalités liées aux utilisateurs fonctionnent correctement dans différents scénarios, y compris les cas limites et les tentatives d'accès non autorisé.
+
+---
+
+## Structure des Tests
+
+### 1. **Initialisation des Données**
+
+Avant l'exécution des tests, des utilisateurs de test sont créés dans la base de données. Cela garantit que chaque test dispose d'un environnement cohérent.
+
+#### Exemple :
+
+```typescript
+beforeAll(async (done) => {
+	const interval = setInterval(async () => {
+		if (server.locals.testSetupDone) {
+			clearInterval(interval);
+
+			Logger.log("Creating test users...", "test: users");
+			for (const user of [UserSet.unitTestUser1, UserSet.unitTestUser2]) {
+				const u = new Utilisateur();
+				u.id = user.id;
+				u.adresseMail = user.email;
+				u.mdpHash = hashString(user.password);
+				u.pseudo = user.pseudo;
+				u.dateInscription = new Date().getTime();
+				u.isVerified = true;
+				await utilisateursRepository.save(u);
+			}
+			Logger.log("Test users created.", "test: users");
+
+			done();
+		}
+	}, 100);
+});
+```
+
+---
+
+### 2. **Tests des Routes API**
+
+#### a. **POST `/api/users/register`**
+
+-   **Objectif** : Vérifier l'inscription d'un nouvel utilisateur.
+-   **Cas Testés** :
+    -   Données manquantes.
+    -   Email invalide.
+    -   Mot de passe trop court.
+    -   Utilisateur créé avec succès.
+    -   Email déjà utilisé.
+
+#### Exemple :
+
+```typescript
+test("succès: Utilisateur créé.", async () => {
+	const payload = new UserRegisterDTO();
+	payload.email = UserSet.example.email;
+	payload.password = UserSet.example.password;
+	payload.pseudo = UserSet.example.pseudo;
+
+	const response = await request.post("/api/users/register").send(payload);
+	expect(response.status).toBe(CreatedRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.User.Success.Created);
+});
+```
+
+---
+
+#### b. **GET `/api/users/confirm/:token`**
+
+-   **Objectif** : Vérifier la confirmation d'inscription via un token.
+-   **Cas Testés** :
+    -   Token invalide.
+    -   Inscription confirmée avec succès.
+
+#### Exemple :
+
+```typescript
+test("succès: Inscription confirmée.", async () => {
+	const response = await request.get(`/api/users/confirm/${confirmToken}`);
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.User.Success.Confirmed);
+});
+```
+
+---
+
+#### c. **POST `/api/users/login`**
+
+-   **Objectif** : Vérifier la connexion d'un utilisateur.
+-   **Cas Testés** :
+    -   Données manquantes.
+    -   Utilisateur introuvable.
+    -   Mot de passe incorrect.
+    -   Connexion réussie.
+
+#### Exemple :
+
+```typescript
+test("succès: Connexion réussie.", async () => {
+	const payload = new UserLoginDTO();
+	payload.email = UserSet.example.email;
+	payload.password = UserSet.example.password;
+
+	const response = await request.post("/api/users/login").send(payload);
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Auth.Success.Logged_in);
+});
+```
+
+---
+
+#### d. **GET `/api/users/logout`**
+
+-   **Objectif** : Vérifier la déconnexion d'un utilisateur.
+-   **Cas Testés** :
+    -   Token manquant.
+    -   Déconnexion réussie.
+
+#### Exemple :
+
+```typescript
+test("succès: Déconnexion réussie.", async () => {
+	const response = await request.get("/api/users/logout").auth(exampleToken, { type: "bearer" });
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Auth.Success.Logged_out);
+});
+```
+
+---
+
+#### e. **PUT `/api/users/:id`**
+
+-   **Objectif** : Vérifier la mise à jour des informations utilisateur.
+-   **Cas Testés** :
+    -   Permission refusée.
+    -   Mot de passe incorrect.
+    -   URL de photo de profil invalide.
+    -   Mise à jour réussie.
+
+#### Exemple :
+
+```typescript
+test("succès: Mot de passe modifié.", async () => {
+	const payload = new UserUpdateDTO();
+	payload.currentPassword = UserSet.example.password;
+	payload.newPassword = UserSet.example.newPassword;
+
+	const response = await request
+		.put(`/api/users/${UserSet.example.id}`)
+		.auth(exampleToken, { type: "bearer" })
+		.send(payload);
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.User.Success.Updated);
+});
+```
+
+---
+
+#### f. **DELETE `/api/users/:id`**
+
+-   **Objectif** : Vérifier la suppression d'un utilisateur.
+-   **Cas Testés** :
+    -   Token invalide.
+    -   Utilisateur introuvable.
+    -   Permission refusée.
+    -   Suppression réussie.
+
+#### Exemple :
+
+```typescript
+test("succès: Utilisateur supprimé.", async () => {
+	const token = await login(UserSet.unitTestUser2);
+
+	const response = await request.delete(`/api/users/${UserSet.unitTestUser2.id}`).auth(token, { type: "bearer" });
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.User.Success.Deleted);
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `beforeAll`**
+
+-   Les utilisateurs de test sont créés avant l'exécution des tests pour garantir un environnement cohérent.
+
+### 2. **Validation des Réponses**
+
+-   Les tests vérifient les statuts HTTP et les messages de réponse pour s'assurer que l'API fonctionne comme prévu.
+
+### 3. **Mock des Emails**
+
+-   Les emails envoyés (par exemple, confirmation d'inscription) sont simulés à l'aide d'un mock pour éviter l'envoi réel.

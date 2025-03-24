@@ -7,3 +7,143 @@ import GitHubFolderStructure from "../../../../../src/components/FolderStructure
 	pathToDisplay="src/back/middlewares"
 	openByDefault
 />
+
+## Description Générale Le dossier `middlewares/` contient les middlewares utilisés dans le backend de l'application Algoforge.
+
+Les middlewares sont des fonctions intermédiaires dans Express qui interceptent les requêtes HTTP avant qu'elles n'atteignent
+les contrôleurs. Ils permettent d'ajouter des fonctionnalités transversales comme la gestion des erreurs, la journalisation
+des requêtes, ou la vérification de l'authentification.
+
+---
+
+## Structure du Dossier
+
+### Contenu Principal
+
+-   [**`auth.middleware.ts`**](./01_auth.mdx) : Vérifie si un utilisateur est authentifié avant d'accéder à certaines routes protégées.
+-   [**`error.middleware.ts`**](./02_error.mdx) : Gère les erreurs survenues lors du traitement des requêtes et renvoie une réponse standardisée.
+-   [**`logger.middleware.ts`**](./03_logger.mdx) : Journalise les requêtes HTTP entrantes pour le suivi et le débogage.
+
+---
+
+## Qu'est-ce qu'un Middleware ?
+
+Un middleware dans Express est une fonction qui a accès à l'objet `Request` (requête), à l'objet `Response` (réponse), et à la fonction `next()` qui permet de passer au middleware ou contrôleur suivant. Les middlewares sont utilisés pour :
+
+-   **Modifier les objets `Request` ou `Response`** : Ajouter des données ou transformer les requêtes/réponses.
+-   **Effectuer des vérifications** : Par exemple, vérifier si un utilisateur est authentifié.
+-   **Gérer les erreurs** : Capturer et traiter les erreurs pour éviter que l'application ne plante.
+-   **Ajouter des fonctionnalités globales** : Comme la journalisation ou la compression des réponses.
+
+---
+
+## Description des Fichiers
+
+### 1. `auth.middleware.ts`
+
+#### Description
+
+Ce middleware vérifie si un utilisateur est authentifié avant d'accéder à une route protégée. Il utilise le service `AuthService` pour valider le token d'authentification.
+
+#### Fonctionnalités
+
+-   Vérifie si un utilisateur est connecté.
+-   Ajoute les informations de l'utilisateur à `res.locals` si l'authentification est réussie.
+-   Renvoie une erreur si l'utilisateur n'est pas authentifié.
+
+#### Exemple d'Utilisation
+
+```typescript
+app.use("/protected-route", authMiddleware, (req, res) => {
+	res.send("Vous êtes authentifié !");
+});
+```
+
+---
+
+### 2. `error.middleware.ts`
+
+#### Description
+
+Ce middleware capture toutes les erreurs survenues dans les middlewares ou contrôleurs précédents. Il enregistre les erreurs dans les logs et renvoie une réponse JSON standardisée au client.
+
+#### Fonctionnalités
+
+-   Enregistre les erreurs dans les logs.
+-   Renvoie une réponse avec un code de statut HTTP (par défaut : 500).
+-   Empêche l'application de planter en cas d'erreur.
+
+#### Exemple d'Utilisation
+
+```typescript
+app.use(errorMiddleware);
+```
+
+---
+
+### 3. `logger.middleware.ts`
+
+#### Description
+
+Ce middleware journalise toutes les requêtes HTTP entrantes. Il enregistre des informations comme la méthode HTTP, l'URL, et éventuellement l'adresse IP du client.
+
+#### Fonctionnalités
+
+-   Enregistre les requêtes dans les logs pour le suivi et le débogage.
+-   Peut inclure l'adresse IP du client si la variable d'environnement `IS_IP_LOGGED` est activée.
+
+#### Exemple d'Utilisation
+
+```typescript
+app.use(loggerMiddleware);
+```
+
+---
+
+## Exemple d'Intégration des Middlewares
+
+Voici un exemple d'intégration des middlewares dans une application Express :
+
+```typescript
+import express from "express";
+import { authMiddleware } from "./middlewares/auth.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import { loggerMiddleware } from "./middlewares/logger.middleware";
+
+const app = express();
+
+// Middleware de journalisation
+app.use(loggerMiddleware);
+
+// Middleware d'authentification pour les routes protégées
+app.use("/protected", authMiddleware, (req, res) => {
+	res.send("Vous êtes authentifié !");
+});
+
+// Middleware de gestion des erreurs
+app.use(errorMiddleware);
+
+// Démarrage du serveur
+app.listen(3000, () => {
+	console.log("Serveur démarré sur le port 3000");
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Ordre des Middlewares**
+
+L'ordre dans lequel les middlewares sont déclarés est important. Par exemple :
+
+-   Le middleware de journalisation (`loggerMiddleware`) doit être exécuté avant les autres pour enregistrer toutes les requêtes.
+-   Le middleware de gestion des erreurs (`errorMiddleware`) doit être déclaré en dernier pour capturer toutes les erreurs.
+
+### 2. **Utilisation de `next()`**
+
+Chaque middleware doit appeler la fonction `next()` pour permettre à la requête de passer au middleware ou contrôleur suivant. Si `next()` n'est pas appelé, la requête sera bloquée.
+
+### 3. **Personnalisation via Variables d'Environnement**
+
+Certains middlewares, comme `logger.middleware.ts`, utilisent des variables d'environnement pour activer ou désactiver certaines fonctionnalités (par exemple, journalisation des adresses IP).

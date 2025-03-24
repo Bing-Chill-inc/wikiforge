@@ -1,1 +1,196 @@
 # Mail Confirm Token
+
+## Description Générale
+
+Le fichier `mailConfirmToken.ts` contient une fonction utilitaire permettant de générer un token de confirmation d'email pour un utilisateur. Ce token est utilisé pour valider l'adresse email d'un utilisateur lors de son inscription ou pour d'autres opérations nécessitant une vérification par email. Le token est généré à partir des informations utilisateur et est encodé en base64 pour garantir sa sécurité.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Récupération des Informations Utilisateur**
+
+La fonction utilise le service `UsersService` pour récupérer les informations de l'utilisateur à partir de son ID.
+
+### 2. **Génération du Token**
+
+Le token est généré en combinant plusieurs éléments uniques de l'utilisateur :
+
+-   **ID de l'utilisateur** : Ajouté directement au token.
+-   **Email** : Les trois premiers caractères de l'email sont transformés en majuscules et chiffrés en fonction de l'ID de l'utilisateur.
+-   **Date d'inscription** : Ajoutée au token pour garantir son unicité.
+
+### 3. **Encodage en Base64**
+
+Le token final est encodé en base64 pour garantir qu'il est sûr à transmettre dans une URL ou un email.
+
+---
+
+## Fonction : `createMailToken`
+
+### Signature
+
+```typescript
+export async function createMailToken(id: number): Promise<string | null>;
+```
+
+### Paramètres
+
+-   **`id`** : L'identifiant unique de l'utilisateur pour lequel le token doit être généré.
+
+### Retour
+
+-   **`string`** : Le token de confirmation encodé en base64.
+-   **`null`** : Si l'utilisateur n'existe pas ou si une erreur survient.
+
+---
+
+## Étapes de Génération du Token
+
+### 1. **Récupération des Données Utilisateur**
+
+La fonction utilise `UsersService` pour récupérer les informations de l'utilisateur à partir de son ID. Si l'utilisateur n'existe pas, la fonction retourne `null`.
+
+#### Exemple :
+
+```typescript
+const service = new UsersService();
+const userData = (await service.getUser(id)).data as Utilisateur;
+
+if (!userData) {
+	return null;
+}
+```
+
+---
+
+### 2. **Construction du Token**
+
+#### a. **Ajout de l'ID Utilisateur**
+
+L'ID de l'utilisateur est ajouté directement au token sous forme de chaîne.
+
+#### b. **Chiffrement des Trois Premiers Caractères de l'Email**
+
+-   Les trois premiers caractères de l'email sont transformés en majuscules.
+-   Chaque caractère est chiffré en fonction de l'ID de l'utilisateur (modulo 26 pour rester dans l'alphabet).
+-   Si le code ASCII dépasse `Z` (90), il est ajusté pour rester dans la plage des lettres majuscules.
+
+#### Exemple :
+
+```typescript
+let email = userData.adresseMail.toUpperCase().substring(0, 3);
+
+for (let i = 0; i < 3; i++) {
+	let charCode = email.charCodeAt(i) + (id % 26);
+	if (charCode > 90) charCode -= 26;
+	email = email.substring(0, i) + String.fromCharCode(charCode) + email.substring(i + 1);
+}
+
+token += "_" + email;
+```
+
+#### c. **Ajout de la Date d'Inscription**
+
+La date d'inscription de l'utilisateur (en millisecondes) est ajoutée au token.
+
+#### Exemple :
+
+```typescript
+token += userData.dateInscription.toString();
+```
+
+---
+
+### 3. **Encodage en Base64**
+
+Le token final est encodé en base64 pour garantir qu'il est sûr à transmettre dans une URL ou un email.
+
+#### Exemple :
+
+```typescript
+token = Buffer.from(token).toString("base64");
+```
+
+---
+
+## Exemple d'Utilisation
+
+### Génération d'un Token
+
+```typescript
+import { createMailToken } from "../utils/mailConfirmToken";
+
+const userId = 123;
+const token = await createMailToken(userId);
+
+if (token) {
+	console.log("Token de confirmation généré :", token);
+} else {
+	console.error("Impossible de générer le token.");
+}
+```
+
+### Utilisation dans une Route API
+
+```typescript
+app.post("/api/users/send-confirmation", async (req, res) => {
+	const userId = req.body.userId;
+
+	// Génération du token
+	const token = await createMailToken(userId);
+
+	if (!token) {
+		return res.status(404).json({ message: "Utilisateur introuvable." });
+	}
+
+	// Envoi de l'email avec le token
+	// (Utilisation d'un service d'envoi d'email)
+	await mailService.sendConfirmationMail(req.body.email, token);
+
+	res.status(200).json({ message: "Email de confirmation envoyé." });
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Sécurité**
+
+-   Le token est encodé en base64, ce qui le rend sûr à transmettre dans une URL ou un email.
+-   L'utilisation de l'ID utilisateur, de l'email, et de la date d'inscription garantit que le token est unique pour chaque utilisateur.
+
+### 2. **Dépendance à `UsersService`**
+
+-   La fonction dépend de `UsersService` pour récupérer les informations utilisateur. Cela garantit que seules les données valides sont utilisées pour générer le token.
+
+### 3. **Chiffrement Simple**
+
+-   Les trois premiers caractères de l'email sont chiffrés de manière simple en fonction de l'ID utilisateur. Bien que cela ajoute une couche d'obscurcissement, ce n'est pas une méthode de chiffrement robuste.
+
+---
+
+## Avantages
+
+1. **Unicité des Tokens** :
+
+    - Chaque token est unique grâce à la combinaison de l'ID utilisateur, de l'email, et de la date d'inscription.
+
+2. **Facilité d'Intégration** :
+
+    - La fonction peut être facilement intégrée dans les routes API ou les services d'envoi d'email.
+
+3. **Encodage en Base64** :
+    - L'encodage garantit que le token est sûr à transmettre dans des environnements où certains caractères spéciaux pourraient poser problème.
+
+---
+
+## Limites
+
+1. **Chiffrement Simple**
+
+    - Le chiffrement des trois premiers caractères de l'email est basique et ne garantit pas une sécurité élevée. Ce n'est pas conçu pour protéger des données sensibles.
+
+2. **Dépendance à `UsersService`**
+    - Si `UsersService` rencontre un problème ou est mal configuré, la génération du token échouera.

@@ -1,1 +1,150 @@
 # Queries
+
+## Description Générale
+
+Le fichier `queries.ts` contient des fonctions utilitaires pour effectuer des requêtes spécifiques sur la base de données. Ces fonctions encapsulent la logique d'accès aux données et permettent de simplifier les interactions avec les entités gérées par TypeORM. Ce fichier est conçu pour centraliser les requêtes complexes ou fréquemment utilisées.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Récupération du Propriétaire d'un Algorithme**
+
+La fonction `getOwnerOfAlgo` permet de récupérer l'utilisateur propriétaire d'un algorithme en utilisant les relations définies dans la base de données.
+
+---
+
+## Fonction : `getOwnerOfAlgo`
+
+### Description
+
+Cette fonction récupère l'utilisateur qui est propriétaire d'un algorithme donné. Elle utilise la table des permissions sur les algorithmes (`PermAlgorithme`) pour identifier l'utilisateur ayant le droit `Owner` sur l'algorithme spécifié.
+
+### Signature
+
+```typescript
+export async function getOwnerOfAlgo(algoId: number): Promise<Utilisateur>;
+```
+
+### Paramètres
+
+-   **`algoId`** : L'identifiant unique de l'algorithme.
+
+### Retour
+
+-   **`Utilisateur`** : L'utilisateur propriétaire de l'algorithme.
+
+---
+
+### Fonctionnement
+
+1. **Accès au Repository**
+
+    - La fonction utilise le repository TypeORM de l'entité `PermAlgorithme` pour effectuer la requête.
+
+2. **Requête avec Relations**
+
+    - La requête inclut une relation avec l'entité `Utilisateur` pour récupérer directement les informations de l'utilisateur propriétaire.
+
+3. **Filtrage par Droits**
+
+    - La condition `droits: Droits.Owner` garantit que seul l'utilisateur ayant le droit `Owner` sur l'algorithme est retourné.
+
+4. **Retour de l'Utilisateur**
+    - Si une permission correspondante est trouvée, la fonction retourne l'utilisateur associé.
+
+---
+
+### Exemple de Code
+
+```typescript
+const permAlgoRepository = AppDataSource.getRepository(PermAlgorithme);
+const owner = await permAlgoRepository.findOne({
+	relations: { utilisateur: true },
+	where: { idAlgorithme: algoId, droits: Droits.Owner },
+});
+return owner.utilisateur;
+```
+
+---
+
+## Exemple d'Utilisation
+
+### Récupération du Propriétaire d'un Algorithme
+
+```typescript
+import { getOwnerOfAlgo } from "../utils/queries";
+
+const algoId = 123;
+
+const owner = await getOwnerOfAlgo(algoId);
+
+if (owner) {
+	console.log("Propriétaire de l'algorithme :", owner.pseudo);
+} else {
+	console.error("Aucun propriétaire trouvé pour cet algorithme.");
+}
+```
+
+### Intégration dans une Route API
+
+```typescript
+app.get("/api/algos/:id/owner", async (req, res) => {
+	const algoId = parseInt(req.params.id);
+
+	try {
+		const owner = await getOwnerOfAlgo(algoId);
+
+		if (!owner) {
+			return res.status(404).json({ message: "Propriétaire introuvable." });
+		}
+
+		res.status(200).json({ owner });
+	} catch (error) {
+		res.status(500).json({ message: "Erreur lors de la récupération du propriétaire." });
+	}
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de TypeORM**
+
+-   La fonction utilise le repository TypeORM pour interagir avec la base de données.
+-   Les relations entre les entités `PermAlgorithme` et `Utilisateur` sont exploitées pour récupérer les données nécessaires.
+
+### 2. **Gestion des Relations**
+
+-   La relation `utilisateur` est incluse dans la requête via l'option `relations`, ce qui permet de récupérer directement les informations de l'utilisateur sans effectuer une requête supplémentaire.
+
+### 3. **Filtrage par Droits**
+
+-   La condition `droits: Droits.Owner` garantit que seule la permission correspondant au propriétaire est prise en compte.
+
+---
+
+## Avantages
+
+1. **Centralisation des Requêtes**
+
+    - La logique de récupération du propriétaire est encapsulée dans une fonction réutilisable, ce qui améliore la maintenabilité du code.
+
+2. **Optimisation des Requêtes**
+
+    - L'utilisation des relations dans TypeORM permet de minimiser le nombre de requêtes nécessaires pour récupérer les données.
+
+3. **Simplicité d'Utilisation**
+    - La fonction abstrait la complexité des requêtes SQL, ce qui facilite son intégration dans les contrôleurs ou services.
+
+---
+
+## Limites
+
+1. **Gestion des Erreurs**
+
+    - La fonction ne gère pas explicitement les cas où aucune permission n'est trouvée. Cela peut entraîner des erreurs si l'appelant ne vérifie pas le retour.
+
+2. **Dépendance à TypeORM**
+    - La fonction est étroitement liée à TypeORM. Si l'ORM est remplacé, cette fonction devra être réécrite.

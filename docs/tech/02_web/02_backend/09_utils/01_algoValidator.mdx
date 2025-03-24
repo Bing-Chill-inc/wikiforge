@@ -1,1 +1,211 @@
 # AlgoValidator
+
+## Description Générale
+
+Le fichier `algoValidator.ts` contient la logique de validation des algorithmes dans l'application backend d'Algoforge. Il utilise la bibliothèque **Zod** pour définir des schémas de validation et s'assurer que les algorithmes respectent une structure spécifique. Ce fichier est essentiel pour garantir la cohérence et la validité des algorithmes manipulés par l'application.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Définition des Types d'Éléments**
+
+Le fichier définit les différents types d'éléments qui composent un algorithme. Ces types sont représentés par l'énumération `TypeElement` et validés à l'aide de `TypeElementEnum`.
+
+#### Types d'Éléments :
+
+-   **`Probleme`** : Représente un problème dans l'algorithme.
+-   **`Procedure`** : Représente une procédure.
+-   **`StructureIterativeBornee`** : Représente une boucle bornée.
+-   **`StructureIterativeNonBornee`** : Représente une boucle non bornée.
+-   **`StructureSi`** : Représente une structure conditionnelle "si".
+-   **`StructureSwitch`** : Représente une structure conditionnelle "switch".
+-   **`Condition`** : Représente une condition.
+-   **`ConditionSortie`** : Représente une condition de sortie.
+-   **`DictionnaireDonnee`** : Représente un dictionnaire de données.
+
+---
+
+## Définition des Schémas de Validation
+
+### 1. **Schéma de Base : `coordonneeSchema`**
+
+-   Valide une coordonnée sous forme de chaîne non vide se terminant par `vw`.
+-   Exemple valide : `"50vw"`.
+
+#### Exemple :
+
+```typescript
+const coordonneeSchema = z.string().nonempty().endsWith("vw");
+```
+
+---
+
+### 2. **Schéma des Éléments**
+
+#### a. **Problème/Procédure**
+
+-   Valide les éléments de type `Probleme` ou `Procedure`.
+-   Attributs :
+    -   **`typeElement`** : Doit être `Probleme` ou `Procedure`.
+    -   **`abscisse`** et **`ordonnee`** : Coordonnées valides.
+    -   **`libelle`** : Libellé non vide.
+    -   **`listeDonnes`** et **`listeResultats`** : Listes de chaînes (par défaut : `[""]`).
+    -   **`estDecomposeAilleurs`** : Booléen optionnel.
+    -   **`enfants`** : Liste d'enfants (par défaut : `[]`).
+
+#### Exemple :
+
+```typescript
+const ProblemeSchema = BaseProblemeSchema.extend({
+	enfants: enfants.default([]),
+});
+```
+
+---
+
+#### b. **Dictionnaire de Données**
+
+-   Valide les éléments de type `DictionnaireDonnee`.
+-   Attributs :
+    -   **`typeElement`** : Doit être `DictionnaireDonnee`.
+    -   **`types`** et **`signification`** : Objets facultatifs contenant des paires clé-valeur.
+
+#### Exemple :
+
+```typescript
+const DictionnaireDonneeSchema = z.object({
+	typeElement: TypeElementEnum.extract([TypeElement.DictionnaireDonnee]),
+	types: z.record(z.string()).optional(),
+	signification: z.record(z.string()).optional(),
+});
+```
+
+---
+
+#### c. **Structure Itérative Non Bornée**
+
+-   Valide les éléments de type `StructureIterativeNonBornee`.
+-   Attributs :
+    -   **`typeElement`** : Doit être `StructureIterativeNonBornee`.
+    -   **`abscisse`** et **`ordonnee`** : Coordonnées valides.
+    -   **`enfants`** : Liste d'enfants (par défaut : `[]`).
+
+#### Exemple :
+
+```typescript
+const StructureIterativeNonBorneeSchema = BaseStructureIterativeNonBorneeSchema.extend({
+	enfants: enfants.default([]),
+});
+```
+
+---
+
+#### d. **Structure Itérative Bornée**
+
+-   Valide les éléments de type `StructureIterativeBornee`.
+-   Attributs :
+    -   **`typeElement`** : Doit être `StructureIterativeBornee`.
+    -   **`abscisse`** et **`ordonnee`** : Coordonnées valides.
+    -   **`variableAIterer`**, **`borneInferieure`**, **`borneSuperieure`**, **`pas`** : Chaînes non vides.
+    -   **`croissant`** : Booléen.
+    -   **`enfants`** : Liste d'enfants (par défaut : `[]`).
+
+#### Exemple :
+
+```typescript
+const StructureIterativeBorneeSchema = BaseStructureIterativeBorneeSchema.extend({
+	enfants: enfants.default([]),
+});
+```
+
+---
+
+#### e. **Structure Conditionnelle (Si/Switch)**
+
+-   **`StructureSi`** :
+
+    -   Valide les structures conditionnelles "si".
+    -   Attributs :
+        -   **`conditions`** : Liste de conditions (par défaut : `[]`).
+
+-   **`StructureSwitch`** :
+    -   Valide les structures conditionnelles "switch".
+    -   Attributs :
+        -   **`expressionATester`** : Expression non vide.
+        -   **`conditions`** : Liste de conditions (par défaut : `[]`).
+
+#### Exemple :
+
+```typescript
+const StructureSiSchema = z.object({
+	typeElement: TypeElementEnum.extract([TypeElement.StructureSi]),
+	abscisse: coordonneeSchema,
+	ordonnee: coordonneeSchema,
+	conditions: z.array(ConditionSchema).default([]),
+});
+```
+
+---
+
+### 3. **Schéma Global : `AlgoSchema`**
+
+-   Définit un algorithme comme une liste d'éléments enfants.
+-   Utilise les schémas définis précédemment pour valider chaque élément.
+
+#### Exemple :
+
+```typescript
+const AlgoSchema = enfants;
+```
+
+---
+
+## Classe `AlgoValidator`
+
+### Description
+
+La classe `AlgoValidator` fournit une méthode statique pour valider un algorithme en utilisant le schéma global `AlgoSchema`.
+
+### Méthode : `validateAlgo`
+
+-   **Paramètre** : Un objet représentant un algorithme.
+-   **Retour** :
+    -   **`success: true`** : Si l'algorithme est valide, avec les données validées dans `data`.
+    -   **`success: false`** : Si l'algorithme est invalide, avec les erreurs dans `error`.
+
+#### Exemple d'Utilisation
+
+```typescript
+const algo = {
+	typeElement: "Probleme",
+	abscisse: "50vw",
+	ordonnee: "100vw",
+	libelle: "Exemple de problème",
+};
+
+const result = AlgoValidator.validateAlgo(algo);
+
+if (result.success) {
+	console.log("Algorithme valide :", result.data);
+} else {
+	console.error("Erreurs de validation :", result.error);
+}
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de Zod**
+
+-   **Zod** est utilisé pour définir des schémas de validation flexibles et robustes.
+-   Les schémas permettent de valider les structures complexes des algorithmes.
+
+### 2. **Validation Récursive**
+
+-   Les schémas utilisent `z.lazy` pour permettre la validation récursive des enfants.
+
+### 3. **Gestion des Erreurs**
+
+-   Les erreurs de validation sont capturées et renvoyées sous une forme structurée.

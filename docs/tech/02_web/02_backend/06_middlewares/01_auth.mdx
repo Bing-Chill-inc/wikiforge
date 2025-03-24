@@ -1,1 +1,126 @@
 # Auth Middleware
+
+## Description Générale
+
+Le fichier `auth.middleware.ts` contient un middleware Express utilisé pour vérifier si un utilisateur est authentifié avant d'accéder à certaines routes protégées. Ce middleware repose sur le service `AuthService` pour valider les droits d'accès de l'utilisateur.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Vérification de l'Authentification**
+
+Le middleware utilise la méthode `verifyUser` du service `AuthService` pour vérifier si l'utilisateur est connecté et possède les droits nécessaires pour accéder à la ressource demandée.
+
+### 2. **Blocage des Accès Non Autorisés**
+
+Si l'utilisateur n'est pas authentifié ou ne possède pas les droits requis, le middleware renvoie une réponse d'erreur et empêche l'accès à la route suivante.
+
+### 3. **Passage au Contrôleur**
+
+Si l'utilisateur est authentifié et possède les droits nécessaires, le middleware appelle la fonction `next()` pour permettre l'exécution du contrôleur ou du middleware suivant.
+
+---
+
+## Exemple de Code
+
+### Middleware `authMiddleware`
+
+```typescript
+import { AuthService } from "../api/auth/auth.service";
+
+/**
+ * Ce middleware permet de vérifier si l'utilisateur est connecté.
+ * Si l'utilisateur n'est pas connecté, une erreur est renvoyée, voir {@link AuthService.verifyUser}.
+ * @category Middlewares
+ */
+export const authMiddleware = async (req, res, next) => {
+	const authService = new AuthService();
+
+	// Vérification des droits de l'utilisateur
+	const hasRights = await authService.verifyUser(req, res);
+	if (!hasRights) return;
+
+	next();
+};
+```
+
+---
+
+## Fonctionnement
+
+1. **Initialisation du Service** :
+
+    - Une instance de `AuthService` est créée pour gérer la vérification des droits d'accès.
+
+2. **Vérification des Droits** :
+
+    - La méthode `verifyUser` du service `AuthService` est appelée avec la requête et la réponse en paramètres.
+    - Cette méthode extrait le token d'authentification de la requête, le valide, et ajoute les informations de l'utilisateur à `res.locals.user` si le token est valide.
+
+3. **Gestion des Accès** :
+    - Si l'utilisateur est authentifié, la fonction `next()` est appelée pour passer au middleware ou au contrôleur suivant.
+    - Si l'utilisateur n'est pas authentifié, une réponse d'erreur est renvoyée (par exemple, statut HTTP 401 ou 403).
+
+---
+
+## Exemple d'Utilisation
+
+### Application du Middleware à une Route
+
+Le middleware peut être appliqué à une ou plusieurs routes pour les protéger.
+
+#### Exemple :
+
+```typescript
+import express from "express";
+import { authMiddleware } from "./middlewares/auth.middleware";
+import { AlgosController } from "./api/algos/algos.controller";
+
+const app = express();
+const algosController = new AlgosController();
+
+// Appliquer le middleware à toutes les routes du contrôleur
+app.use("/algos", authMiddleware, algosController.router);
+
+// Exemple de route protégée
+app.get("/protected", authMiddleware, (req, res) => {
+	res.json({ message: "Vous êtes authentifié !" });
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `AuthService`**
+
+Le middleware délègue la logique de vérification au service `AuthService`, ce qui garantit une séparation claire des responsabilités :
+
+-   Le middleware se concentre sur la gestion des accès.
+-   Le service gère la logique métier liée à l'authentification.
+
+### 2. **Ajout d'Informations à la Requête**
+
+Si l'utilisateur est authentifié, ses informations sont ajoutées à `res.locals.user`. Cela permet aux contrôleurs ou middlewares suivants d'accéder facilement aux données de l'utilisateur.
+
+### 3. **Gestion des Erreurs**
+
+Si l'utilisateur n'est pas authentifié ou si une erreur survient lors de la vérification, une réponse d'erreur est renvoyée sans exécuter les contrôleurs ou middlewares suivants.
+
+---
+
+## Exemple de Flux
+
+1. **Requête Entrante** :
+
+    - Un utilisateur envoie une requête HTTP à une route protégée.
+
+2. **Exécution du Middleware** :
+
+    - Le middleware extrait le token d'authentification de la requête.
+    - Le service `AuthService` valide le token et vérifie les droits de l'utilisateur.
+
+3. **Résultat** :
+    - Si l'utilisateur est authentifié, la requête est transmise au contrôleur ou middleware suivant.
+    - Sinon, une réponse d'erreur est renvoyée.

@@ -1,1 +1,124 @@
 # Hash
+
+## Description Générale
+
+Le fichier `hash.ts` contient une fonction utilitaire permettant de hasher des chaînes de caractères, principalement utilisée pour sécuriser les mots de passe avant de les stocker dans la base de données. Il utilise la bibliothèque **bcrypt-nodejs** pour générer un hash sécurisé.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Hashage des Chaînes de Caractères**
+
+La fonction `hashString` génère un hash sécurisé pour une chaîne de caractères donnée. Ce hash est irréversible, ce qui garantit que les mots de passe ne peuvent pas être récupérés en clair.
+
+### 2. **Utilisation de Sel (Salt)**
+
+La fonction utilise un sel (salt) généré aléatoirement pour renforcer la sécurité du hash. Cela empêche les attaques par table de hachage (rainbow table).
+
+---
+
+## Fonction : `hashString`
+
+### Signature
+
+```typescript
+export function hashString(toHash: string): string;
+```
+
+### Paramètres
+
+-   **`toHash`** : La chaîne de caractères à hasher (par exemple, un mot de passe).
+
+### Retour
+
+-   **`string`** : La chaîne de caractères hashée.
+
+---
+
+## Exemple d'Utilisation
+
+### Hashage d'un Mot de Passe
+
+```typescript
+import { hashString } from "../utils/hash";
+
+const password = "monMotDePasse123";
+const hashedPassword = hashString(password);
+
+console.log("Mot de passe hashé :", hashedPassword);
+```
+
+---
+
+## Exemple d'Intégration dans une Route API
+
+### Route d'Inscription
+
+Lors de l'inscription d'un utilisateur, le mot de passe est hashé avant d'être stocké dans la base de données.
+
+```typescript
+import { hashString } from "../utils/hash";
+import { Utilisateur } from "../db/schemas/Utilisateur.schema";
+
+app.post("/api/users/register", async (req, res) => {
+	const { email, password, pseudo } = req.body;
+
+	// Hashage du mot de passe
+	const hashedPassword = hashString(password);
+
+	// Création de l'utilisateur
+	const utilisateur = new Utilisateur();
+	utilisateur.adresseMail = email;
+	utilisateur.mdpHash = hashedPassword;
+	utilisateur.pseudo = pseudo;
+
+	await utilisateursRepository.save(utilisateur);
+
+	res.status(201).json({ message: "Utilisateur créé avec succès" });
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `bcrypt-nodejs`**
+
+-   **bcrypt-nodejs** est une bibliothèque permettant de générer des hashes sécurisés.
+-   Elle est basée sur l'algorithme bcrypt, qui est conçu pour être résistant aux attaques par force brute.
+
+### 2. **Génération de Sel (Salt)**
+
+-   La fonction `bcrypt.genSaltSync(10)` génère un sel aléatoire avec un facteur de coût de 10. Ce facteur détermine la complexité du hash et impacte les performances.
+
+### 3. **Hashage Synchronisé**
+
+-   La fonction `bcrypt.hashSync` est utilisée pour générer le hash de manière synchrone. Cela garantit que le hash est disponible immédiatement après l'appel de la fonction.
+
+---
+
+## Avantages
+
+1. **Sécurité Renforcée** :
+
+    - L'utilisation de bcrypt et de sel garantit que les mots de passe sont stockés de manière sécurisée.
+
+2. **Facilité d'Intégration** :
+
+    - La fonction `hashString` est simple à utiliser et peut être intégrée facilement dans les routes API ou les services.
+
+3. **Résistance aux Attaques** :
+    - Le sel empêche les attaques par table de hachage.
+    - L'algorithme bcrypt est conçu pour être lent, ce qui rend les attaques par force brute plus difficiles.
+
+---
+
+## Limites
+
+1. **Performances** :
+
+    - Le hashage avec bcrypt peut être lent pour des systèmes à forte charge. Cependant, cela est un compromis nécessaire pour garantir la sécurité.
+
+2. **Synchronisation** :
+    - La fonction utilise une méthode synchrone (`hashSync`), ce qui peut bloquer le thread principal pour des opérations longues. Une version asynchrone pourrait être envisagée pour améliorer les performances.

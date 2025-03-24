@@ -1,1 +1,166 @@
 # Error Middleware
+
+## Description Générale
+
+Le fichier `error.middleware.ts` contient un middleware Express utilisé pour gérer les erreurs survenues lors du traitement des requêtes. Ce middleware capture les erreurs non gérées, les enregistre dans les logs, et renvoie une réponse standardisée au client. Il garantit que l'application ne plante pas en cas d'erreur.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Capture des Erreurs**
+
+Le middleware intercepte toutes les erreurs survenues dans les middlewares ou contrôleurs précédents. Cela inclut les erreurs explicites (lancées avec `throw`) et les erreurs inattendues.
+
+### 2. **Enregistrement des Erreurs**
+
+Les erreurs sont enregistrées dans les logs à l'aide du module `Logger`. En mode développement, la pile d'erreurs complète est enregistrée pour faciliter le débogage.
+
+### 3. **Réponse Standardisée**
+
+Le middleware renvoie une réponse JSON standardisée au client, contenant :
+
+-   Un code de statut HTTP (par défaut : 500).
+-   Un message d'erreur générique.
+
+---
+
+## Exemple de Code
+
+### Middleware `errorMiddleware`
+
+```typescript
+import { Res } from "../types/response.entity";
+import { Logger } from "../utils/logger";
+
+/**
+ * Ce middleware permet de gérer les erreurs survenues lors du traitement des requêtes.
+ * Il sert également à ce que l'application ne plante pas en cas d'erreur.
+ * @category Middlewares
+ */
+export const errorMiddleware = async (error, req, res, next) => {
+	const errorMessage: string = process.env.BUILD === "dev" ? error.stack : error.message;
+
+	Logger.error(`Une erreur est survenue lors du traitement de la requête: \n${errorMessage}`, "middleware: error");
+
+	const statusCode = error.statusCode || 500;
+	const result = new Res(statusCode, "Une erreur est survenue lors du traitement de la requête.");
+
+	res.status(statusCode).json(result);
+};
+```
+
+---
+
+## Fonctionnement
+
+1. **Capture de l'Erreur** :
+
+    - Le middleware reçoit l'erreur en tant que premier paramètre (`error`).
+    - Il peut s'agir d'une erreur explicite (par exemple, `throw new Error()`) ou d'une erreur inattendue.
+
+2. **Enregistrement dans les Logs** :
+
+    - En mode développement (`BUILD=dev`), la pile complète de l'erreur (`error.stack`) est enregistrée.
+    - En mode production, seul le message de l'erreur (`error.message`) est enregistré pour éviter d'exposer des informations sensibles.
+
+3. **Construction de la Réponse** :
+
+    - Le middleware crée une instance de la classe `Res` pour formater la réponse.
+    - Le code de statut HTTP est défini par `error.statusCode` (ou 500 par défaut).
+    - Un message générique est renvoyé au client pour éviter de divulguer des détails techniques.
+
+4. **Envoi de la Réponse** :
+    - La réponse est envoyée au client sous forme de JSON.
+
+---
+
+## Exemple d'Utilisation
+
+### Intégration dans une Application Express
+
+Le middleware doit être ajouté après tous les autres middlewares et contrôleurs pour capturer les erreurs.
+
+#### Exemple :
+
+```typescript
+import express from "express";
+import { errorMiddleware } from "./middlewares/error.middleware";
+import { authMiddleware } from "./middlewares/auth.middleware";
+import { AlgosController } from "./api/algos/algos.controller";
+
+const app = express();
+const algosController = new AlgosController();
+
+// Middlewares et routes
+app.use(authMiddleware);
+app.use("/algos", algosController.router);
+
+// Middleware de gestion des erreurs
+app.use(errorMiddleware);
+
+// Démarrage du serveur
+app.listen(3000, () => {
+	console.log("Serveur démarré sur le port 3000");
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Séparation des Environnements**
+
+-   En mode développement (`BUILD=dev`), la pile complète de l'erreur est incluse dans les logs pour faciliter le débogage.
+-   En mode production, seuls les messages d'erreur sont enregistrés pour éviter d'exposer des informations sensibles.
+
+### 2. **Standardisation des Réponses**
+
+-   Le middleware utilise la classe `Res` pour formater les réponses d'erreur. Cela garantit une structure cohérente pour toutes les erreurs.
+
+### 3. **Prévention des Plantages**
+
+-   En capturant toutes les erreurs, le middleware empêche l'application de planter en cas d'erreur inattendue.
+
+---
+
+## Exemple de Flux
+
+1. **Requête Entrante** :
+
+    - Une requête HTTP est envoyée à une route de l'application.
+
+2. **Erreur dans un Contrôleur ou Middleware** :
+
+    - Une erreur est levée (par exemple, `throw new Error()`).
+
+3. **Capture par le Middleware** :
+
+    - Le middleware `errorMiddleware` intercepte l'erreur.
+
+4. **Enregistrement et Réponse** :
+    - L'erreur est enregistrée dans les logs.
+    - Une réponse JSON standardisée est renvoyée au client.
+
+---
+
+## Exemple de Réponse JSON
+
+### En Mode Production
+
+```json
+{
+	"status": 500,
+	"message": "Une erreur est survenue lors du traitement de la requête."
+}
+```
+
+### En Mode Développement
+
+```json
+{
+	"status": 500,
+	"message": "Une erreur est survenue lors du traitement de la requête.",
+	"stack": "Error: Exemple d'erreur\n    at ..."
+}
+```

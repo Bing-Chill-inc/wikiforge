@@ -1,1 +1,141 @@
 # ClassValidator
+
+## Description Générale
+
+Le fichier `classValidator.ts` contient une fonction utilitaire permettant de valider les données d'une classe DTO (Data Transfer Object) à l'aide de la bibliothèque **class-validator**. Cette validation garantit que les données reçues respectent les contraintes définies dans les classes DTO, comme les formats d'email, les longueurs minimales, ou les champs obligatoires.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Validation des Données**
+
+La fonction `validateClass` utilise la méthode `validate` de **class-validator** pour vérifier que les données d'une classe respectent les contraintes définies par ses décorateurs (par exemple, `@IsEmail`, `@MinLength`).
+
+### 2. **Retour des Erreurs**
+
+Si les données ne respectent pas les contraintes, la fonction retourne un tableau d'erreurs de validation. Sinon, elle retourne `null`.
+
+### 3. **Arrêt à la Première Erreur**
+
+La validation s'arrête dès qu'une erreur est détectée grâce à l'option `stopAtFirstError: true`. Cela permet d'optimiser les performances et de fournir un retour rapide.
+
+---
+
+## Fonction : `validateClass`
+
+### Signature
+
+```typescript
+export async function validateClass(data: any): Promise<ValidationError[] | null>;
+```
+
+### Paramètres
+
+-   **`data`** : Instance de la classe DTO contenant les données à valider.
+
+### Retour
+
+-   **`ValidationError[]`** : Tableau contenant les erreurs de validation si les données sont invalides.
+-   **`null`** : Si les données sont valides.
+
+---
+
+## Exemple d'Utilisation
+
+### Validation d'une Classe DTO
+
+Supposons que nous ayons une classe DTO pour l'inscription d'un utilisateur :
+
+```typescript
+import { IsEmail, MinLength } from "class-validator";
+
+export class UserRegisterDTO {
+	@IsEmail()
+	email: string;
+
+	@MinLength(8)
+	password: string;
+
+	@MinLength(3)
+	pseudo: string;
+}
+```
+
+#### Exemple de Validation
+
+```typescript
+import { validateClass } from "../utils/classValidator";
+import { UserRegisterDTO } from "../api/users/users.dto";
+
+const data = new UserRegisterDTO();
+data.email = "test@@"; // Email invalide
+data.password = "test"; // Mot de passe trop court
+data.pseudo = "T"; // Pseudo trop court
+
+const validationErrors = await validateClass(data);
+
+if (validationErrors) {
+	console.error("Erreurs de validation :", validationErrors);
+} else {
+	console.log("Les données sont valides !");
+}
+```
+
+---
+
+## Exemple d'Intégration dans une Route API
+
+### Route d'Inscription
+
+```typescript
+import { validateClass } from "../utils/classValidator";
+import { UserRegisterDTO } from "../api/users/users.dto";
+import { Res } from "../types/response.entity";
+
+app.post("/api/users/register", async (req, res) => {
+	const data = Object.assign(new UserRegisterDTO(), req.body);
+
+	// Validation des données
+	const validationErrors = await validateClass(data);
+	if (validationErrors) {
+		return res.status(400).json(new Res(400, "Données invalides", validationErrors));
+	}
+
+	// Logique métier pour créer l'utilisateur
+	// ...
+	res.status(201).json(new Res(201, "Utilisateur créé avec succès"));
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `class-validator`**
+
+-   **class-validator** est une bibliothèque qui permet de valider les données d'une classe en utilisant des décorateurs comme `@IsEmail`, `@MinLength`, ou `@IsOptional`.
+-   Elle est particulièrement utile pour valider les données des DTOs dans les applications TypeScript.
+
+### 2. **Arrêt à la Première Erreur**
+
+L'option `stopAtFirstError: true` optimise les performances en arrêtant la validation dès qu'une erreur est détectée.
+
+### 3. **Retour Structuré des Erreurs**
+
+Les erreurs retournées par la fonction `validateClass` sont structurées et contiennent des informations détaillées sur les champs invalides, ce qui facilite leur gestion dans les réponses API.
+
+---
+
+## Avantages
+
+1. **Validation Centralisée** :
+
+    - La validation est centralisée dans les DTOs, ce qui améliore la maintenabilité et réduit la duplication de code.
+
+2. **Gestion des Erreurs Simplifiée** :
+
+    - Les erreurs de validation sont retournées sous une forme standardisée, ce qui facilite leur traitement dans les contrôleurs.
+
+3. **Flexibilité** :
+    - Les contraintes de validation peuvent être facilement modifiées en ajoutant ou en modifiant les décorateurs dans les DTOs.

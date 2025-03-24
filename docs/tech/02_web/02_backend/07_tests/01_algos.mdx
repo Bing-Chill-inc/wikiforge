@@ -1,1 +1,212 @@
 # Test des Algorithmes
+
+## Description Générale
+
+Le fichier `algos.test.ts` contient une suite de tests automatisés pour vérifier le bon fonctionnement des fonctionnalités liées aux algorithmes dans le backend de l'application Algoforge. Ces tests couvrent les opérations CRUD (Create, Read, Update, Delete) sur les algorithmes, ainsi que la validation de leur structure. Ils utilisent le framework de test **Bun** pour exécuter les tests et vérifier les résultats.
+
+---
+
+## Objectifs des Tests
+
+### 1. **Vérification des Routes API**
+
+Les tests valident les différentes routes de l'API liées aux algorithmes, notamment :
+
+-   **GET** : Récupération des algorithmes par utilisateur ou par ID.
+-   **POST** : Création d'un nouvel algorithme.
+-   **PUT** : Mise à jour d'un algorithme existant.
+-   **DELETE** : Suppression d'un algorithme.
+
+### 2. **Validation des Algorithmes**
+
+Les tests vérifient que les algorithmes respectent la structure attendue et détectent les erreurs dans leur contenu.
+
+### 3. **Gestion des Erreurs**
+
+Les tests s'assurent que les erreurs sont correctement gérées, avec des réponses appropriées (par exemple, statut HTTP 400 ou 404).
+
+### 4. **Robustesse et Cohérence**
+
+Les tests garantissent que les fonctionnalités liées aux algorithmes fonctionnent correctement dans différents scénarios, y compris les cas limites.
+
+---
+
+## Structure des Tests
+
+### 1. **Initialisation des Données**
+
+Avant l'exécution des tests, des utilisateurs et des algorithmes de test sont créés dans la base de données. Cela garantit que chaque test dispose d'un environnement cohérent.
+
+#### Exemple :
+
+```typescript
+beforeAll(async (done) => {
+	// Création des utilisateurs de test
+	for (const user of [UserSet.unitTestAlgo1, UserSet.unitTestAlgo2]) {
+		const u = new Utilisateur();
+		u.id = user.id;
+		u.adresseMail = user.email;
+		u.mdpHash = hashString(user.password);
+		u.pseudo = user.pseudo;
+		u.dateInscription = new Date().getTime();
+		u.isVerified = true;
+		await utilisateursRepository.save(u);
+	}
+
+	// Connexion avec un utilisateur de test
+	const payload = new UserLoginDTO();
+	payload.email = UserSet.unitTestAlgo1.email;
+	payload.password = UserSet.unitTestAlgo1.password;
+	const response = await request.post("/api/users/login").send(payload);
+	token = response.headers.authorization;
+});
+```
+
+---
+
+### 2. **Tests des Routes API**
+
+#### a. **GET `/api/algos/byUserId/:id`**
+
+-   **Objectif** : Vérifier la récupération des algorithmes d'un utilisateur.
+-   **Cas Testés** :
+    -   Aucun algorithme trouvé pour l'utilisateur.
+    -   Algorithmes trouvés pour l'utilisateur.
+
+#### Exemple :
+
+```typescript
+test("succès: Algorithme trouvé.", async () => {
+	const response = await request
+		.get(`/api/algos/byUserId/${UserSet.unitTestAlgo1.id}`)
+		.auth(token, { type: "bearer" });
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Algo.By_User.Found);
+	expect(response.body.data).toBeArrayOfSize(1);
+});
+```
+
+---
+
+#### b. **GET `/api/algos/:id`**
+
+-   **Objectif** : Vérifier la récupération d'un algorithme par son ID.
+-   **Cas Testés** :
+    -   Algorithme non trouvé.
+    -   Algorithme trouvé.
+
+#### Exemple :
+
+```typescript
+test("erreur: Algorithme non trouvé.", async () => {
+	const response = await request.get("/api/algos/13").auth(token, { type: "bearer" });
+	expect(response.status).toBe(NotFoundRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Algo.Not_found);
+});
+```
+
+---
+
+#### c. **POST `/api/algos`**
+
+-   **Objectif** : Vérifier la création d'un nouvel algorithme.
+-   **Cas Testés** :
+    -   Données manquantes.
+    -   Algorithme invalide.
+    -   Algorithme créé avec succès.
+
+#### Exemple :
+
+```typescript
+test("succès: Algorithme créé.", async () => {
+	const payload = new AlgoCreateDTO();
+	payload.nom = "Algorithme test";
+	payload.ownerId = UserSet.unitTestAlgo1.id;
+	payload.sourceCode = readAlgo("algo-complet");
+
+	const response = await request.post("/api/algos").auth(token, { type: "bearer" }).send(payload);
+	expect(response.status).toBe(CreatedRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Algo.Success.Created);
+});
+```
+
+---
+
+#### d. **PUT `/api/algos/:id`**
+
+-   **Objectif** : Vérifier la mise à jour d'un algorithme existant.
+-   **Cas Testés** :
+    -   Données manquantes.
+    -   Algorithme mis à jour avec succès.
+
+#### Exemple :
+
+```typescript
+test("succès: Algorithme mis à jour.", async () => {
+	const payload = new AlgoUpdateDTO();
+	payload.id = 1;
+	payload.nom = "Algorithme test mis à jour";
+	payload.sourceCode = readAlgo("algo-1");
+
+	const response = await request.put("/api/algos/1").auth(token, { type: "bearer" }).send(payload);
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Algo.Success.Updated);
+});
+```
+
+---
+
+#### e. **DELETE `/api/algos/:id`**
+
+-   **Objectif** : Vérifier la suppression d'un algorithme.
+-   **Cas Testés** :
+    -   Algorithme non trouvé.
+    -   Algorithme supprimé avec succès.
+
+#### Exemple :
+
+```typescript
+test("succès: Algorithme supprimé.", async () => {
+	const response = await request.delete("/api/algos/1").auth(token, { type: "bearer" });
+	expect(response.status).toBe(OkRes.statut);
+	expect(response.body).toHaveProperty("message", Responses.Algo.Success.Deleted);
+});
+```
+
+---
+
+### 3. **Tests de Validation des Algorithmes**
+
+#### Objectif
+
+Vérifier que les algorithmes respectent la structure attendue et détecter les erreurs dans leur contenu.
+
+#### Cas Testés
+
+-   Algorithmes valides.
+-   Algorithmes avec des erreurs (par exemple, mauvais format, données manquantes).
+
+#### Exemple :
+
+```typescript
+test("Algo référence n°3. -> 8 erreurs: mauvais format de abscisse/ordonnee.", async () => {
+	const result = validationAlgo("algo-3");
+	expect(result.error.issues).toBeArrayOfSize(8);
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `beforeAll`**
+
+-   Les données de test (utilisateurs, algorithmes) sont initialisées avant l'exécution des tests pour garantir un environnement cohérent.
+
+### 2. **Validation des Réponses**
+
+-   Les tests vérifient les statuts HTTP et les messages de réponse pour s'assurer que l'API fonctionne comme prévu.
+
+### 3. **Gestion des Fichiers**
+
+-   Les algorithmes sont stockés sous forme de fichiers JSON. Les tests vérifient la création, la mise à jour, et la suppression de ces fichiers.

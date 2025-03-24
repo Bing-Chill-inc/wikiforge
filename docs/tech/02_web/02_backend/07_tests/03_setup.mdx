@@ -1,1 +1,146 @@
 # Point d'entrée
+
+## Description Générale
+
+Le fichier `setup.test.ts` est responsable de l'initialisation de l'environnement de test pour l'application backend d'Algoforge. Il configure les prérequis nécessaires avant l'exécution des tests unitaires et d'intégration, notamment la réinitialisation de la base de données et le lancement des suites de tests. Ce fichier garantit que chaque test démarre dans un environnement propre et cohérent.
+
+---
+
+## Objectifs des Tests
+
+### 1. **Initialisation de l'Environnement**
+
+-   Vérifier que l'application est en mode `test` avant de lancer les tests.
+-   S'assurer que l'application est correctement initialisée avant de démarrer les tests.
+
+### 2. **Réinitialisation de la Base de Données**
+
+-   Supprimer toutes les données existantes dans les tables de la base de données.
+-   Garantir un environnement propre pour chaque exécution des tests.
+
+### 3. **Exécution des Suites de Tests**
+
+-   Lancer les tests unitaires et d'intégration pour les différentes fonctionnalités de l'application (par exemple, utilisateurs, algorithmes).
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Vérification du Mode de l'Application**
+
+Le fichier vérifie que l'application est en mode `test` avant de démarrer les tests. Si ce n'est pas le cas, un message d'erreur est affiché et le processus est arrêté.
+
+#### Exemple :
+
+```typescript
+if (process.env.BUILD !== "test") {
+	Logger.error("Le mode de l'application doit être 'test'.", "test: setup");
+	Logger.warn("ATTENTION: ceci supprime toutes les données de la base de données.", "test: setup");
+	process.exit(1);
+}
+```
+
+---
+
+### 2. **Initialisation Avant les Tests**
+
+Le hook `beforeAll` attend que l'application soit complètement initialisée avant de lancer les tests. Une fois l'application prête, il réinitialise la base de données en supprimant toutes les données existantes.
+
+#### Exemple :
+
+```typescript
+beforeAll(async (done) => {
+	Logger.log("Waiting for application to be initialized...", "test: setup");
+	const interval = setInterval(async () => {
+		if (app.locals.initialized && !app.locals.testSetupInit) {
+			Logger.log("Application initialized !", "test: setup");
+			app.locals.testSetupInit = true;
+			clearInterval(interval);
+			await clearAllTables();
+			app.locals.testSetupDone = true;
+			done();
+		}
+	}, 1000);
+});
+```
+
+---
+
+### 3. **Réinitialisation de la Base de Données**
+
+La fonction `clearAllTables` supprime toutes les données des tables de la base de données. Elle utilise les entités définies dans le projet pour identifier les tables à nettoyer.
+
+#### Exemple :
+
+```typescript
+async function clearAllTables() {
+	Logger.log("Cleaning database...", "test: setup");
+	const entities = [PermAlgorithme, PermDossier, Dossier, Algorithme, Token, Utilisateur];
+
+	for (const entity of entities) {
+		const repository = AppDataSource.getRepository(entity.name);
+		Logger.debug(`Clearing table: ⏳ ${repository.metadata.tableName}`, "test: setup", 5);
+		await AppDataSource.query(`DELETE FROM ${repository.metadata.tableName}`);
+		Logger.debug(`Clearing table: 🧹 ${repository.metadata.tableName} `, "test: setup", 5);
+	}
+
+	Logger.log("Cleaning done !", "test: setup");
+}
+```
+
+---
+
+### 4. **Exécution des Suites de Tests**
+
+Le hook `afterAll` exécute les suites de tests définies dans les fichiers `algos.test.ts` et `users.test.ts` après l'initialisation.
+
+#### Exemple :
+
+```typescript
+afterAll(async (done) => {
+	await UsersTests();
+	await AlgosTests();
+	done;
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation des Hooks `beforeAll` et `afterAll`**
+
+-   **`beforeAll`** : Prépare l'environnement de test avant l'exécution des tests (par exemple, nettoyage de la base de données).
+-   **`afterAll`** : Lance les suites de tests après l'initialisation.
+
+### 2. **Réinitialisation Complète de la Base de Données**
+
+-   Toutes les tables de la base de données sont vidées avant chaque exécution des tests.
+-   Cela garantit que les tests ne sont pas influencés par des données résiduelles.
+
+### 3. **Vérification de l'État de l'Application**
+
+-   Le fichier utilise un intervalle pour vérifier si l'application est complètement initialisée avant de commencer les tests.
+
+### 4. **Gestion des Logs**
+
+-   Les étapes importantes (par exemple, nettoyage de la base de données, initialisation de l'application) sont enregistrées dans les logs pour faciliter le suivi et le débogage.
+
+---
+
+## Exemple de Flux
+
+1. **Vérification du Mode `test`** :
+
+    - Le fichier vérifie que l'application est en mode `test`. Si ce n'est pas le cas, le processus est arrêté.
+
+2. **Initialisation de l'Application** :
+
+    - Le hook `beforeAll` attend que l'application soit complètement initialisée.
+
+3. **Nettoyage de la Base de Données** :
+
+    - Toutes les tables de la base de données sont vidées pour garantir un environnement propre.
+
+4. **Exécution des Tests** :
+    - Les suites de tests (`UsersTests`, `AlgosTests`) sont exécutées.

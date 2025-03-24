@@ -3,3 +3,135 @@ import GitHubFolderStructure from "../../../../src/components/FolderStructure/gi
 # Types
 
 <GitHubFolderStructure githubUrl="https://github.com/Bing-Chill-inc/Algoforge-main" pathToDisplay="src/back/types" />
+
+## Description Générale
+
+Le dossier `types/` contient des définitions de types et des classes utilisées dans l'application backend d'Algoforge. Ces types permettent de structurer les données, de standardiser les réponses des API, et de définir des comportements spécifiques comme les droits d'accès ou les gestionnaires de routes.
+
+---
+
+## Structure du Dossier
+
+```
+types/
+├── droits.enum.ts         # Enumération des droits d'accès.
+├── response.entity.ts     # Classes pour structurer les réponses des API.
+├── RouteHandler.d.ts      # Interface pour les gestionnaires de routes.
+```
+
+---
+
+## 1. `droits.enum.ts`
+
+### Description
+
+Ce fichier définit une énumération (`enum`) des droits d'accès pour les utilisateurs sur les algorithmes et les dossiers. Ces droits permettent de gérer les permissions des utilisateurs dans l'application.
+
+### Enumération : `Droits`
+
+-   **`Owner`** : L'utilisateur est propriétaire de l'algorithme ou du dossier.
+-   **`ReadWrite`** : L'utilisateur a des droits de lecture et d'écriture.
+-   **`ReadOnly`** : L'utilisateur a uniquement des droits de lecture.
+
+### Exemple d'Utilisation
+
+```typescript
+import { Droits } from "../types/droits.enum";
+
+const userPermission: Droits = Droits.ReadWrite;
+
+if (userPermission === Droits.Owner) {
+	console.log("L'utilisateur est propriétaire.");
+}
+```
+
+---
+
+## 2. `response.entity.ts`
+
+### Description
+
+Ce fichier contient des classes pour structurer les réponses des API. Chaque classe représente un type de réponse spécifique (succès, erreur, etc.) et inclut un code de statut HTTP, un message, et éventuellement des données supplémentaires.
+
+### Classes Principales
+
+#### a. **`Res`**
+
+-   Classe de base pour toutes les réponses.
+-   Attributs :
+    -   **`statut`** : Code de statut HTTP.
+    -   **`message`** : Message de la réponse.
+    -   **`data`** : Données supplémentaires (optionnel).
+
+#### Exemple :
+
+```typescript
+const response = new Res(200, "Opération réussie", { id: 1 });
+console.log(response);
+```
+
+#### b. **Réponses Spécifiques**
+
+-   **`BadRequestRes`** : Requête mal formée (statut 400).
+-   **`UnauthorizedRes`** : Non autorisé (statut 401).
+-   **`ForbiddenRes`** : Accès interdit (statut 403).
+-   **`NotFoundRes`** : Ressource non trouvée (statut 404).
+-   **`InternalServerErrorRes`** : Erreur interne du serveur (statut 500).
+-   **`OkRes`** : Succès (statut 200).
+-   **`CreatedRes`** : Ressource créée (statut 201).
+
+#### Exemple d'Utilisation
+
+```typescript
+import { OkRes, NotFoundRes } from "../types/response.entity";
+
+function getUser(id: number) {
+	if (id === 1) {
+		return new OkRes("Utilisateur trouvé", { id: 1, name: "John Doe" });
+	} else {
+		return new NotFoundRes("Utilisateur non trouvé");
+	}
+}
+```
+
+---
+
+## 3. `RouteHandler.d.ts`
+
+### Description
+
+Ce fichier définit une interface pour les gestionnaires de routes dans l'application. Il permet de structurer les routes et leurs callbacks.
+
+### Interface : `RouteHandler`
+
+-   **`route`** : Chemin de la route (par exemple, `/api/users`).
+-   **`callback`** : Fonction de rappel exécutée lorsque la route est appelée.
+
+### Exemple d'Utilisation
+
+```typescript
+import RouteHandler from "../types/RouteHandler";
+
+const userRoute: RouteHandler = {
+	route: "/api/users",
+	callback: (req, res) => {
+		res.send("Liste des utilisateurs");
+	},
+};
+```
+
+---
+
+## Points Techniques
+
+### 1. **Standardisation des Réponses**
+
+Les classes dans `response.entity.ts` permettent de standardiser les réponses des API, ce qui facilite la gestion des erreurs et des succès dans l'application.
+
+### 2. **Gestion des Permissions**
+
+L'énumération `Droits` dans `droits.enum.ts` fournit une manière claire et typée de gérer les permissions des utilisateurs sur les ressources.
+
+### 3. **Structuration des Routes**
+
+L'interface `RouteHandler` dans `RouteHandler.d.ts` aide à structurer les routes et leurs gestionnaires, ce qui améliore la lisibilité et la maintenabilité du code.

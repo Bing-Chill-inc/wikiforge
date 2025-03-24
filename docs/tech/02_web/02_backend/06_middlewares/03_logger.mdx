@@ -1,1 +1,145 @@
 # Logger Middleware
+
+## Description Générale
+
+Le fichier `logger.middleware.ts` contient un middleware Express utilisé pour journaliser les requêtes HTTP entrantes. Il enregistre des informations telles que l'adresse IP du client, la méthode HTTP, et l'URL de la requête. Ce middleware est utile pour le suivi des activités dans l'application et pour le débogage.
+
+---
+
+## Fonctionnalités Principales
+
+### 1. **Journalisation des Requêtes**
+
+Le middleware enregistre chaque requête HTTP entrante dans les logs. Les informations enregistrées incluent :
+
+-   La méthode HTTP (GET, POST, etc.).
+-   L'URL de la requête.
+-   L'adresse IP du client (si activée via une variable d'environnement).
+
+### 2. **Personnalisation via Variables d'Environnement**
+
+-   **`IS_IP_LOGGED`** :
+    -   Si défini à `true`, l'adresse IP du client est incluse dans les logs.
+    -   Sinon, seuls la méthode et l'URL sont enregistrées.
+
+### 3. **Passage au Middleware Suivant**
+
+Après avoir journalisé la requête, le middleware appelle la fonction `next()` pour permettre l'exécution des middlewares ou contrôleurs suivants.
+
+---
+
+## Exemple de Code
+
+### Middleware `loggerMiddleware`
+
+```typescript
+import { Request } from "express";
+import { Logger } from "../utils/logger";
+
+/**
+ * Ce middleware permet de journaliser les requêtes entrantes.
+ * @category Middlewares
+ */
+export const loggerMiddleware = async (req: Request, res, next) => {
+	if (process.env.IS_IP_LOGGED === "true") {
+		Logger.log(`[${req.ip}] ${req.method} ${req.url}`);
+	} else {
+		Logger.log(`${req.method} ${req.url}`);
+	}
+	next();
+};
+```
+
+---
+
+## Fonctionnement
+
+1. **Lecture des Variables d'Environnement** :
+
+    - Le middleware vérifie la valeur de la variable `IS_IP_LOGGED` pour déterminer si l'adresse IP doit être incluse dans les logs.
+
+2. **Journalisation** :
+
+    - Si `IS_IP_LOGGED` est défini à `true`, le middleware enregistre l'adresse IP du client, la méthode HTTP, et l'URL.
+    - Sinon, seuls la méthode HTTP et l'URL sont enregistrées.
+
+3. **Passage au Middleware Suivant** :
+    - La fonction `next()` est appelée pour permettre l'exécution des middlewares ou contrôleurs suivants.
+
+---
+
+## Exemple d'Utilisation
+
+### Intégration dans une Application Express
+
+Le middleware peut être appliqué globalement pour journaliser toutes les requêtes.
+
+#### Exemple :
+
+```typescript
+import express from "express";
+import { loggerMiddleware } from "./middlewares/logger.middleware";
+
+const app = express();
+
+// Appliquer le middleware de journalisation
+app.use(loggerMiddleware);
+
+// Exemple de route
+app.get("/", (req, res) => {
+	res.send("Bienvenue sur Algoforge !");
+});
+
+// Démarrage du serveur
+app.listen(3000, () => {
+	console.log("Serveur démarré sur le port 3000");
+});
+```
+
+---
+
+## Points Techniques
+
+### 1. **Utilisation de `Logger`**
+
+Le middleware utilise le module `Logger` pour enregistrer les informations dans les logs. Cela garantit une gestion centralisée et cohérente des journaux.
+
+### 2. **Personnalisation via `IS_IP_LOGGED`**
+
+-   En activant ou désactivant la journalisation des adresses IP via la variable d'environnement `IS_IP_LOGGED`, le middleware peut être adapté aux besoins spécifiques de l'application.
+-   Cela permet également de respecter les réglementations sur la confidentialité des données, si nécessaire.
+
+### 3. **Impact Minimal sur les Performances**
+
+Le middleware est conçu pour être léger et rapide. Il n'effectue que des opérations de journalisation avant de passer au middleware ou contrôleur suivant.
+
+---
+
+## Exemple de Flux
+
+1. **Requête Entrante** :
+
+    - Un client envoie une requête HTTP à l'application.
+
+2. **Exécution du Middleware** :
+
+    - Le middleware journalise les informations de la requête (méthode, URL, et éventuellement l'adresse IP).
+
+3. **Passage au Middleware Suivant** :
+    - La requête est transmise au middleware ou contrôleur suivant pour traitement.
+
+---
+
+## Exemple de Log
+
+### Avec `IS_IP_LOGGED=true`
+
+```
+[192.168.1.1] GET /api/algos
+```
+
+### Avec `IS_IP_LOGGED=false`
+
+```
+GET /api/algos
+```
