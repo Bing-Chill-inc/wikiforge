@@ -12,7 +12,7 @@ const instructions = {
 		>
 			<p>• Télécharger le .zip ci-dessous</p>
 			<p>• Extraire le zip</p>
-			<p>• Exécuter le fichier .exe</p>
+			<p>• Exécuter le fichier AlgoForge.exe</p>
 		</div>
 	),
 	Mac: (
@@ -38,7 +38,7 @@ const instructions = {
 					position: "relative",
 				}}
 			>
-				xattr -d com.apple.quarantine /Applications/algoforge-electron.app/
+				xattr -d com.apple.quarantine /Applications/AlgoForge.app/
 				<svg
 					style={{
 						width: "1rem",
@@ -53,9 +53,7 @@ const instructions = {
 					viewBox="0 0 24 24"
 					xmlns="http://www.w3.org/2000/svg"
 					onClick={() => {
-						navigator.clipboard.writeText(
-							"xattr -d com.apple.quarantine /Applications/algoforge-electron.app/"
-						);
+						navigator.clipboard.writeText("xattr -d com.apple.quarantine /Applications/AlgoForge.app/");
 						alert("Copié dans le presse-papier");
 					}}
 				>
@@ -87,7 +85,7 @@ const instructions = {
 		>
 			<p>• Télécharger le .zip ci-dessous</p>
 			<p>• Extraire le zip</p>
-			<p>• Exécuter le fichier algoforge-electron</p>
+			<p>• Exécuter le fichier AlgoForge</p>
 		</div>
 	),
 };
