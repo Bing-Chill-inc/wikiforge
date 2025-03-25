@@ -21,9 +21,41 @@ function HomepageHeader() {
 					<Link className="button button--secondary button--lg" to="/docs/tutorial/intro">
 						Comment utiliser Algoforge ?
 					</Link>
-					<Link className="button button--secondary button--lg" to="/download">
-						Télécharger Algoforge
-					</Link>
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "row",
+							gap: "20px",
+						}}
+					>
+						<Link
+							style={{
+								backgroundColor: "transparent",
+								border: "3px solid #eeeeee",
+								color: "#eeeeee",
+								borderRadius: "999em 0 0 999em",
+								width: "350px",
+							}}
+							className={clsx("button button--secondary button--lg", styles.useButton)}
+							to="/download"
+						>
+							Télécharger Algoforge Desktop
+						</Link>
+
+						<Link
+							style={{
+								backgroundColor: "transparent",
+								border: "3px solid #eeeeee",
+								color: "#eeeeee",
+								borderRadius: "0 999em 999em 0",
+								width: "350px",
+							}}
+							className={clsx("button button--secondary button--lg", styles.useButton)}
+							to="https://algoforge.fr"
+						>
+							Ouvrir Algoforge Web
+						</Link>
+					</div>
 				</div>
 			</div>
 		</header>
