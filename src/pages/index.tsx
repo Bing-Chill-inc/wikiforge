@@ -19,7 +19,7 @@ function HomepageHeader() {
 				<p className="hero__subtitle">{siteConfig.tagline}</p>
 				<div className={styles.buttons} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
 					<Link className="button button--secondary button--lg" to="/docs/tutorial/intro">
-						Comment utiliser Algoforge ?
+						Comment utiliser AlgoForge ?
 					</Link>
 					<div
 						style={{
@@ -39,7 +39,7 @@ function HomepageHeader() {
 							className={clsx("button button--secondary button--lg", styles.useButton)}
 							to="/download"
 						>
-							Télécharger Algoforge Desktop
+							Télécharger AlgoForge Desktop
 						</Link>
 
 						<Link
@@ -53,7 +53,7 @@ function HomepageHeader() {
 							className={clsx("button button--secondary button--lg", styles.useButton)}
 							to="https://algoforge.fr"
 						>
-							Ouvrir Algoforge Web
+							Ouvrir AlgoForge Web
 						</Link>
 					</div>
 				</div>
@@ -65,7 +65,7 @@ function HomepageHeader() {
 export default function Home(): ReactNode {
 	const { siteConfig } = useDocusaurusContext();
 	return (
-		<Layout title={`${siteConfig.title}`} description="Algoforge: Because your algorithms deserve better.">
+		<Layout title={`${siteConfig.title}`} description="AlgoForge: Because your algorithms deserve better.">
 			<HomepageHeader />
 			<main>
 				<HomepageFeatures />
