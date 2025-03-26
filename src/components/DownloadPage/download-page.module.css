@@ -1,0 +1,17 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.downloadButton {
+	padding: 1rem 10rem;
+	border-radius: 0.5rem;
+	background-color: var(--titleColor);
+	color: var(--bgColor);
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.downloadButton:hover {
+	scale: 1.05;
+}

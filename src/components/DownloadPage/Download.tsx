@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import instructions from "./Instructions";
+import styles from "./download-page.module.css";
 
 const AppDownloadPage = () => {
 	const [os, setOs] = useState<"Windows" | "Mac" | "Linux">("Windows");
@@ -75,16 +76,7 @@ const AppDownloadPage = () => {
 
 			{instructions[os]}
 
-			<div
-				style={{
-					padding: "1rem 10rem",
-					borderRadius: "0.5rem",
-					backgroundColor: "var(--titleColor)",
-					color: "var(--bgColor)",
-					cursor: "pointer",
-				}}
-				onClick={() => window.open(downloadLink, "_blank")}
-			>
+			<div className={styles.downloadButton} onClick={() => window.open(downloadLink, "_blank")}>
 				Télécharger
 			</div>
 		</div>

@@ -62,7 +62,6 @@ const config: Config = {
 					to: "/download",
 					position: "right",
 					activeBasePath: "/download",
-					
 				},
 				{
 					label: "Autohébergement",
@@ -89,34 +88,34 @@ const config: Config = {
 				},
 			],
 		},
-		footer: {
-			style: "dark",
-			links: [
-				{
-					title: "Docs",
-					items: [
-						{
-							label: "Tutorial",
-							to: "/docs/tutorial/intro",
-						},
-						{
-							label: "Technical",
-							to: "/docs/tech/intro",
-						},
-					],
-				},
-				{
-					title: "More",
-					items: [
-						{
-							label: "GitHub",
-							href: "https://github.com/Bing-Chill-inc/Algoforge-main.git",
-						},
-					],
-				},
-			],
-			copyright: `Copyright © ${new Date().getFullYear()} Algoforge, Inc. Because your algorithms deserve better.`,
-		},
+		// footer: {
+		// 	style: "dark",
+		// 	links: [
+		// 		{
+		// 			title: "Docs",
+		// 			items: [
+		// 				{
+		// 					label: "Tutorial",
+		// 					to: "/docs/tutorial/intro",
+		// 				},
+		// 				{
+		// 					label: "Technical",
+		// 					to: "/docs/tech/intro",
+		// 				},
+		// 			],
+		// 		},
+		// 		{
+		// 			title: "More",
+		// 			items: [
+		// 				{
+		// 					label: "GitHub",
+		// 					href: "https://github.com/Bing-Chill-inc/Algoforge-main.git",
+		// 				},
+		// 			],
+		// 		},
+		// 	],
+		// 	copyright: `Copyright © ${new Date().getFullYear()} Algoforge, Inc. Because your algorithms deserve better.`,
+		// },
 		prism: {
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula,
