@@ -1,29 +1,70 @@
 # Configuration
 
-:::danger
-Cette page est en cours d'écriture...
-:::
+Pour configurer l'application AlgoForge web, vous retrouverez à la racine du dossier un fichier environnement `.env`.
+Il contient sur chaque clé une description claire et potentiellement les valeurs possibles. Si vous voulez rapidement revenir à une configuration par défaut, n'hésitez pas à copier/coller l'une des templates environnement en fonction de votre situation: `template-docker.env`, `template-local.env` ou `template-test.env`.
 
-| Clé                      |  Type   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Par défaut          |
-| ------------------------ | :-----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| PORT                     | Nombre  | Port de connexion à l'application.                                                                                                                                                                                                                                                                                                                                                                                                                                            | 5205                |
-| IS_IP_LOGGED             | Booléen | Affiche les IPs dans la console.                                                                                                                                                                                                                                                                                                                                                                                                                                              | false               |
-| MAIL_ACTIVE              | Booléen | Active/désactive le système de mail. Il est utilisé pour la validation des comptes utilisateurs. Lors de l'inscription, un mail est envoyé à l'utilisateur pour valider son compte. Il doit cliquer sur le lien contenu dans le mail pour activer son compte, sinon il ne pourra pas se connecter. Il est également utilisé pour la réinitialisation du mot de passe. Si désactivé, l'utilisateur sera automatiquement validé et pourra se connecter sans valider son compte. | false               |
-| DATABASE_TYPE            | Chaîne  | Type de la base de données. Types supportés: postgres, mysql, sqlite.                                                                                                                                                                                                                                                                                                                                                                                                         | sqlite              |
-| DATABASE_NAME            | Chaîne  | Nom de la base de données. Pour sqlite, utilisez le chemin absolu/relatif. (ex: database.sqlite).                                                                                                                                                                                                                                                                                                                                                                             | db_algoforge.sqlite |
-| DATABASE_HOST            | Chaîne  | Adresse IP/DNS de l'hôte. Pour ceux qui utilisent docker-compose, utilisez le nom du service. (ex: db_postgres).                                                                                                                                                                                                                                                                                                                                                              | db_postgres         |
-| DATABASE_USER            | Chaîne  | Utilisateur de la base de données.                                                                                                                                                                                                                                                                                                                                                                                                                                            | postgres            |
-| DATABASE_PASSWORD        | Chaîne  | Mot de passe de la base de données.                                                                                                                                                                                                                                                                                                                                                                                                                                           | password            |
-| DATABASE_PORT            | Nombre  | Port d'écoute de la base de données.                                                                                                                                                                                                                                                                                                                                                                                                                                          | 5432                |
-| MAIL_HOST                | Chaîne  | Adresse IP/DNS du serveur de mail.                                                                                                                                                                                                                                                                                                                                                                                                                                            | smtp.test.com       |
-| MAIL_PORT                | Nombre  | Port d'écoute du serveur de mail.                                                                                                                                                                                                                                                                                                                                                                                                                                             | 465                 |
-| MAIL_USER                | Chaîne  | Utilisateur du serveur de mail.                                                                                                                                                                                                                                                                                                                                                                                                                                               | test@example.com    |
-| MAIL_PASSWORD            | Chaîne  | Mot de passe du serveur de mail.                                                                                                                                                                                                                                                                                                                                                                                                                                              | password            |
-| PGADMIN_DEFAULT_EMAIL    | Chaîne  | Email par défaut pour PGAdmin.                                                                                                                                                                                                                                                                                                                                                                                                                                                | pgadmin@admin.com   |
-| PGADMIN_DEFAULT_PASSWORD | Chaîne  | Mot de passe par défaut pour PGAdmin.                                                                                                                                                                                                                                                                                                                                                                                                                                         | password            |
-| PGADMIN_PORT             | Nombre  | Port d'écoute de PGAdmin.                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 5300                |
-| RETRY_MANY_TIMES         | Nombre  | Retente la connexion à la base de données et au serveur de mail N fois.                                                                                                                                                                                                                                                                                                                                                                                                       | 3                   |
-| QUOTA_ALGO               | Nombre  | Nombre maximum d'algorithmes que l'utilisateur peut stocker.                                                                                                                                                                                                                                                                                                                                                                                                                  | 500                 |
-| BUILD                    | Chaîne  | Valeurs possibles: prod, dev, test.                                                                                                                                                                                                                                                                                                                                                                                                                                           | prod                |
-| DEBUG                    | Booléen | Active/désactive le mode debug.                                                                                                                                                                                                                                                                                                                                                                                                                                               | false               |
-| DEBUG_LEVEL              | Nombre  | Niveau de debug.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 0                   |
+## Général
+
+Paramètres généraux de l'application.
+
+| Clé                |  Type   | Description                                                             | Par défaut |
+| ------------------ | :-----: | :---------------------------------------------------------------------- | ---------- |
+| `PORT`             | Nombre  | Port de connexion à l'application.                                      | 5205       |
+| `IS_IP_LOGGED`     | Booléen | Affiche les IPs dans la console.                                        | false      |
+| `MAIL_ACTIVE`      | Booléen | Active/désactive le système de mail.                                    | false      |
+| `QUOTA_ALGO`       | Nombre  | Nombre maximum d'algorithmes que l'utilisateur peut stocker.            | 500        |
+| `RETRY_MANY_TIMES` | Nombre  | Retente la connexion à la base de données et au serveur de mail N fois. | 3          |
+
+## Base de données
+
+Paramètres de configuration pour la base de données. Certains paramètres sont optionnels, notamment lorsque vous installez l'application en local.
+
+### Local standalone
+
+| Clé             |  Type  | Description                                                           | Par défaut          |
+| --------------- | :----: | :-------------------------------------------------------------------- | ------------------- |
+| `DATABASE_TYPE` | Chaîne | Type de la base de données. Types supportés: postgres, mysql, sqlite. | sqlite              |
+| `DATABASE_NAME` | Chaîne | Nom de la base de données. Utilisez le chemin absolu/relatif.         | db_algoforge.sqlite |
+
+### Autre
+
+| Clé                 |  Type  | Description                                                           | Par défaut   |
+| ------------------- | :----: | :-------------------------------------------------------------------- | ------------ |
+| `DATABASE_TYPE`     | Chaîne | Type de la base de données. Types supportés: postgres, mysql, sqlite. | postgres     |
+| `DATABASE_NAME`     | Chaîne | Nom de la base de données.                                            | db_algoforge |
+| `DATABASE_HOST`     | Chaîne | Adresse IP/DNS de l'hôte. Utilisez le nom du service.                 | db_postgres  |
+| `DATABASE_USER`     | Chaîne | Utilisateur de la base de données.                                    | postgres     |
+| `DATABASE_PASSWORD` | Chaîne | Mot de passe de la base de données.                                   | password     |
+| `DATABASE_PORT`     | Nombre | Port d'écoute de la base de données.                                  | 5432         |
+
+## Mails
+
+Paramètres de configuration pour le système de mail.
+Cette section doit être configuré seulement si le service de mail est activé (= si `MAIL_ACTIVE` est sur true).
+
+| Clé             |  Type  | Description                        | Par défaut       |
+| --------------- | :----: | :--------------------------------- | ---------------- |
+| `MAIL_HOST`     | Chaîne | Adresse IP/DNS du serveur de mail. | smtp.test.com    |
+| `MAIL_PORT`     | Nombre | Port d'écoute du serveur de mail.  | 465              |
+| `MAIL_USER`     | Chaîne | Utilisateur du serveur de mail.    | test@example.com |
+| `MAIL_PASSWORD` | Chaîne | Mot de passe du serveur de mail.   | password         |
+
+## Docker
+
+Paramètres de configuration pour PGAdmin.
+
+| Clé                        |  Type  | Description                           | Par défaut        |
+| -------------------------- | :----: | :------------------------------------ | ----------------- |
+| `PGADMIN_DEFAULT_EMAIL`    | Chaîne | Email par défaut pour PGAdmin.        | pgadmin@admin.com |
+| `PGADMIN_DEFAULT_PASSWORD` | Chaîne | Mot de passe par défaut pour PGAdmin. | password          |
+| `PGADMIN_PORT`             | Nombre | Port d'écoute de PGAdmin.             | 5300              |
+
+## Avancé
+
+Paramètres avancés de l'application. Nous vous déconseillons de toucher à ces paramètres, sauf si vous savez ce que vous faites.
+
+| Clé           |  Type   | Description                         | Par défaut |
+| ------------- | :-----: | :---------------------------------- | ---------- |
+| `BUILD`       | Chaîne  | Valeurs possibles: prod, dev, test. | prod       |
+| `DEBUG`       | Booléen | Active/désactive le mode debug.     | false      |
+| `DEBUG_LEVEL` | Nombre  | Niveau de debug.                    | 0          |
