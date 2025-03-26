@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-	title: "Algoforge - wiki",
+	title: "AlgoForge - Wiki",
 	tagline: "Because your algorithms deserve better.",
 	favicon: "img/favicon.ico",
 
@@ -18,8 +18,8 @@ const config: Config = {
 
 	// GitHub pages deployment config.
 	// If you aren't using GitHub pages, you don't need these.
-	organizationName: "Algoforge", // Usually your GitHub org/user name.
-	projectName: "Algoforge - wiki", // Usually your repo name.
+	organizationName: "AlgoForge", // Usually your GitHub org/user name.
+	projectName: "AlgoForge - Wiki", // Usually your repo name.
 
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
@@ -50,7 +50,7 @@ const config: Config = {
 		// Replace with your project's social card
 		image: "img/AlgoForge.svg",
 		navbar: {
-			title: "Algoforge",
+			title: "AlgoForge",
 			logo: {
 				alt: "AF",
 				src: "img/algoforgeLogo(black).png",
@@ -115,7 +115,7 @@ const config: Config = {
 					],
 				},
 			],
-			copyright: `Copyright © ${new Date().getFullYear()} Algoforge, Inc. Because your algorithms deserve better.`,
+			copyright: `Copyright © ${new Date().getFullYear()} AlgoForge, Inc. Because your algorithms deserve better.`,
 		},
 		prism: {
 			theme: prismThemes.github,

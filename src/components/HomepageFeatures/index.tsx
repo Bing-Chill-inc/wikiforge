@@ -14,7 +14,7 @@ const FeatureList: FeatureItem[] = [
 		title: "Facile à utiliser",
 		Svg: require("@site/static/img/algoforge-facile-a-utiliser.svg").default,
 		description: (
-			<>Algoforge est un outil simple et intuitif pour vous aider à apprendre et à pratiquer les algorithmes.</>
+			<>AlgoForge est un outil simple et intuitif pour vous aider à apprendre et à pratiquer les algorithmes.</>
 		),
 	},
 	{
@@ -22,7 +22,7 @@ const FeatureList: FeatureItem[] = [
 		Svg: require("@site/static/img/algoforge-open-source.svg").default,
 		description: (
 			<>
-				Algoforge est un projet open source et gratuit. Vous pouvez l'utiliser, le modifier et le distribuer
+				AlgoForge est un projet open source et gratuit. Vous pouvez l'utiliser, le modifier et le distribuer
 				librement.
 			</>
 		),
@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
 		Svg: require("@site/static/img/algoforge-rocket.svg").default,
 		description: (
 			<>
-				Algoforge est conçu pour être rapide et performant. Dites adieu aux pages de chargement interminables.
+				AlgoForge est conçu pour être rapide et performant. Dites adieu aux pages de chargement interminables.
 				Notre application charge en <code>16ms</code>.
 			</>
 		),
