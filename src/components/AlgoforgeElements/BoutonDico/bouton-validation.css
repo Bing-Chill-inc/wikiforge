@@ -1,11 +1,35 @@
-#valid-inputs,
-#remove-inputs {
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--borderColor);
-    border-radius: 50%;
+.dico-button-wrapper button {
+    border: none;
+    border-radius: 0.6em;
     background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 6px 10px 6px 10px;
+}
+
+.dico-button-wrapper button:not(:disabled) {
+    cursor: pointer;
+}
+
+.dico-button-wrapper button:hover {
+    box-shadow: 0px 4px 10px var(--fgColorSemiTransparent);
+}
+
+#valid-inputs:hover {
+    color: var(--warningColor);
+}
+
+#remove-inputs:hover {
+    color: var(--errorColor);
+}
+
+.dico-button-wrapper button {
+    color: var(--fgColor);
+}
+
+.dico-button-wrapper {
+    width: 100px;
+    height: 50px;
+    background-color: var(--bgColorTertiary);
 }

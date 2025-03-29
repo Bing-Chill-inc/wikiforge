@@ -2,16 +2,15 @@ import "./bouton-validation.css";
 
 const BoutonSuppression = () => {
     return (
-        <button id="remove-inputs" title="Supprimer la variable">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
+        <div id="dico-buttons" className="dico-button-wrapper">
+            <button
+                id="remove-inputs"
+                className="secondaryButton"
+                title="Supprimer la variable"
             >
-                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-            </svg>
-        </button>
+                Supprimer
+            </button>
+        </div>
     );
 };
 
