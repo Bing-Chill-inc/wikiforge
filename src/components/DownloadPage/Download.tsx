@@ -18,7 +18,8 @@ const AppDownloadPage = () => {
 		else setArch("x64");
 	}, []);
 
-	const downloadLink = `https://github.com/Bing-Chill-inc/Algoforge-main/releases/latest/download/Algoforge-${os}-${arch}.zip`;
+	const extension = os === "Mac" ? "dmg" : "zip";
+	const downloadLink = `https://github.com/Bing-Chill-inc/Algoforge-main/releases/latest/download/Algoforge-${os}-${arch}.${extension}`;
 
 	return (
 		<div
